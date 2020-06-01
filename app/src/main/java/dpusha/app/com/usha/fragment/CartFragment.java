@@ -1,0 +1,439 @@
+package dpusha.app.com.usha.fragment;
+
+
+import android.content.Context;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import dpusha.app.com.usha.R;
+import dpusha.app.com.usha.adapter.CartItemsAdapter;
+import dpusha.app.com.usha.adapter.MyDividerItemDecoration;
+import dpusha.app.com.usha.model.CartItem;
+import dpusha.app.com.usha.model.GetPriceResponse;
+import dpusha.app.com.usha.model.Item;
+import dpusha.app.com.usha.model.Material;
+import dpusha.app.com.usha.model.ProductDivision;
+import dpusha.app.com.usha.model.Result;
+import dpusha.app.com.usha.model.ShipToParty;
+import dpusha.app.com.usha.network.APIError;
+import dpusha.app.com.usha.network.RequestListener;
+import dpusha.app.com.usha.network.RetrofitManager;
+import dpusha.app.com.usha.orders_home.util.Constants;
+import dpusha.app.com.usha.orders_home.util.utility;
+import dpusha.app.com.usha.shared_preference.SharedPreferencesUtil;
+import okhttp3.ResponseBody;
+import retrofit2.Response;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
+
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class CartFragment extends Fragment implements RequestListener, DatePickerDialog.OnDateSetListener {
+
+
+    @BindView(R.id.recycler_items)
+    RecyclerView recycler_items;
+
+    @BindView(R.id.txtvw_totalNetPrice)
+    TextView txtvw_totalNetPrice;
+    @BindView(R.id.txtvw_totalDiscount)
+    TextView txtvw_totalDiscount;
+    @BindView(R.id.txtvw_taxableValue)
+    TextView txtvw_taxableValue;
+    @BindView(R.id.txtvw_totalTax)
+    TextView txtvw_totalTax;
+    @BindView(R.id.txtvw_totalGrossPrice)
+    TextView txtvw_totalGrossPrice;
+
+    @BindView(R.id.et_deliveryDate)
+    EditText et_deliveryDate;
+    @BindView(R.id.spinnerShipToParty)
+    Spinner spinnerShipToParty;
+//   @BindView(R.id.etShipToParty)
+    // EditText etShipToParty;
+
+
+    @BindView(R.id.et_referenceNumber)
+    EditText et_referenceNumber;
+    @BindView(R.id.et_remarks)
+    EditText et_remarks;
+
+
+    private RetrofitManager retrofitManager = RetrofitManager.getInstance();
+    CartItem cartItems;
+    List<ShipToParty> shipToPartyList = new ArrayList<>();
+    AlertDialog alertDialog1;
+
+    public CartFragment() {
+        // Required empty public constructor
+    }
+
+    public static CartFragment newInstance() {
+        return new CartFragment();
+
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+
+    }
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.cart, container, false);
+        ButterKnife.bind(this, view);
+        recycler_items.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recycler_items.setItemAnimator(new DefaultItemAnimator());
+
+        // RecyclerViewMargin decoration = new RecyclerViewMargin(20, 1);
+        MyDividerItemDecoration decoration1 = new MyDividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL, 50);
+        recycler_items.addItemDecoration(decoration1);
+
+
+        setViewListener();
+        setTemporaryAdapterForPartySpinner();
+        hitAPIGetShipToParty();
+        refreshCartRecyclerFromPreference();
+        return view;
+    }
+
+    void getPrice(CartItem cartItems) {
+
+        List<String> sku = new ArrayList<>();
+        List<Item> items = cartItems.getItems();
+        for (int i = 0; i < items.size(); i++) {
+            sku.add(items.get(i).getSKU());
+        }
+        Material material = new Material(SharedPreferencesUtil.getUserId(getActivity()), sku);
+        hitAPIGetPrice(material);
+    }
+
+    void refreshCartRecyclerFromPreference() {
+        String strCartItem = SharedPreferencesUtil.getCartItems(getActivity());
+        if (!strCartItem.equals("")) {
+            cartItems = utility.convertJSONStringToCartObject(strCartItem);
+            if (cartItems != null && cartItems.getItems() != null && cartItems.getItems().size() > 0) {
+                getPriceSample();
+                // getPrice(cartItems);
+                CartItemsAdapter cartItemsAdapter = new CartItemsAdapter(getActivity(), cartItems);
+                recycler_items.setAdapter(cartItemsAdapter);
+
+            } else {
+                recycler_items.setAdapter(null);
+            }
+        } else {
+            recycler_items.setAdapter(null);
+        }
+    }
+
+    void setViewListener() {
+
+    }
+
+    private void hitAPIGetPrice(Material material) {
+        retrofitManager.getPrice(this, getActivity(), Constants.API_TYPE.GET_PRICE, material, true);
+    }
+
+    private void hitAPIGetShipToParty() {
+        retrofitManager.getShipToParty(this, getActivity(), Constants.API_TYPE.SHIP_TO_PARTY, true);
+    }
+
+    private void hitAPIPlaceOrder() {
+        retrofitManager.placeOrder(this, getActivity(), Constants.API_TYPE.PLACE_ORDER, cartItems, true);
+    }
+
+    @OnClick({
+            R.id.et_deliveryDate,
+            R.id.button_proceed,
+
+    })
+    public void onClick(@NonNull View view) {
+
+        switch (view.getId()) {
+            case R.id.et_deliveryDate:
+                Click_getDate();
+                break;
+            case R.id.button_proceed:
+                if (validation()) {
+                    hitAPIPlaceOrder();
+                }
+                break;
+
+           /* case R.id.etShipToParty:
+                showDialogNew("Ship to party", getActivity(), etShipToParty, shipToPartyList);
+                break;*/
+
+        }
+    }
+
+    @Override
+    public void onSuccess(Response<ResponseBody> response, Constants.API_TYPE apiType) {
+        try {
+            String strResponse = response.body().string();
+            Log.e("menu", response.body().toString());
+            // Toast.makeText(this, apiType+"Response  "+strResponse,Toast.LENGTH_SHORT).show();
+            if (apiType == Constants.API_TYPE.SHIP_TO_PARTY) {
+                shipToPartyList.clear();
+                Gson gson = new Gson();
+                Type listType = new TypeToken<List<ShipToParty>>() {
+                }.getType();
+                List<ShipToParty> _shipToPartyList = gson.fromJson(strResponse, listType);
+
+                shipToPartyList.add(new ShipToParty("Select Party", "0"));
+                shipToPartyList.addAll(_shipToPartyList);
+
+                if (_shipToPartyList != null && !_shipToPartyList.isEmpty()) {
+                    ArrayAdapter<ShipToParty> dataAdapter = new ArrayAdapter<ShipToParty>(getActivity(), android.R.layout.simple_spinner_item, shipToPartyList);
+                    dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinnerShipToParty.setAdapter(dataAdapter);
+                } else {
+                    setTemporaryAdapterForPartySpinner();
+                    Toast.makeText(getActivity(), "No data found!", Toast.LENGTH_SHORT).show();
+                }
+            } else if (apiType == Constants.API_TYPE.GET_PRICE) {
+                GetPriceResponse priceResponse = new Gson().fromJson(strResponse, GetPriceResponse.class);
+                if (priceResponse != null && priceResponse.getIsSuccess() && priceResponse.getResult() != null && priceResponse.getResult().size() > 0) {
+                    List<Result> priceList = priceResponse.getResult();
+                    for (int i = 0; i < priceList.size(); i++) {
+                        if (!priceList.get(i).getMaterialCode().equals("")) continue;
+                        for (int j = 0; j < cartItems.getItems().size(); j++) {
+                            if (priceList.get(i).getMaterialCode().equals(cartItems.getItems().get(i).getSKU())) {
+                                cartItems.getItems().get(i).setUnitPrice(priceList.get(i).getPriceBeforeDiscount());
+                                cartItems.getItems().get(i).setDiscount(priceList.get(i).getBillDiscount());
+                                cartItems.getItems().get(i).setTaxPercent(priceList.get(i).gettAX());
+                            }
+                        }
+                    }
+                    refreshTotalAmount();
+
+                }
+
+                // init recycler now
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onFailure(Response<ResponseBody> response, Constants.API_TYPE apiType) {
+        //  Toast.makeText(this, apiType+" error "+response.toString(),Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onApiException(APIError error, Response<ResponseBody> response, Constants.API_TYPE apiType) {
+        //   Toast.makeText(this, apiType+" onApiException "+response.toString(),Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
+
+
+    private void getPriceSample() {
+        for (int j = 0; j < cartItems.getItems().size(); j++) {
+            cartItems.getItems().get(j).setUnitPrice(10.0);
+            cartItems.getItems().get(j).setDiscount(2.0);
+            cartItems.getItems().get(j).setTaxPercent(3.0);
+        }
+        refreshTotalAmount();
+    }
+
+    private void refreshTotalAmount() {
+        double totalNetPrice = 0.0;
+        double totalDiscount = 0.0;
+        double totalTax = 0.0;
+        double totalGrossPrice = 0.0;
+        for (int j = 0; j < cartItems.getItems().size(); j++) {
+            try {
+                double _unitPrice = cartItems.getItems().get(j).getUnitPrice();
+                double unitPrice = cartItems.getItems().get(j).getUnitPrice() * cartItems.getItems().get(j).getQuantity();
+                double discountPercent = cartItems.getItems().get(j).getDiscount();
+                double taxPercent = cartItems.getItems().get(j).getTaxPercent();
+                double quantity = cartItems.getItems().get(j).getQuantity();
+                totalNetPrice = totalNetPrice + unitPrice * quantity;
+                double tax = (unitPrice * taxPercent) / 100;
+
+                double priceAfterTax = totalNetPrice + tax;
+                double discount = (totalNetPrice * discountPercent) / 100;
+                double priceAfterDiscount = priceAfterTax - discount;
+                totalDiscount = totalDiscount + discount;
+                totalTax = totalTax + tax;
+                totalGrossPrice = totalGrossPrice + priceAfterDiscount;
+            } catch (Exception e) {
+                Log.d(TAG, e.getMessage());
+            }
+        }
+
+        txtvw_totalNetPrice.setText(String.valueOf(totalNetPrice));
+
+        txtvw_totalDiscount.setText(String.valueOf(totalDiscount));
+
+        txtvw_taxableValue.setText(String.valueOf("taxable"));
+
+        txtvw_totalTax.setText(String.valueOf(totalTax));
+
+        txtvw_totalGrossPrice.setText( String.format("%.2f", totalGrossPrice));//String.valueOf(totalGrossPrice));
+    }
+
+    @Override
+    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+        String date = +dayOfMonth + "/" + (++monthOfYear) + "/" + year;
+
+        String dayOfMonthString = dayOfMonth < 10 ? "0" + dayOfMonth : "" + dayOfMonth;
+        String monthOfYearString = monthOfYear < 10 ? "0" + monthOfYear : "" + monthOfYear;
+
+        // String  date_1 = year + "-" + monthOfYearString + "-" + dayOfMonthString;
+        String date_1 = dayOfMonthString + "-" + monthOfYearString + "-" + year;
+
+        et_deliveryDate.setText(date_1);
+
+    }
+
+    private void Click_getDate() {
+
+        Calendar calendar = Calendar.getInstance();
+        DatePickerDialog dpd = DatePickerDialog.newInstance(
+                CartFragment.this,
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH));
+        dpd.setThemeDark(false);
+        dpd.vibrate(false);
+        dpd.dismissOnPause(false);
+        dpd.showYearPickerFirst(false);
+        dpd.setVersion(DatePickerDialog.Version.VERSION_1);
+        dpd.setAccentColor(getResources().getColor(R.color.colorAccent));
+
+
+        dpd.setTitle("Delivery Date");
+        dpd.setYearRange(1985, 2028);
+        dpd.setMinDate(calendar);
+        dpd.show(getActivity().getFragmentManager(), "dialog");
+
+
+    }
+
+    public void showDialogNew(String dialog_title, final Context context, final EditText editText, List<ShipToParty> list) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.custom_spinner_dialog, null);
+        dialogBuilder.setView(dialogView);
+
+        final EditText autoText = (EditText) dialogView.findViewById(R.id.autoText);
+        final ListView listvw = (ListView) dialogView.findViewById(R.id.listview);
+
+        autoText.setVisibility(View.GONE);
+        final ImageView imgvwSearch = (ImageView) dialogView.findViewById(R.id.imgvwSearch);
+        imgvwSearch.setVisibility(View.GONE);
+
+        ArrayAdapter<ShipToParty> adapter = new ArrayAdapter<ShipToParty>(context,
+                android.R.layout.simple_list_item_1, android.R.id.text1, list);
+        listvw.setAdapter(adapter);
+
+        listvw.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+
+                ShipToParty spinner_ = (ShipToParty) listvw.getItemAtPosition(position);
+                String txt = spinner_.getColumnName();
+                editText.setText(txt);
+
+
+                try {
+                    alertDialog1.dismiss();
+                } catch (Exception e) {
+                    e.getMessage();
+                }
+
+
+            }
+        });
+
+
+        dialogBuilder.setTitle(dialog_title);
+
+        alertDialog1 = dialogBuilder.create();
+        if (!alertDialog1.isShowing()) {
+            alertDialog1.show();
+        }
+    }
+
+    public boolean validation() {
+        boolean validate = true;
+        ShipToParty _shipToParty = (ShipToParty) spinnerShipToParty.getSelectedItem();
+        String shipToParty = _shipToParty.getColumnValue();
+        // String shipToParty = etShipToParty.getText().toString().trim();
+        String date = et_deliveryDate.getText().toString().trim();
+
+        if (cartItems == null || cartItems.getItems() == null || cartItems.getItems().size() == 0) {
+            Toast.makeText(getActivity(), "Cart is empty!", Toast.LENGTH_SHORT).show();
+            validate = false;
+        }
+        // else if (shipToParty.isEmpty() ) {
+        else if (shipToParty.equals("0")) {
+            Toast.makeText(getActivity(), "Please select party!", Toast.LENGTH_SHORT).show();
+            validate = false;
+        } else if (date.isEmpty()) {
+            Toast.makeText(getActivity(), "Please select delivery date!", Toast.LENGTH_SHORT).show();
+            validate = false;
+        }
+
+
+        return validate;
+    }
+
+    void setTemporaryAdapterForPartySpinner() {
+        shipToPartyList.clear();
+        shipToPartyList.add(new ShipToParty("Select Party", "0"));
+        ArrayAdapter<ShipToParty> dataAdapter = new ArrayAdapter<ShipToParty>(getActivity(), android.R.layout.simple_spinner_item, shipToPartyList);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerShipToParty.setAdapter(dataAdapter);
+    }
+}

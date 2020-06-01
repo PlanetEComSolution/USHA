@@ -1,0 +1,383 @@
+package dpusha.app.com.usha.network;
+
+import android.accounts.NetworkErrorException;
+import android.content.Context;
+import android.util.Log;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+//import com.bumptech.glide.request.RequestListener;
+
+import org.json.JSONObject;
+
+import java.net.SocketTimeoutException;
+import java.util.concurrent.TimeUnit;
+
+import dpusha.app.com.usha.BuildConfig;
+import dpusha.app.com.usha.R;
+import dpusha.app.com.usha.activity.USHAApplication;
+import dpusha.app.com.usha.model.CartItem;
+import dpusha.app.com.usha.model.Material;
+import dpusha.app.com.usha.orders_home.util.Constants;
+import dpusha.app.com.usha.orders_home.util.Dialogs;
+import dpusha.app.com.usha.shared_preference.SharedPreferencesUtil;
+import okhttp3.OkHttpClient;
+import okhttp3.ResponseBody;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+
+public class RetrofitManager implements OnRetryCallback {
+
+    public static Retrofit retrofit = null;
+    public static RetrofitManager retrofitManager = null;
+    public static API_Interface retroService = null;
+    private Call<ResponseBody> call = null;
+    //private Call<AuthenticationToken> call2 = null;
+
+    private Callback<ResponseBody> mCallback = null;
+    private final String format = "json";
+    private String TAG = "RetrofitManager";
+    AppCompatActivity activity = null;
+    private OnRetryCallback mRetryCallback = this;
+    private static String BASE_URL;
+
+    static {
+
+        BASE_URL = Constants.BASE_URL_LIVE;
+
+    }
+
+
+    private RetrofitManager() {
+
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.readTimeout(10, TimeUnit.SECONDS);
+        httpClient.connectTimeout(10, TimeUnit.SECONDS);
+        httpClient.addInterceptor(new ConnectivityInterceptor(USHAApplication.get()));
+        httpClient.addInterceptor(new SupportInterceptor());
+
+        if(BuildConfig.DEBUG)
+        {
+            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+            httpClient.addInterceptor(logging);
+        }
+
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(httpClient.build())
+                .build();
+
+        retroService = retrofit.create(API_Interface.class);
+
+    }
+
+    public static RetrofitManager getInstance() {
+        if (retrofitManager == null) {
+            retrofitManager = new RetrofitManager();
+        }
+        return retrofitManager;
+    }
+
+
+    /**
+     * Method to resolve the API callbacks
+     *
+     * @param mRequestListener
+     * @param mContext
+     * @param mApiType
+     * @param showProgress
+     */
+    public void performCallback(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            final boolean showProgress) {
+
+        activity = (AppCompatActivity) mContext;
+
+     /*   if (mContext == null) {
+            Util.DEBUG_LOG(1, TAG, "context is null");
+            return;
+        }*/
+
+        if (showProgress) {
+          Dialogs.showProgressDialog(activity, "Please wait..");
+        }
+
+        mCallback = new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                if (response.isSuccessful()) {
+                    APIError error = null;
+                    try {
+                       // error = ErrorUtils.parseError(response, retrofitManager);
+
+                        if (error == null) {
+                            mRequestListener.onSuccess(response, mApiType);
+
+                        } else {
+                            mRequestListener.onApiException(error, response, mApiType);
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    try {
+
+                        String strResponse = response.errorBody().string();
+                        Log.d(TAG, strResponse);
+                        JSONObject obj = new JSONObject(strResponse);
+                        String s = obj.getString("details");
+                        if (s.equalsIgnoreCase("Expired token") || s.equalsIgnoreCase("Signature verification failed")) {
+                           // Intent in = new Intent(activity, SplashActivity.class);
+                          //  activity.startActivity(in);
+                          //  activity.finish();
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    mRequestListener.onFailure(response, mApiType);
+                }
+
+               Dialogs.hideProgressDialog(mContext);
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                try {
+                    if (t instanceof SocketTimeoutException) {
+                        Dialogs.showTryAgainDialog(mContext, mContext.getString(R.string.ERROR_SOCKET), mRetryCallback);
+
+                    } else if (t instanceof NoConnectivityException) {
+                        Dialogs.showAlert(mContext, mContext.getString(R.string.ERROR_INTERNET));
+
+                    } else if (t instanceof NetworkErrorException) {
+                       // Dialogs.showAlert(mContext, t.getMessage());
+                        Dialogs.showAlert(mContext, mContext.getString(R.string.ERROR_SOMETHING_WENT_WRONG));
+                    }
+                    Dialogs.hideProgressDialog(mContext);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+//                mRequestListener.onFailure(t, mApiType);
+
+
+            }
+        };
+
+        call.enqueue(mCallback);
+    }
+
+
+    @Override
+    public void OnRetry(boolean isRetry) {
+        if (isRetry) {
+          Dialogs.showProgressDialog(activity, "Please wait..");
+            call.clone().enqueue(mCallback);
+        } else {
+
+        }
+    }
+
+    /**
+     * Method to cancel the call
+     */
+    public void cancelRequest() {
+        call.cancel();
+    }
+
+
+    public void getAuthToken(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            final boolean showProgress) {
+
+        call= retroService.getAuthorizationToken("0000106849","1234","password","U");
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+
+    }
+
+
+    public void Login(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            final String userID,
+            final String password,
+            final boolean showProgress) {
+
+        call = retroService.getUser(userID,password);
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+
+    }
+
+    // get orderList
+
+    public void GetOrderList(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            final String userID,
+            final boolean showProgress) {
+
+        call = retroService.getOrderList(userID);
+        //   call = retroService.getUser(SharedPreferencesUtil.getAuthToken(mContext),userID,password);
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+
+    }
+
+    //get orderList Details
+
+
+    public void GetOrderListDetails(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            final String userID,
+            final boolean showProgress) {
+
+        call = retroService.getOrderListDetails(userID);
+        //   call = retroService.getUser(SharedPreferencesUtil.getAuthToken(mContext),userID,password);
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+
+    }
+
+
+
+
+    public void getProductCategory(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            final String userID,
+            final boolean showProgress) {
+
+        call = retroService.getProductCategory(userID);
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+
+    }
+    public void getDivisionByProductCategory(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            final String userID,
+            final String catCode,
+            final String callType,
+            final boolean showProgress) {
+
+        call = retroService.getDivisionByProductCategory(userID,catCode,callType);
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+
+    }
+    public void getSKU(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            final String userID,
+            final String preFix,
+            final String divCode,
+            final String callType,
+            final boolean showProgress) {
+
+        call = retroService.getSKU(userID,preFix,divCode,callType);
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+
+    }
+
+    public void getDescription(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            final String userID,
+            final String preFix,
+            final String divCode,
+            final String callType,
+            final boolean showProgress) {
+
+        call = retroService.getDescription(userID,preFix,divCode,callType);
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+
+    }
+
+    public void saveDraft(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            final CartItem cartItem,
+
+            final boolean showProgress) {
+
+        call = retroService.saveDraft(cartItem);
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+
+    }
+
+
+    public void saveTemplate(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            final CartItem cartItem,
+
+            final boolean showProgress) {
+
+        call = retroService.saveTemplate(cartItem);
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+
+    }
+
+    public void placeOrder(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            final CartItem cartItem,
+            final boolean showProgress) {
+
+        call = retroService.saveOrder(cartItem);
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+
+    }
+
+
+    public void getPrice(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            final Material material,
+
+            final boolean showProgress) {
+
+        call = retroService.getPrice(material);
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+
+    }
+
+    public void getShipToParty(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            final boolean showProgress) {
+
+        call = retroService.getShipToParty("LookupName","LookupValue","LookUps","ShipToParty");
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+
+    }
+
+
+}
