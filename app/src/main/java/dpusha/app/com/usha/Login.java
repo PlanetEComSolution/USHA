@@ -87,7 +87,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener ,Ba
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
 
-        hitAPIAccessToken();
+       // hitAPIAccessToken();
         login_button = findViewById(R.id.login_button);
         user_name = (EditText) findViewById(R.id.user_id);
         pass = (EditText) findViewById(R.id.user_pass);
@@ -502,7 +502,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener ,Ba
 
     private void hitAPIAccessToken() {
 
-        retrofitManager.getAuthToken(this, this, Constants.API_TYPE.TOKEN, true);
+        retrofitManager.getAuthToken(this, this, Constants.API_TYPE.TOKEN,SharedPreferencesUtil.getUserId(this),SharedPreferencesUtil.getPassword(this) ,true);
     }
     @Override
     public void onSuccess(Response<ResponseBody> response, Constants.API_TYPE apiType) {

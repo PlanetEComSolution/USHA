@@ -98,7 +98,7 @@ public class HomeFragment extends Fragment {
 
 
     public void onClick(@NonNull View view) {
-        Toast.makeText(getActivity(),"Add your fragment HERE in HomeFragment: ",Toast.LENGTH_SHORT).show();
+       // Toast.makeText(getActivity(),"Add your fragment HERE in HomeFragment: ",Toast.LENGTH_SHORT).show();
         switch (view.getId()) {
             case R.id.rl_AdminModule:
 

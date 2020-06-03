@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import dpusha.app.com.usha.R;
+import dpusha.app.com.usha.listeners.CartItemChangedListener;
 import dpusha.app.com.usha.model.CartItem;
 import dpusha.app.com.usha.model.Item;
 import dpusha.app.com.usha.model.ProductItem;
@@ -28,11 +29,15 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.MyVi
 
     List<Item> items;
     CartItem cartItem;
+    CartItemChangedListener cartItemChangedListener;
 
-    public CartItemsAdapter(Context context, CartItem cartItem) {
+    Integer Icon[]={R.drawable.fan,R.drawable.fan2,R.drawable.fan3,R.drawable.fan4};
+
+    public CartItemsAdapter(Context context, CartItem cartItem,CartItemChangedListener listener) {
         this.context = context;
         this.cartItem = cartItem;
         this.items = cartItem.getItems();
+        this.  cartItemChangedListener=listener;
     }
 
     @Override
@@ -46,11 +51,15 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.MyVi
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
 
-        holder.txtvw_SKU.setText("SKU :" + items.get(position).getSKU());
-        holder.txtvw_Description.setText(items.get(position).getSKU());
-        holder.icon.setImageDrawable(context.getResources().getDrawable(R.drawable.fan));
-        holder.txtvw_variable_qnty.setText(String.valueOf(items.get(position).getQuantity()));
+        holder.txtvw_SKU.setText("SKU :" + items.get(position).getsKU());
+        holder.txtvw_Description.setText(items.get(position).getDescription());
 
+        holder.txtvw_variable_qnty.setText(String.valueOf(items.get(position).getQuantity()));
+          if(position<Icon.length){
+              holder.icon.setImageResource(Icon[position]);
+          }else {
+              holder.icon.setImageResource(Icon[0]);
+          }
         //   Picasso.load(items.get(position).getImage()).into( holder.menu_icon);
     }
 
@@ -80,9 +89,12 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.MyVi
                 public void onClick(View v) {
                     items.remove(getAdapterPosition());
                     cartItem.setItems(items);
-                    notifyDataSetChanged();
 
+                    notifyDataSetChanged();
                     SharedPreferencesUtil.setCartItems(context,  utility.convertCartToJSONString(cartItem));
+
+                    cartItemChangedListener.onCartRefresh();
+
                 }
             });
             txtvw_minus_qnty.setOnClickListener(new View.OnClickListener() {
@@ -93,10 +105,13 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.MyVi
                         quantity = quantity - 1;
                         items.get(getAdapterPosition()).setQuantity(quantity);
                     }
-                    cartItem.setItems(items);
-                    SharedPreferencesUtil.setCartItems(context,utility.convertCartToJSONString(cartItem));
 
+                    cartItem.setItems(items);
                     notifyDataSetChanged();
+                    SharedPreferencesUtil.setCartItems(context,utility.convertCartToJSONString(cartItem));
+                    cartItemChangedListener.onCartRefresh();
+
+
                 }
             });
             txtvw_plus_qnty.setOnClickListener(new View.OnClickListener() {
@@ -106,8 +121,9 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.MyVi
                     quantity = quantity + 1;
                     items.get(getAdapterPosition()).setQuantity(quantity);
                     cartItem.setItems(items);
-                    SharedPreferencesUtil.setCartItems(context,utility.convertCartToJSONString(cartItem));
                     notifyDataSetChanged();
+                    SharedPreferencesUtil.setCartItems(context,utility.convertCartToJSONString(cartItem));
+                    cartItemChangedListener.onCartRefresh();
                 }
             });
 

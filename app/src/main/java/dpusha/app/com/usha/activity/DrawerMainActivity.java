@@ -28,7 +28,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +42,7 @@ import butterknife.OnClick;
 import dpusha.app.com.usha.Login;
 import dpusha.app.com.usha.fragment.OrderByItemCodeFragment;
 import dpusha.app.com.usha.fragment.orderListFragment;
+import dpusha.app.com.usha.model.AuthToken;
 import dpusha.app.com.usha.model.DrawerItem;
 import dpusha.app.com.usha.R;
 import dpusha.app.com.usha.adapter.LeftMenuAdapter;
@@ -45,10 +50,17 @@ import dpusha.app.com.usha.adapter.RecyclerViewMargin;
 import dpusha.app.com.usha.fragment.HomeFragment;
 import dpusha.app.com.usha.listeners.AppResumeListener;
 import dpusha.app.com.usha.listeners.MainListner;
+import dpusha.app.com.usha.model.LoginResponse;
+import dpusha.app.com.usha.network.APIError;
+import dpusha.app.com.usha.network.RequestListener;
+import dpusha.app.com.usha.network.RetrofitManager;
+import dpusha.app.com.usha.orders_home.util.Constants;
 import dpusha.app.com.usha.shared_preference.SharedPreferencesUtil;
+import okhttp3.ResponseBody;
+import retrofit2.Response;
 
 public class DrawerMainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, MainListner, AppResumeListener {
+        implements NavigationView.OnNavigationItemSelectedListener, MainListner, AppResumeListener,RequestListener {
     @BindView(R.id.drawer_layout)
     DrawerLayout drawer;
 
@@ -84,12 +96,13 @@ public class DrawerMainActivity extends AppCompatActivity
     ImageView profile_userimage;
 
     LeftMenuAdapter leftMenuAdapter;
-
+    private RetrofitManager retrofitManager = RetrofitManager.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_drawer);
         ButterKnife.bind(this);
+        hitAPIAccessToken();
         drawerActivityListener();
         initBottomViewAndLoadFragments();
         initLeftDrawerMenu();
@@ -188,7 +201,7 @@ public class DrawerMainActivity extends AppCompatActivity
         }
     }
     public void onLeftDrawerItemClick(int position) {
-        Toast.makeText(this,"Drawer Clicked ,Postion: "+position,Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this,"Drawer Clicked ,Postion: "+position,Toast.LENGTH_SHORT).show();
         closeLeftDrawer();
         switch (position) {
             case 0:
@@ -236,7 +249,7 @@ public class DrawerMainActivity extends AppCompatActivity
     }
 
     public void onLeftDrawerBookOrderItemClick(int position) {
-        Toast.makeText(this,"Drawer Clicked ,Postion: "+position,Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this,"Drawer Clicked ,Postion: "+position,Toast.LENGTH_SHORT).show();
         closeLeftDrawer();
         switch (position) {
             case 0:
@@ -257,7 +270,7 @@ public class DrawerMainActivity extends AppCompatActivity
 
     }
     public void onLeftDrawerDownloadsItemClick(int position) {
-        Toast.makeText(this,"Drawer Clicked ,Postion: "+position,Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this,"Drawer Clicked ,Postion: "+position,Toast.LENGTH_SHORT).show();
         closeLeftDrawer();
 
     }
@@ -377,5 +390,38 @@ public class DrawerMainActivity extends AppCompatActivity
 
 
     }
+    private void hitAPIAccessToken() {
 
+        retrofitManager.getAuthToken(this, this, Constants.API_TYPE.TOKEN,SharedPreferencesUtil.getUserId(this),SharedPreferencesUtil.getPassword(this) ,true);
+    }
+
+    @Override
+    public void onSuccess(Response<ResponseBody> response, Constants.API_TYPE apiType) {
+        try {
+            String strResponse = response.body().string();
+            Log.e("menu", response.body().toString());
+            // Toast.makeText(this, apiType+"Response  "+strResponse,Toast.LENGTH_SHORT).show();
+            if (apiType == Constants.API_TYPE.TOKEN) {
+                AuthToken tokenBean = new Gson().fromJson(strResponse, AuthToken.class);
+                String token = tokenBean.getAccessToken();
+                String token_type = tokenBean.getTokenType();
+                SharedPreferencesUtil.setAuthToken(DrawerMainActivity.this,token_type+" "+token);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    @Override
+    public void onFailure(Response<ResponseBody> response, Constants.API_TYPE apiType) {
+        Toast.makeText(this, apiType+" error "+response.toString(),Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onApiException(APIError error, Response<ResponseBody> response, Constants.API_TYPE apiType) {
+        Toast.makeText(this, apiType+" onApiException "+response.toString(),Toast.LENGTH_SHORT).show();
+    }
 }

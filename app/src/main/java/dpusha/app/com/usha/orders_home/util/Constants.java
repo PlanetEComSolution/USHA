@@ -15,6 +15,7 @@ public class Constants {
             PRODUCT_DIVISION("PRODUCT_DIVISION"),
             PRODUCT_SKU("PRODUCT_SKU"),
             PRODUCT_DESCRIPTION("PRODUCT_DESCRIPTION"),
+            GET_DRAFT("GET_DRAFT"),
             SAVE_DRAFT("SAVE_DRAFT"),
             SAVE_TEMPLATE("SAVE_TEMPLATE"),
             GET_PRICE("GET_PRICE"),

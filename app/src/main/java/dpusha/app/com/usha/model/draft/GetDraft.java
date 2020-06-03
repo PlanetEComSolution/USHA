@@ -1,11 +1,11 @@
 
-package dpusha.app.com.usha.model;
+package dpusha.app.com.usha.model.draft;
 
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class CartItem {
+public class GetDraft {
 
     @SerializedName("OrderId")
     @Expose
@@ -25,12 +25,18 @@ public class CartItem {
     @SerializedName("RequestDeliveryDate")
     @Expose
     private String requestDeliveryDate;
+    @SerializedName("Fright")
+    @Expose
+    private Integer fright;
     @SerializedName("Items")
     @Expose
     private List<Item> items = null;
     @SerializedName("DivCode")
     @Expose
     private Object divCode;
+    @SerializedName("DivName")
+    @Expose
+    private Object divName;
     @SerializedName("TotalNetPrice")
     @Expose
     private Double totalNetPrice;
@@ -52,28 +58,58 @@ public class CartItem {
     @SerializedName("OrderStatus")
     @Expose
     private String orderStatus;
-
-    /*@SerializedName("Id")
+    @SerializedName("CreatedDate")
     @Expose
-    private String Id;
-*/
+    private String createdDate;
+    @SerializedName("ShipToParty")
+    @Expose
+    private Object shipToParty;
+    @SerializedName("UnavailableItems")
+    @Expose
+    private Object unavailableItems;
+    @SerializedName("DealerName")
+    @Expose
+    private Object dealerName;
+    @SerializedName("Id")
+    @Expose
+    private Integer id;
+    @SerializedName("CreatedBy")
+    @Expose
+    private Object createdBy;
+    @SerializedName("IsActive")
+    @Expose
+    private Boolean isActive;
+    @SerializedName("IsDeleted")
+    @Expose
+    private Boolean isDeleted;
+    @SerializedName("IP")
+    @Expose
+    private Object iP;
+    @SerializedName("CallType")
+    @Expose
+    private Object callType;
+    @SerializedName("ResultCode")
+    @Expose
+    private Object resultCode;
+
     /**
      * No args constructor for use in serialization
      * 
      */
-    public CartItem() {
+    public GetDraft() {
     }
 
-
-    public CartItem(String orderId, Object templateName, Object referenceNo, Object description, String shipToPartyId, String requestDeliveryDate, List<Item> items, Object divCode, Double totalNetPrice, Double totalDiscounts, Double taxableValue, Double totalTax, Double totalGrossPrice, Object schId, String orderStatus) {
+    public GetDraft(String orderId, Object templateName, Object referenceNo, Object description, String shipToPartyId, String requestDeliveryDate, Integer fright, List<Item> items, Object divCode, Object divName, Double totalNetPrice, Double totalDiscounts, Double taxableValue, Double totalTax, Double totalGrossPrice, Object schId, String orderStatus, String createdDate, Object shipToParty, Object unavailableItems, Object dealerName, Integer id, Object createdBy, Boolean isActive, Boolean isDeleted, Object iP, Object callType, Object resultCode) {
         this.orderId = orderId;
         this.templateName = templateName;
         this.referenceNo = referenceNo;
         this.description = description;
         this.shipToPartyId = shipToPartyId;
         this.requestDeliveryDate = requestDeliveryDate;
+        this.fright = fright;
         this.items = items;
         this.divCode = divCode;
+        this.divName = divName;
         this.totalNetPrice = totalNetPrice;
         this.totalDiscounts = totalDiscounts;
         this.taxableValue = taxableValue;
@@ -81,32 +117,18 @@ public class CartItem {
         this.totalGrossPrice = totalGrossPrice;
         this.schId = schId;
         this.orderStatus = orderStatus;
+        this.createdDate = createdDate;
+        this.shipToParty = shipToParty;
+        this.unavailableItems = unavailableItems;
+        this.dealerName = dealerName;
+        this.id = id;
+        this.createdBy = createdBy;
+        this.isActive = isActive;
+        this.isDeleted = isDeleted;
+        this.iP = iP;
+        this.callType = callType;
+        this.resultCode = resultCode;
     }
-
-
-   /* public CartItem(String orderId, Object templateName, Object referenceNo, Object description, String shipToPartyId, String requestDeliveryDate, List<Item> items, Object divCode, Double totalNetPrice, Double totalDiscounts, Double taxableValue, Double totalTax, Double totalGrossPrice, Object schId, String orderStatus, String id) {
-        this.orderId = orderId;
-        this.templateName = templateName;
-        this.referenceNo = referenceNo;
-        this.description = description;
-        this.shipToPartyId = shipToPartyId;
-        this.requestDeliveryDate = requestDeliveryDate;
-        this.items = items;
-        this.divCode = divCode;
-        this.totalNetPrice = totalNetPrice;
-        this.totalDiscounts = totalDiscounts;
-        this.taxableValue = taxableValue;
-        this.totalTax = totalTax;
-        this.totalGrossPrice = totalGrossPrice;
-        this.schId = schId;
-        this.orderStatus = orderStatus;
-        Id = id;
-    }
-*/
-
-
-
-
 
     public String getOrderId() {
         return orderId;
@@ -140,7 +162,7 @@ public class CartItem {
         this.description = description;
     }
 
-    public String getShipToPartyId() {
+    public Object getShipToPartyId() {
         return shipToPartyId;
     }
 
@@ -154,6 +176,14 @@ public class CartItem {
 
     public void setRequestDeliveryDate(String requestDeliveryDate) {
         this.requestDeliveryDate = requestDeliveryDate;
+    }
+
+    public Integer getFright() {
+        return fright;
+    }
+
+    public void setFright(Integer fright) {
+        this.fright = fright;
     }
 
     public List<Item> getItems() {
@@ -170,6 +200,14 @@ public class CartItem {
 
     public void setDivCode(Object divCode) {
         this.divCode = divCode;
+    }
+
+    public Object getDivName() {
+        return divName;
+    }
+
+    public void setDivName(Object divName) {
+        this.divName = divName;
     }
 
     public Double getTotalNetPrice() {
@@ -228,11 +266,91 @@ public class CartItem {
         this.orderStatus = orderStatus;
     }
 
-   /* public String getId() {
-        return Id;
+    public String getCreatedDate() {
+        return createdDate;
     }
 
-    public void setId(String id) {
-        Id = id;
-    }*/
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Object getShipToParty() {
+        return shipToParty;
+    }
+
+    public void setShipToParty(Object shipToParty) {
+        this.shipToParty = shipToParty;
+    }
+
+    public Object getUnavailableItems() {
+        return unavailableItems;
+    }
+
+    public void setUnavailableItems(Object unavailableItems) {
+        this.unavailableItems = unavailableItems;
+    }
+
+    public Object getDealerName() {
+        return dealerName;
+    }
+
+    public void setDealerName(Object dealerName) {
+        this.dealerName = dealerName;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Object getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(Object createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
+    }
+
+    public Object getiP() {
+        return iP;
+    }
+
+    public void setiP(Object iP) {
+        this.iP = iP;
+    }
+
+    public Object getCallType() {
+        return callType;
+    }
+
+    public void setCallType(Object callType) {
+        this.callType = callType;
+    }
+
+    public Object getResultCode() {
+        return resultCode;
+    }
+
+    public void setResultCode(Object resultCode) {
+        this.resultCode = resultCode;
+    }
 }

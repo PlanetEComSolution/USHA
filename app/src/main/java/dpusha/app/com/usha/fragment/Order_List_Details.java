@@ -87,7 +87,7 @@ public class Order_List_Details extends Fragment implements RequestListener {
         recycler_orderlist_details= (RecyclerView) rootView.findViewById(R.id.recycler_orderlist_details);
         recycler_orderlist_details.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recycler_orderlist_details.setItemAnimator(new DefaultItemAnimator());
-        hitAPIAccessToken();
+
         getOrderListDetails();
 
 
@@ -116,7 +116,7 @@ public class Order_List_Details extends Fragment implements RequestListener {
 
 
 
-        retrofitManager.getAuthToken(this,getContext(), Constants.API_TYPE.TOKEN,true);
+        retrofitManager.getAuthToken(this, getActivity(), Constants.API_TYPE.TOKEN,SharedPreferencesUtil.getUserId(getActivity()),SharedPreferencesUtil.getPassword(getActivity()) ,true);
     }
 
     @Override

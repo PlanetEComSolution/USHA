@@ -1,10 +1,10 @@
 
-package dpusha.app.com.usha.model;
+package dpusha.app.com.usha.model.draft;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ProductSKU {
+public class Item {
 
     @SerializedName("OrderId")
     @Expose
@@ -38,7 +38,7 @@ public class ProductSKU {
     private Integer approvedQuantity;
     @SerializedName("ImageName")
     @Expose
-    private Object imageName;
+    private String imageName;
     @SerializedName("DivCode")
     @Expose
     private Object divCode;
@@ -50,19 +50,19 @@ public class ProductSKU {
     private Object preFix;
     @SerializedName("TotalDiscountPerSKU")
     @Expose
-    private Double totalDiscountPerSKU;
+    private Integer totalDiscountPerSKU;
     @SerializedName("TotalPricePerSKU")
     @Expose
-    private Double totalPricePerSKU;
+    private Integer totalPricePerSKU;
     @SerializedName("TotalAfterDiscountPerSKU")
     @Expose
-    private Double totalAfterDiscountPerSKU;
+    private Integer totalAfterDiscountPerSKU;
     @SerializedName("TotalTaxPerSKU")
     @Expose
-    private Double totalTaxPerSKU;
+    private Integer totalTaxPerSKU;
     @SerializedName("TotalPriceWithTaxPerSKU")
     @Expose
-    private Double totalPriceWithTaxPerSKU;
+    private Integer totalPriceWithTaxPerSKU;
     @SerializedName("DeliveryStatus")
     @Expose
     private Object deliveryStatus;
@@ -74,7 +74,7 @@ public class ProductSKU {
     private Object userId;
     @SerializedName("Status")
     @Expose
-    private Object status;
+    private String status;
     @SerializedName("Id")
     @Expose
     private Integer id;
@@ -101,10 +101,10 @@ public class ProductSKU {
      * No args constructor for use in serialization
      * 
      */
-    public ProductSKU() {
+    public Item() {
     }
 
-    public ProductSKU(Object orderId, String sKU, String description, String uOM, Double unitPrice, Double discount, Double taxPercent, Boolean availableInStock, Integer quantity, Integer approvedQuantity, Object imageName, Object divCode, Object shipToPartyId, Object preFix, Double totalDiscountPerSKU, Double totalPricePerSKU, Double totalAfterDiscountPerSKU, Double totalTaxPerSKU, Double totalPriceWithTaxPerSKU, Object deliveryStatus, Object deliveryStatusString, Object userId, Object status, Integer id, Object createdBy, Boolean isActive, Boolean isDeleted, Object iP, Object callType, Object resultCode) {
+    public Item(Object orderId, String sKU, String description, String uOM, Double unitPrice, Double discount, Double taxPercent, Boolean availableInStock, Integer quantity, Integer approvedQuantity, String imageName, Object divCode, Object shipToPartyId, Object preFix, Integer totalDiscountPerSKU, Integer totalPricePerSKU, Integer totalAfterDiscountPerSKU, Integer totalTaxPerSKU, Integer totalPriceWithTaxPerSKU, Object deliveryStatus, Object deliveryStatusString, Object userId, String status, Integer id, Object createdBy, Boolean isActive, Boolean isDeleted, Object iP, Object callType, Object resultCode) {
         this.orderId = orderId;
         this.sKU = sKU;
         this.description = description;
@@ -217,11 +217,11 @@ public class ProductSKU {
         this.approvedQuantity = approvedQuantity;
     }
 
-    public Object getImageName() {
+    public String getImageName() {
         return imageName;
     }
 
-    public void setImageName(Object imageName) {
+    public void setImageName(String imageName) {
         this.imageName = imageName;
     }
 
@@ -249,43 +249,43 @@ public class ProductSKU {
         this.preFix = preFix;
     }
 
-    public Double getTotalDiscountPerSKU() {
+    public Integer getTotalDiscountPerSKU() {
         return totalDiscountPerSKU;
     }
 
-    public void setTotalDiscountPerSKU(Double totalDiscountPerSKU) {
+    public void setTotalDiscountPerSKU(Integer totalDiscountPerSKU) {
         this.totalDiscountPerSKU = totalDiscountPerSKU;
     }
 
-    public Double getTotalPricePerSKU() {
+    public Integer getTotalPricePerSKU() {
         return totalPricePerSKU;
     }
 
-    public void setTotalPricePerSKU(Double totalPricePerSKU) {
+    public void setTotalPricePerSKU(Integer totalPricePerSKU) {
         this.totalPricePerSKU = totalPricePerSKU;
     }
 
-    public Double getTotalAfterDiscountPerSKU() {
+    public Integer getTotalAfterDiscountPerSKU() {
         return totalAfterDiscountPerSKU;
     }
 
-    public void setTotalAfterDiscountPerSKU(Double totalAfterDiscountPerSKU) {
+    public void setTotalAfterDiscountPerSKU(Integer totalAfterDiscountPerSKU) {
         this.totalAfterDiscountPerSKU = totalAfterDiscountPerSKU;
     }
 
-    public Double getTotalTaxPerSKU() {
+    public Integer getTotalTaxPerSKU() {
         return totalTaxPerSKU;
     }
 
-    public void setTotalTaxPerSKU(Double totalTaxPerSKU) {
+    public void setTotalTaxPerSKU(Integer totalTaxPerSKU) {
         this.totalTaxPerSKU = totalTaxPerSKU;
     }
 
-    public Double getTotalPriceWithTaxPerSKU() {
+    public Integer getTotalPriceWithTaxPerSKU() {
         return totalPriceWithTaxPerSKU;
     }
 
-    public void setTotalPriceWithTaxPerSKU(Double totalPriceWithTaxPerSKU) {
+    public void setTotalPriceWithTaxPerSKU(Integer totalPriceWithTaxPerSKU) {
         this.totalPriceWithTaxPerSKU = totalPriceWithTaxPerSKU;
     }
 
@@ -313,11 +313,11 @@ public class ProductSKU {
         this.userId = userId;
     }
 
-    public Object getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Object status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -375,10 +375,5 @@ public class ProductSKU {
 
     public void setResultCode(Object resultCode) {
         this.resultCode = resultCode;
-    }
-
-    @Override
-    public String toString() {
-        return  sKU ;
     }
 }

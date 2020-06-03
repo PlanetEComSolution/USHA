@@ -4,7 +4,7 @@ package dpusha.app.com.usha.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Product {
+public class ProductDescription {
 
     @SerializedName("OrderId")
     @Expose
@@ -101,10 +101,10 @@ public class Product {
      * No args constructor for use in serialization
      * 
      */
-    public Product() {
+    public ProductDescription() {
     }
 
-    public Product(Object orderId, String sKU, String description, String uOM, Double unitPrice, Double discount, Double taxPercent, Boolean availableInStock, Integer quantity, Integer approvedQuantity, Object imageName, Object divCode, Object shipToPartyId, Object preFix, Double totalDiscountPerSKU, Double totalPricePerSKU, Double totalAfterDiscountPerSKU, Double totalTaxPerSKU, Double totalPriceWithTaxPerSKU, Object deliveryStatus, Object deliveryStatusString, Object userId, Object status, Integer id, Object createdBy, Boolean isActive, Boolean isDeleted, Object iP, Object callType, Object resultCode) {
+    public ProductDescription(Object orderId, String sKU, String description, String uOM, Double unitPrice, Double discount, Double taxPercent, Boolean availableInStock, Integer quantity, Integer approvedQuantity, Object imageName, Object divCode, Object shipToPartyId, Object preFix, Double totalDiscountPerSKU, Double totalPricePerSKU, Double totalAfterDiscountPerSKU, Double totalTaxPerSKU, Double totalPriceWithTaxPerSKU, Object deliveryStatus, Object deliveryStatusString, Object userId, Object status, Integer id, Object createdBy, Boolean isActive, Boolean isDeleted, Object iP, Object callType, Object resultCode) {
         this.orderId = orderId;
         this.sKU = sKU;
         this.description = description;

@@ -9,6 +9,7 @@ import dpusha.app.com.usha.model.Material;
 import dpusha.app.com.usha.orders_home.model.OrderList;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -43,6 +44,7 @@ public interface API_Interface {
     @GET("/api/TrackOrder/GetOrdersByUserId")// get list of order
     Call<ResponseBody> getOrderList(@Query("id") String id);
 
+
     // get orderList Details
     @GET("/api/TrackOrder/GetDetailsByOrderId")// get list of order
     Call<ResponseBody> getOrderListDetails(@Query("id") String id);
@@ -50,6 +52,8 @@ public interface API_Interface {
     @GET("api/ProductCategory/GetProductCategory")
     Call<ResponseBody> getProductCategory(@Query("Id") String UserId
     );
+
+
     @FormUrlEncoded
     @POST("api/ProductCategory/GetDropDownsByProductCategory")
     Call<ResponseBody> getDivisionByProductCategory(@Field("UserId") String UserId,
@@ -71,6 +75,13 @@ public interface API_Interface {
     @POST("/api/Template/InsertDraft")
     Call<ResponseBody>saveDraft(@Field("cartDTO") CartItem cartItem);
 
+
+    @POST("/api/Template/InsertDraft")
+    Call<ResponseBody>saveDraft2(@Body CartItem cartItem);
+
+
+    @GET("api/Template/GetDraft")// GET /api/Template/GetDraft
+    Call<ResponseBody> getDraft();
 
     @FormUrlEncoded
     @POST("/api/Template/InsertTemplate")

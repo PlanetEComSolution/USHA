@@ -1,6 +1,7 @@
 package dpusha.app.com.usha.orders_home.util;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,12 +10,16 @@ import com.google.gson.Gson;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import dpusha.app.com.usha.model.AuthToken;
 import dpusha.app.com.usha.model.CartItem;
 import dpusha.app.com.usha.model.Item;
+import dpusha.app.com.usha.model.ProductDescription;
+import dpusha.app.com.usha.model.ProductSKU;
+import dpusha.app.com.usha.model.draft.GetDraft;
 import dpusha.app.com.usha.shared_preference.SharedPreferencesUtil;
 
 public class utility {
@@ -167,6 +172,7 @@ public class utility {
 
    public static CartItem getCartFromPreference(Context context){
        String strCartItem = SharedPreferencesUtil.getCartItems(context);
+       Log.e("Log_Cart",strCartItem);
         if(strCartItem.equals(""))
             return null;
        CartItem cartItem= utility.convertJSONStringToCartObject(strCartItem);
@@ -212,5 +218,76 @@ public class utility {
     }
 
     //end
+    public static ProductDescription convertSKU_To_Description(ProductSKU productSKU){
+
+       return  new ProductDescription(productSKU.getOrderId(),
+                productSKU.getsKU(),
+                productSKU.getDescription(),
+                productSKU.getuOM(),
+                productSKU.getUnitPrice(),
+                productSKU.getDiscount(),
+                productSKU.getTaxPercent(),
+                productSKU.getAvailableInStock(),
+                productSKU.getQuantity(),
+                productSKU.getApprovedQuantity(),
+                productSKU.getImageName(),
+                productSKU.getDivCode(),
+                productSKU.getShipToPartyId(),
+                productSKU.getPreFix(),
+                productSKU.getTotalDiscountPerSKU(),
+                productSKU.getTotalPricePerSKU(),
+                productSKU.getTotalAfterDiscountPerSKU(),
+                productSKU.getTotalTaxPerSKU(),
+                productSKU.getTotalPriceWithTaxPerSKU(),
+                productSKU.getDeliveryStatus(),
+                productSKU.getDeliveryStatusString(),
+                productSKU.getUserId(),
+                productSKU.getStatus(),
+                productSKU.getId(),
+                productSKU.getCreatedBy(),
+                productSKU.getActive(),
+                productSKU.getDeleted(),
+                productSKU.getiP(),
+                productSKU.getCallType(),
+                productSKU.getResultCode());
+    }
+
+    public static void saveDraftToPreference(GetDraft draft,Context context) {
+
+        if (draft != null && draft.getItems() != null && draft.getItems().size() > 0) {
+
+
+            List<dpusha.app.com.usha.model.draft.Item> draftItemsFromAPI=draft.getItems();
+            List<Item> items=new ArrayList<>();
+            for(dpusha.app.com.usha.model.draft.Item item:draftItemsFromAPI){
+                items.add(new Item(item.getsKU(),item.getDescription(),item.getuOM(),
+                        item.getUnitPrice(),item.getDiscount(),item.getTaxPercent(),
+                        item.getAvailableInStock(),item.getQuantity(),item.getApprovedQuantity(),item.getImageName(),
+                        item.getDivCode(),
+                        item.getStatus(),String.valueOf(item.getCreatedBy())
+                ));
+
+            }
+
+
+            CartItem cartItem=new CartItem(draft.getOrderId(),draft.getTemplateName()
+                    ,draft.getReferenceNo(), draft.getDescription(),String.valueOf(draft.getShipToPartyId()),
+                    draft.getRequestDeliveryDate(),items,draft.getDivCode(),
+                    draft.getTotalNetPrice(),draft.getTotalDiscounts(),draft.getTaxableValue(),draft.getTotalTax(),
+                    draft.getTotalGrossPrice(),draft.getSchId(),draft.getOrderStatus());
+
+
+            cartItem.setOrderId(utility.getCurrentTimestamp());
+            cartItem.setOrderStatus("Created");
+
+            String newCartJson = utility.convertCartToJSONString(cartItem);
+            SharedPreferencesUtil.setCartItems(context, newCartJson);
+
+
+        }
+
+
+
+    }
 
 }

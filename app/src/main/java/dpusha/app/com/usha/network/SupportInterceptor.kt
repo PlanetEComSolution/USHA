@@ -22,6 +22,8 @@ class SupportInterceptor: Interceptor, Authenticator {
         val authenticationRequest = request(originalRequest)
         val initialResponse = chain.proceed(authenticationRequest)
 
+        Log.e("Log_originalRequest",originalRequest.toString());
+        Log.e("Log_initialResponse",initialResponse.toString());
         when {
             //initialResponse.code() == 401 -> {
              initialResponse.code == 401 -> {
@@ -29,7 +31,11 @@ class SupportInterceptor: Interceptor, Authenticator {
                var uid=  SharedPreferencesUtil.getUserId(USHAApplication.get());
                  var password=  SharedPreferencesUtil.getPassword(USHAApplication.get());
                 val responseNewTokenLoginModel =  RetrofitManager.retrofit.create(API_Interface::class.java).getAuthorizationToken(uid,password,"password","U").execute()
-             //   val responseNewTokenLoginModel =  RetrofitManager.retrofit.create(API_Interface::class.java).getAuthorizationToken("0000106955","1234","password","U").execute()
+                 //   val responseNewTokenLoginModel =  RetrofitManager.retrofit.create(API_Interface::class.java).getAuthorizationToken("0000106955","1234","password","U").execute()
+
+                 Log.e("Log_uid",uid);
+                 Log.e("Log_password",password);
+                 Log.e("Log_responseNewTokenLoginModel",responseNewTokenLoginModel.toString());
                   when {
                     responseNewTokenLoginModel == null || responseNewTokenLoginModel.code() != 200 -> {
                        return initialResponse
@@ -63,9 +69,10 @@ class SupportInterceptor: Interceptor, Authenticator {
 
     private fun request(originalRequest: Request): Request {
         val token= SharedPreferencesUtil.getAuthToken(USHAApplication.get())
+        Log.e("Log_request",token);
         return originalRequest.newBuilder()
-                .addHeader("Authorization",token.toString()).build()
-
+                .addHeader("Authorization",token.toString())
+                .build()
     }
 
     /**
@@ -77,7 +84,7 @@ class SupportInterceptor: Interceptor, Authenticator {
         var requestAvailable: Request? = null
         val token: String = SharedPreferencesUtil.getAuthToken(USHAApplication.get())
       //  val token= SharedPreferencesUtil(LebanonNewsApplication.get(),null).getStringValue(Constants.ACCESS_TOKEN,"bearer")
-       Log.e("token auth",token.toString());
+           Log.e("Log_ token auth",token.toString());
       //  if (token.toString().equals(response.request().header("Authorization"))) {
         if (token.toString().equals(response.request.header("Authorization"))) {
             return null; // If we already failed with these credentials, don't retry.

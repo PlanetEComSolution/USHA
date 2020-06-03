@@ -31,7 +31,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -47,16 +46,20 @@ import dpusha.app.com.usha.R;
 import dpusha.app.com.usha.adapter.CartItemsAdapter;
 import dpusha.app.com.usha.adapter.MyDividerItemDecoration;
 import dpusha.app.com.usha.adapter.ProductListAdapter;
+import dpusha.app.com.usha.listeners.CartItemChangedListener;
 import dpusha.app.com.usha.listeners.MainListner;
+import dpusha.app.com.usha.model.AuthToken;
 import dpusha.app.com.usha.model.CartItem;
 import dpusha.app.com.usha.model.Item;
 import dpusha.app.com.usha.model.Material;
 import dpusha.app.com.usha.model.ProductCategory;
-import dpusha.app.com.usha.model.Product;
+import dpusha.app.com.usha.model.ProductDescription;
 import dpusha.app.com.usha.model.ProductDivision;
 import dpusha.app.com.usha.model.ProductItem;
 //import dpusha.app.com.usha.model.ProductSKU;
+import dpusha.app.com.usha.model.ProductSKU;
 import dpusha.app.com.usha.model.ShipToParty;
+import dpusha.app.com.usha.model.draft.GetDraft;
 import dpusha.app.com.usha.network.APIError;
 import dpusha.app.com.usha.network.RequestListener;
 import dpusha.app.com.usha.network.RetrofitManager;
@@ -70,7 +73,7 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class OrderByItemCodeFragment extends Fragment implements RequestListener {
+public class OrderByItemCodeFragment extends Fragment implements RequestListener, CartItemChangedListener {
 
     @BindView(R.id.spinnerCategory)
     Spinner spinnerCategory;
@@ -97,21 +100,21 @@ public class OrderByItemCodeFragment extends Fragment implements RequestListener
 
 
     private String CategoryCode = "", DivisionCode = "";
-    private List<Product> productList = new ArrayList<>();
-    //  private List<ProductSKU> productSKUList = new ArrayList<>();
-    private List<Product> productSKUList = new ArrayList<>();
+    private List<ProductDescription> productDescriptionList = new ArrayList<>();
+    private List<ProductSKU> productSKUList = new ArrayList<>();
+    //  private List<ProductDescription> productSKUList = new ArrayList<>();
     private List<ProductCategory> productCategoryList = new ArrayList<>();
     private List<ProductDivision> productDivisionList = new ArrayList<>();
-    private List<ProductItem> productItemList = new ArrayList<>();
+    //  private List<ProductItem> productItemList = new ArrayList<>();
 
 
-    private Product item;
+    private ProductDescription item;
     private ProductListAdapter productListAdapter;
     boolean autoCompleteSKU_ItemClicked = false, autoCompleteDescription_ItemClicked = false;
 
     private MainListner listenerMainActivity;
     private FragmentActivity activity;
-    //   CartItem cartItem = new CartItem();
+    // CartItem cartItem = new CartItem();
     AlertDialog alertDialog;
 
     public OrderByItemCodeFragment() {
@@ -144,7 +147,7 @@ public class OrderByItemCodeFragment extends Fragment implements RequestListener
         // RecyclerViewMargin decoration = new RecyclerViewMargin(20, 1);
         MyDividerItemDecoration decoration1 = new MyDividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL, 50);
         recycler_items.addItemDecoration(decoration1);
-
+        hitAPIGetDraft();
         hitAPIGetProductCategory();
         setViewListener();
         return view;
@@ -160,18 +163,18 @@ public class OrderByItemCodeFragment extends Fragment implements RequestListener
         }
     }
 
-    void initRecyclerAdapter() {
+   /* void initRecyclerAdapter() {
 
         productListAdapter = new ProductListAdapter(getActivity(), productItemList);
         recycler_items.setAdapter(productListAdapter);
 
-    }
+    }*/
 
     void setViewListener() {
         setTemporaryAdapterForCategorySpinner();
         setTemporaryAdapterForDivsionSpinner();
         // initRecyclerAdapter();
-        refreshCartRecyclerFromPreference();
+       // refreshCartRecyclerFromPreference();
 
         spinnerCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -217,12 +220,34 @@ public class OrderByItemCodeFragment extends Fragment implements RequestListener
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (autoCompleteSKU.isPerformingCompletion()) {
+                    // An item has been selected from the list. Ignore.
+                    autoCompleteSKU_ItemClicked = true;
+                    Log.e("selected", "");
+                } else if (!autoCompleteDescription_ItemClicked) {
+                    // Perform your task here... Like calling web service, Reading data from SQLite database, etc..
+                    autoCompleteDescription.setAdapter(null);
+                    String Prefix = s.toString().trim();
+                    if (!Prefix.isEmpty()) {
+                        final Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                hitAPIGetSKU(Prefix, DivisionCode);
+                            }
+                        }, 1000);
 
+                    } else {
+                        autoCompleteDescription.setText("");
+                    }
+                }
+
+                autoCompleteSKU_ItemClicked = false;
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (!(autoCompleteSKU_ItemClicked && autoCompleteDescription_ItemClicked)) {
+         /*       if (!(autoCompleteSKU_ItemClicked && autoCompleteDescription_ItemClicked)) {
                     autoCompleteDescription.setAdapter(null);
                     String Prefix = s.toString().trim();
                     if (!Prefix.isEmpty()) {
@@ -233,15 +258,11 @@ public class OrderByItemCodeFragment extends Fragment implements RequestListener
                                 hitAPIGetSKU(Prefix, DivisionCode);
                             }
                         }, 2000);
-
-
-
-
                     } else {
                         autoCompleteDescription.setText("");
                     }
                 }
-                autoCompleteSKU_ItemClicked = false;
+                autoCompleteSKU_ItemClicked = false;*/
             }
         });
         autoCompleteDescription.addTextChangedListener(new TextWatcher() {
@@ -252,12 +273,32 @@ public class OrderByItemCodeFragment extends Fragment implements RequestListener
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (autoCompleteDescription.isPerformingCompletion()) {
+                    // An item has been selected from the list. Ignore.
+                    autoCompleteDescription_ItemClicked = true;
+                    Log.e("selected", "");
+                } else if (!autoCompleteSKU_ItemClicked) {
+                    // Perform your task here... Like calling web service, Reading data from SQLite database, etc..
 
+                    autoCompleteSKU.setAdapter(null);
+                    String desc = s.toString().trim();
+                    if (!desc.isEmpty()) {
+                        final Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                hitAPIGetDescription(desc, DivisionCode);
+                            }
+                        }, 1000);
+
+                    }
+                }
+                autoCompleteDescription_ItemClicked = false;
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (!(autoCompleteSKU_ItemClicked && autoCompleteDescription_ItemClicked)) {
+                /*if (!(autoCompleteSKU_ItemClicked && autoCompleteDescription_ItemClicked)) {
                     String desc = s.toString().trim();
                     if (!desc.isEmpty()) {
                         final Handler handler = new Handler();
@@ -270,7 +311,7 @@ public class OrderByItemCodeFragment extends Fragment implements RequestListener
 
                     }
                 }
-                autoCompleteDescription_ItemClicked = false;
+                autoCompleteDescription_ItemClicked = false;*/
             }
         });
 
@@ -279,9 +320,10 @@ public class OrderByItemCodeFragment extends Fragment implements RequestListener
             @Override
             public void onItemClick(AdapterView<?> parent, View arg1, int pos,
                                     long id) {
-                autoCompleteSKU_ItemClicked = true;
-                item = (Product) parent.getItemAtPosition(pos);
-                autoCompleteSKU.setText(item.getsKU());
+                // autoCompleteSKU_ItemClicked = true;
+                ProductSKU productSKU = (ProductSKU) parent.getItemAtPosition(pos);
+                item = utility.convertSKU_To_Description(productSKU);
+                //  autoCompleteSKU.setText(item.getsKU());
                 autoCompleteDescription.setText(item.getDescription());
             }
         });
@@ -290,9 +332,9 @@ public class OrderByItemCodeFragment extends Fragment implements RequestListener
             @Override
             public void onItemClick(AdapterView<?> parent, View arg1, int pos,
                                     long id) {
-                autoCompleteDescription_ItemClicked = true;
-                item = (Product) parent.getItemAtPosition(pos);
-                autoCompleteDescription.setText(item.getDescription());
+                // autoCompleteDescription_ItemClicked = true;
+                item = (ProductDescription) parent.getItemAtPosition(pos);
+                //  autoCompleteDescription.setText(item.getDescription());
                 autoCompleteSKU.setText(item.getsKU());
 
 
@@ -342,6 +384,10 @@ public class OrderByItemCodeFragment extends Fragment implements RequestListener
 
     private void hitAPIGetDescription(String Prefix, String DivisionCode) {
         retrofitManager.getDescription(this, getActivity(), Constants.API_TYPE.PRODUCT_DESCRIPTION, SharedPreferencesUtil.getUserId(getActivity()), Prefix, DivisionCode, "GetProductByDesc", true);
+    }
+
+    private void hitAPIGetDraft() {
+        retrofitManager.getDraft(this, getActivity(), Constants.API_TYPE.GET_DRAFT, true);
     }
 
     private void hitAPISaveDraft(CartItem cartItems) {
@@ -414,11 +460,9 @@ public class OrderByItemCodeFragment extends Fragment implements RequestListener
                     utility.showToast(getActivity(), "Cart is empty!");
                 }
 
-
                 break;
             case R.id.et_SKU:
                 showDialogSKU("SKU", getActivity(), et_SKU);
-
 
                 break;
         }
@@ -467,12 +511,12 @@ public class OrderByItemCodeFragment extends Fragment implements RequestListener
             } else if (apiType == Constants.API_TYPE.PRODUCT_SKU) {
                 productSKUList.clear();
                 Gson gson = new Gson();
-                Type listType = new TypeToken<List<Product>>() {
+                Type listType = new TypeToken<List<ProductSKU>>() {
                 }.getType();
                 productSKUList = gson.fromJson(strResponse, listType);
 
                 if (productSKUList != null && !productSKUList.isEmpty()) {
-                    ArrayAdapter<Product> adapter = new ArrayAdapter<Product>
+                    ArrayAdapter<ProductSKU> adapter = new ArrayAdapter<ProductSKU>
                             (getActivity(), android.R.layout.simple_spinner_dropdown_item, productSKUList);
                     // android.R.layout.select_dialog_item
                     // autoCompleteSKU.setThreshold(1);//will start working from first character
@@ -481,14 +525,14 @@ public class OrderByItemCodeFragment extends Fragment implements RequestListener
                 } else
                     Toast.makeText(getActivity(), "No data found!", Toast.LENGTH_SHORT).show();
             } else if (apiType == Constants.API_TYPE.PRODUCT_DESCRIPTION) {
-                productList.clear();
+                productDescriptionList.clear();
                 Gson gson = new Gson();
-                Type listType = new TypeToken<List<Product>>() {
+                Type listType = new TypeToken<List<ProductDescription>>() {
                 }.getType();
-                productList = gson.fromJson(strResponse, listType);
-                if (productList != null && !productList.isEmpty()) {
-                    ArrayAdapter<Product> adapter = new ArrayAdapter<Product>
-                            (getActivity(), android.R.layout.simple_spinner_dropdown_item, productList);
+                productDescriptionList = gson.fromJson(strResponse, listType);
+                if (productDescriptionList != null && !productDescriptionList.isEmpty()) {
+                    ArrayAdapter<ProductDescription> adapter = new ArrayAdapter<ProductDescription>
+                            (getActivity(), android.R.layout.simple_spinner_dropdown_item, productDescriptionList);
                     // autoCompleteSKU.setThreshold(1);//will start working from first character
                     autoCompleteDescription.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
                     autoCompleteDescription.showDropDown();
@@ -497,12 +541,15 @@ public class OrderByItemCodeFragment extends Fragment implements RequestListener
             } else if (apiType == Constants.API_TYPE.SAVE_DRAFT) {
 
                 Toast.makeText(getActivity(), strResponse, Toast.LENGTH_SHORT).show();
-            }
-            if (apiType == Constants.API_TYPE.SAVE_TEMPLATE) {
+            } else if (apiType == Constants.API_TYPE.SAVE_TEMPLATE) {
 
                 Toast.makeText(getActivity(), strResponse, Toast.LENGTH_SHORT).show();
+            } else if (apiType == Constants.API_TYPE.GET_DRAFT) {
+                GetDraft draft = new Gson().fromJson(strResponse, GetDraft.class);
+                utility.saveDraftToPreference(draft,getActivity());
+                refreshCartRecyclerFromPreference();
+               // Toast.makeText(getActivity(), strResponse, Toast.LENGTH_SHORT).show();
             }
-
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -511,12 +558,12 @@ public class OrderByItemCodeFragment extends Fragment implements RequestListener
 
     @Override
     public void onFailure(Response<ResponseBody> response, Constants.API_TYPE apiType) {
-        //  Toast.makeText(this, apiType+" error "+response.toString(),Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), apiType + " error " + response.toString(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onApiException(APIError error, Response<ResponseBody> response, Constants.API_TYPE apiType) {
-        //   Toast.makeText(this, apiType+" onApiException "+response.toString(),Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), apiType + " onApiException " + response.toString(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -536,13 +583,13 @@ public class OrderByItemCodeFragment extends Fragment implements RequestListener
         String sku = autoCompleteSKU.getText().toString().trim();
         String desc = autoCompleteDescription.getText().toString().trim();
         boolean isCorrectSKU = false;
-        for (Product product : productSKUList) {
-            if (product.getsKU().equals(sku)) ;
+        for (ProductSKU productSKU : productSKUList) {
+            if (productSKU.getsKU().equals(sku)) ;
             isCorrectSKU = true;
         }
         boolean isCorrectDescription = false;
-        for (Product product : productList) {
-            if (product.getDescription().equals(desc)) ;
+        for (ProductDescription productDescription : productDescriptionList) {
+            if (productDescription.getDescription().equals(desc)) ;
             isCorrectDescription = true;
         }
         if (productCategory.getCatCode().equals("0")) {
@@ -561,7 +608,7 @@ public class OrderByItemCodeFragment extends Fragment implements RequestListener
         return validate;
     }
 
-    void addItemToRecyclerView() {
+   /* void addItemToRecyclerView() {
         productItemList.add(new ProductItem(String.valueOf(item.getImageName()), item.getsKU(),
                 item.getDescription(), "1", item.getUnitPrice(), item.getDiscount(),
                 item.getTaxPercent(),
@@ -571,7 +618,7 @@ public class OrderByItemCodeFragment extends Fragment implements RequestListener
         autoCompleteDescription.setText("");
 
 
-    }
+    }*/
 
     void addItemToSharedpref() {
         String strCartItem = SharedPreferencesUtil.getCartItems(getActivity());
@@ -580,7 +627,8 @@ public class OrderByItemCodeFragment extends Fragment implements RequestListener
             cartObject = new CartItem();
         }
         cartObject.setOrderId(utility.getCurrentTimestamp());
-        cartObject.setId(SharedPreferencesUtil.getUserId(getActivity()));
+        cartObject.setOrderStatus("Created");
+        // cartObject.setId(SharedPreferencesUtil.getUserId(getActivity()));
 
         List<Item> list = cartObject.getItems();
         if (list == null || list.isEmpty()) {
@@ -595,13 +643,16 @@ public class OrderByItemCodeFragment extends Fragment implements RequestListener
                 item.getDescription(), item.getuOM(), item.getUnitPrice(), item.getDiscount(),
                 item.getTaxPercent(), item.getAvailableInStock(), 1,
                 item.getApprovedQuantity(),
-                imageName, item.getDivCode(), String.valueOf(item.getStatus())));
+                imageName, item.getDivCode(), String.valueOf(item.getStatus()), String.valueOf(item.getCreatedBy())));
 
 
         cartObject.setItems(list);
         String newCartJson = utility.convertCartToJSONString(cartObject);
         SharedPreferencesUtil.setCartItems(getActivity(), newCartJson);
         refreshCartRecyclerFromPreference();
+
+        autoCompleteSKU.setText("");
+        autoCompleteDescription.setText("");
     }
 
     void refreshCartRecyclerFromPreference() {
@@ -609,7 +660,7 @@ public class OrderByItemCodeFragment extends Fragment implements RequestListener
         if (!strCartItem.equals("")) {
             CartItem cartObject = utility.convertJSONStringToCartObject(strCartItem);
             if (cartObject != null && cartObject.getItems() != null && cartObject.getItems().size() > 0) {
-                CartItemsAdapter cartItemsAdapter = new CartItemsAdapter(getActivity(), cartObject);
+                CartItemsAdapter cartItemsAdapter = new CartItemsAdapter(getActivity(), cartObject, this);
                 recycler_items.setAdapter(cartItemsAdapter);
             } else {
                 recycler_items.setAdapter(null);
@@ -639,6 +690,7 @@ public class OrderByItemCodeFragment extends Fragment implements RequestListener
                 if (et_templateName.getText().toString().trim().isEmpty()) {
                     utility.showToast(getActivity(), "Enter template name!");
                 } else {
+                    cartItems.setTemplateName(et_templateName.getText().toString().trim());
                     hitAPISaveTemplate(cartItems);
                 }
             }
@@ -663,7 +715,7 @@ public class OrderByItemCodeFragment extends Fragment implements RequestListener
         final ListView listvw = (ListView) dialogView.findViewById(R.id.listview);
 
 
-        ArrayAdapter<Product> adapter = new ArrayAdapter<Product>(context,
+        ArrayAdapter<ProductSKU> adapter = new ArrayAdapter<ProductSKU>(context,
                 android.R.layout.simple_list_item_1, android.R.id.text1, productSKUList);
         listvw.setAdapter(adapter);
         autoText.addTextChangedListener(new TextWatcher() {
@@ -713,6 +765,11 @@ public class OrderByItemCodeFragment extends Fragment implements RequestListener
         if (!alertDialog.isShowing()) {
             alertDialog.show();
         }
+    }
+
+    @Override
+    public void onCartRefresh() {
+
     }
 
 

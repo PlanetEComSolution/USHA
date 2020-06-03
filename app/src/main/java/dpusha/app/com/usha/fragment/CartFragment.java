@@ -41,6 +41,7 @@ import butterknife.OnClick;
 import dpusha.app.com.usha.R;
 import dpusha.app.com.usha.adapter.CartItemsAdapter;
 import dpusha.app.com.usha.adapter.MyDividerItemDecoration;
+import dpusha.app.com.usha.listeners.CartItemChangedListener;
 import dpusha.app.com.usha.model.CartItem;
 import dpusha.app.com.usha.model.GetPriceResponse;
 import dpusha.app.com.usha.model.Item;
@@ -62,7 +63,7 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CartFragment extends Fragment implements RequestListener, DatePickerDialog.OnDateSetListener {
+public class CartFragment extends Fragment implements RequestListener, DatePickerDialog.OnDateSetListener, CartItemChangedListener {
 
 
     @BindView(R.id.recycler_items)
@@ -137,11 +138,10 @@ public class CartFragment extends Fragment implements RequestListener, DatePicke
     }
 
     void getPrice(CartItem cartItems) {
-
         List<String> sku = new ArrayList<>();
         List<Item> items = cartItems.getItems();
         for (int i = 0; i < items.size(); i++) {
-            sku.add(items.get(i).getSKU());
+            sku.add(items.get(i).getsKU());
         }
         Material material = new Material(SharedPreferencesUtil.getUserId(getActivity()), sku);
         hitAPIGetPrice(material);
@@ -154,7 +154,7 @@ public class CartFragment extends Fragment implements RequestListener, DatePicke
             if (cartItems != null && cartItems.getItems() != null && cartItems.getItems().size() > 0) {
                 getPriceSample();
                 // getPrice(cartItems);
-                CartItemsAdapter cartItemsAdapter = new CartItemsAdapter(getActivity(), cartItems);
+                CartItemsAdapter cartItemsAdapter = new CartItemsAdapter(getActivity(), cartItems, this);
                 recycler_items.setAdapter(cartItemsAdapter);
 
             } else {
@@ -236,7 +236,7 @@ public class CartFragment extends Fragment implements RequestListener, DatePicke
                     for (int i = 0; i < priceList.size(); i++) {
                         if (!priceList.get(i).getMaterialCode().equals("")) continue;
                         for (int j = 0; j < cartItems.getItems().size(); j++) {
-                            if (priceList.get(i).getMaterialCode().equals(cartItems.getItems().get(i).getSKU())) {
+                            if (priceList.get(i).getMaterialCode().equals(cartItems.getItems().get(i).getsKU())) {
                                 cartItems.getItems().get(i).setUnitPrice(priceList.get(i).getPriceBeforeDiscount());
                                 cartItems.getItems().get(i).setDiscount(priceList.get(i).getBillDiscount());
                                 cartItems.getItems().get(i).setTaxPercent(priceList.get(i).gettAX());
@@ -247,8 +247,12 @@ public class CartFragment extends Fragment implements RequestListener, DatePicke
 
                 }
 
-                // init recycler now
+
+            } else if (apiType == Constants.API_TYPE.PLACE_ORDER) {
+
+                Toast.makeText(getActivity(), strResponse, Toast.LENGTH_SHORT).show();
             }
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -278,9 +282,9 @@ public class CartFragment extends Fragment implements RequestListener, DatePicke
 
     private void getPriceSample() {
         for (int j = 0; j < cartItems.getItems().size(); j++) {
-            cartItems.getItems().get(j).setUnitPrice(10.0);
-            cartItems.getItems().get(j).setDiscount(2.0);
-            cartItems.getItems().get(j).setTaxPercent(3.0);
+            cartItems.getItems().get(j).setUnitPrice(100.0);
+            cartItems.getItems().get(j).setDiscount(20.0);
+            cartItems.getItems().get(j).setTaxPercent(18.0);
         }
         refreshTotalAmount();
     }
@@ -289,37 +293,45 @@ public class CartFragment extends Fragment implements RequestListener, DatePicke
         double totalNetPrice = 0.0;
         double totalDiscount = 0.0;
         double totalTax = 0.0;
+        double totalTaxableValue = 0.0;
         double totalGrossPrice = 0.0;
         for (int j = 0; j < cartItems.getItems().size(); j++) {
             try {
-                double _unitPrice = cartItems.getItems().get(j).getUnitPrice();
-                double unitPrice = cartItems.getItems().get(j).getUnitPrice() * cartItems.getItems().get(j).getQuantity();
-                double discountPercent = cartItems.getItems().get(j).getDiscount();
+                double unitPrice = cartItems.getItems().get(j).getUnitPrice();
+                // double unitPrice = cartItems.getItems().get(j).getUnitPrice() * cartItems.getItems().get(j).getQuantity();
+                double _discount = cartItems.getItems().get(j).getDiscount();
                 double taxPercent = cartItems.getItems().get(j).getTaxPercent();
                 double quantity = cartItems.getItems().get(j).getQuantity();
-                totalNetPrice = totalNetPrice + unitPrice * quantity;
-                double tax = (unitPrice * taxPercent) / 100;
+                // double discount = (totalNetPrice * _discount) / 100;
+                double discount = _discount;
 
-                double priceAfterTax = totalNetPrice + tax;
-                double discount = (totalNetPrice * discountPercent) / 100;
-                double priceAfterDiscount = priceAfterTax - discount;
-                totalDiscount = totalDiscount + discount;
+                totalDiscount = totalDiscount + (discount * quantity);
+                totalNetPrice = totalNetPrice + (unitPrice * quantity);
+
+                double _taxableValue = (unitPrice - discount) * quantity;
+                totalTaxableValue = totalTaxableValue + _taxableValue;
+
+                double tax = (_taxableValue * taxPercent) / 100;
                 totalTax = totalTax + tax;
-                totalGrossPrice = totalGrossPrice + priceAfterDiscount;
+
+                double priceAfterTax = _taxableValue + tax;
+                totalGrossPrice = totalGrossPrice + priceAfterTax;
+
+
             } catch (Exception e) {
                 Log.d(TAG, e.getMessage());
             }
         }
 
-        txtvw_totalNetPrice.setText(String.valueOf(totalNetPrice));
+        txtvw_totalNetPrice.setText(String.format("%.2f", totalNetPrice));
 
-        txtvw_totalDiscount.setText(String.valueOf(totalDiscount));
+        txtvw_totalDiscount.setText(String.format("%.2f", totalDiscount));
 
-        txtvw_taxableValue.setText(String.valueOf("taxable"));
+        txtvw_taxableValue.setText(String.format("%.2f", totalTaxableValue));
 
-        txtvw_totalTax.setText(String.valueOf(totalTax));
+        txtvw_totalTax.setText(String.format("%.2f", totalTax));
 
-        txtvw_totalGrossPrice.setText( String.format("%.2f", totalGrossPrice));//String.valueOf(totalGrossPrice));
+        txtvw_totalGrossPrice.setText(String.format("%.2f", totalGrossPrice));//String.valueOf(totalGrossPrice));
     }
 
     @Override
@@ -435,5 +447,10 @@ public class CartFragment extends Fragment implements RequestListener, DatePicke
         ArrayAdapter<ShipToParty> dataAdapter = new ArrayAdapter<ShipToParty>(getActivity(), android.R.layout.simple_spinner_item, shipToPartyList);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerShipToParty.setAdapter(dataAdapter);
+    }
+
+    @Override
+    public void onCartRefresh() {
+        refreshTotalAmount();
     }
 }

@@ -206,9 +206,11 @@ public class RetrofitManager implements OnRetryCallback {
             final RequestListener mRequestListener,
             final Context mContext,
             final Constants.API_TYPE mApiType,
+            final  String userId,
+            final  String password,
             final boolean showProgress) {
 
-        call= retroService.getAuthorizationToken("0000106849","1234","password","U");
+        call= retroService.getAuthorizationToken(userId,password,"password","U");
         performCallback(mRequestListener, mContext, mApiType, showProgress);
 
     }
@@ -327,7 +329,17 @@ public class RetrofitManager implements OnRetryCallback {
         performCallback(mRequestListener, mContext, mApiType, showProgress);
 
     }
+    public void getDraft(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
 
+            final boolean showProgress) {
+
+        call = retroService.getDraft();
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+
+    }
 
     public void saveTemplate(
             final RequestListener mRequestListener,

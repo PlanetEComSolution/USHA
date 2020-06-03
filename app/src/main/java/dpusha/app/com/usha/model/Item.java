@@ -43,6 +43,10 @@ public class Item {
     @Expose
     private String status;
 
+    @SerializedName("createdBy")
+    @Expose
+    private String createdBy;
+
     /**
      * No args constructor for use in serialization
      * 
@@ -50,23 +54,7 @@ public class Item {
     public Item() {
     }
 
-    /**
-     * 
-     * @param unitPrice
-     * @param uOM
-     * @param quantity
-     * @param imageName
-     * @param divCode
-     * @param availableInStock
-     * @param description
-     * @param discount
-     * @param taxPercent
-     * @param sKU
-     * @param approvedQuantity
-     * @param status
-     */
-    public Item(String sKU, String description, String uOM, Double unitPrice, Double discount, Double taxPercent, Boolean availableInStock, Integer quantity, Integer approvedQuantity, String imageName, Object divCode, String status) {
-        super();
+    public Item(String sKU, String description, String uOM, Double unitPrice, Double discount, Double taxPercent, Boolean availableInStock, Integer quantity, Integer approvedQuantity, String imageName, Object divCode, String status, String createdBy) {
         this.sKU = sKU;
         this.description = description;
         this.uOM = uOM;
@@ -79,13 +67,14 @@ public class Item {
         this.imageName = imageName;
         this.divCode = divCode;
         this.status = status;
+        this.createdBy = createdBy;
     }
 
-    public String getSKU() {
+    public String getsKU() {
         return sKU;
     }
 
-    public void setSKU(String sKU) {
+    public void setsKU(String sKU) {
         this.sKU = sKU;
     }
 
@@ -97,11 +86,11 @@ public class Item {
         this.description = description;
     }
 
-    public String getUOM() {
+    public String getuOM() {
         return uOM;
     }
 
-    public void setUOM(String uOM) {
+    public void setuOM(String uOM) {
         this.uOM = uOM;
     }
 
@@ -177,4 +166,11 @@ public class Item {
         this.status = status;
     }
 
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
 }

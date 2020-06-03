@@ -395,7 +395,7 @@ public class orderListFragment extends Fragment implements RequestListener {
 
 
 
-        retrofitManager.getAuthToken(this,getContext(), Constants.API_TYPE.TOKEN,true);
+        retrofitManager.getAuthToken(this, getActivity(), Constants.API_TYPE.TOKEN,SharedPreferencesUtil.getUserId(getActivity()),SharedPreferencesUtil.getPassword(getActivity()) ,true);
     }
 
     @Override
