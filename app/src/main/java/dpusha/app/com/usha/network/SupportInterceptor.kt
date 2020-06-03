@@ -7,6 +7,7 @@ import dpusha.app.com.usha.shared_preference.SharedPreferencesUtil
 
 import okhttp3.*
 import org.json.JSONObject
+import retrofit2.http.Headers
 
 /**
  * Created by Unknown on 1/15/2020.
@@ -72,7 +73,9 @@ class SupportInterceptor: Interceptor, Authenticator {
         Log.e("Log_request",token);
         return originalRequest.newBuilder()
                 .addHeader("Authorization",token.toString())
+                .addHeader("Content-Type","application/json")
                 .build()
+
     }
 
     /**
@@ -95,6 +98,7 @@ class SupportInterceptor: Interceptor, Authenticator {
            // requestAvailable = response.request().newBuilder()
             requestAvailable = response.request.newBuilder()
                     .addHeader("Authorization", token.toString())
+                    .addHeader("Content-Type","application/json")
                 .build()
             return requestAvailable
         } catch (ex: Exception) { }

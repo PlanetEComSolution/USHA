@@ -264,17 +264,15 @@ public class utility {
                         item.getUnitPrice(),item.getDiscount(),item.getTaxPercent(),
                         item.getAvailableInStock(),item.getQuantity(),item.getApprovedQuantity(),item.getImageName(),
                         item.getDivCode(),
-                        item.getStatus(),String.valueOf(item.getCreatedBy())
-                ));
-
+                       null,null));
             }
 
 
             CartItem cartItem=new CartItem(draft.getOrderId(),draft.getTemplateName()
-                    ,draft.getReferenceNo(), draft.getDescription(),String.valueOf(draft.getShipToPartyId()),
+                    ,draft.getReferenceNo(), draft.getDescription(),null,
                     draft.getRequestDeliveryDate(),items,draft.getDivCode(),
                     draft.getTotalNetPrice(),draft.getTotalDiscounts(),draft.getTaxableValue(),draft.getTotalTax(),
-                    draft.getTotalGrossPrice(),draft.getSchId(),draft.getOrderStatus());
+                    draft.getTotalGrossPrice(),draft.getSchId(),null);
 
 
             cartItem.setOrderId(utility.getCurrentTimestamp());

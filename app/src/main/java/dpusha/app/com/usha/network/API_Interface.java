@@ -71,13 +71,10 @@ public interface API_Interface {
                               @Field("PreFix") String PreFix,@Field("DivCode") String DivCode,@Field("CallType") String CallType
     );
 
-    @FormUrlEncoded
-    @POST("/api/Template/InsertDraft")
-    Call<ResponseBody>saveDraft(@Field("cartDTO") CartItem cartItem);
 
-
+   //@Headers( "Content-Type: application/json" )
     @POST("/api/Template/InsertDraft")
-    Call<ResponseBody>saveDraft2(@Body CartItem cartItem);
+    Call<ResponseBody>saveDraft(@Body CartItem cartItem);
 
 
     @GET("api/Template/GetDraft")// GET /api/Template/GetDraft
@@ -85,7 +82,7 @@ public interface API_Interface {
 
     @FormUrlEncoded
     @POST("/api/Template/InsertTemplate")
-    Call<ResponseBody>saveTemplate(@Field("cartDTO") CartItem cartItem);
+    Call<ResponseBody>saveTemplate(@Body CartItem cartItem);
 
     @FormUrlEncoded
     @POST("/api/Order/InsertOrder")
