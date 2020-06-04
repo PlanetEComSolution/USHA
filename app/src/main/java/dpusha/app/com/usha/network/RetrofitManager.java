@@ -6,8 +6,6 @@ import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-//import com.bumptech.glide.request.RequestListener;
-
 import org.json.JSONObject;
 
 import java.net.SocketTimeoutException;
@@ -20,7 +18,6 @@ import dpusha.app.com.usha.model.CartItem;
 import dpusha.app.com.usha.model.Material;
 import dpusha.app.com.usha.orders_home.util.Constants;
 import dpusha.app.com.usha.orders_home.util.Dialogs;
-import dpusha.app.com.usha.shared_preference.SharedPreferencesUtil;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -29,6 +26,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+//import com.bumptech.glide.request.RequestListener;
+//import com.android.volley.BuildConfig;
 
 
 public class RetrofitManager implements OnRetryCallback {
@@ -60,6 +60,7 @@ public class RetrofitManager implements OnRetryCallback {
         httpClient.connectTimeout(10, TimeUnit.SECONDS);
         httpClient.addInterceptor(new ConnectivityInterceptor(USHAApplication.get()));
         httpClient.addInterceptor(new SupportInterceptor());
+
 
         if(BuildConfig.DEBUG)
         {

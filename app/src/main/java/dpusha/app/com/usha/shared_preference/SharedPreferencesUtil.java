@@ -37,6 +37,8 @@ public class SharedPreferencesUtil {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
             SharedPreferences.Editor editor = preferences.edit();
             editor.putString("user_id",id);
+            //SharedPreferences.Editor editor = preferences.edit();
+
             editor.commit();
         } catch (Exception e) {
             e.printStackTrace();
