@@ -1,4 +1,4 @@
-package dpusha.app.com.usha.fragment;
+package dpusha.app.com.usha.fragment.book_order.by_itemcode;
 
 
 import android.content.Context;
@@ -44,18 +44,17 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dpusha.app.com.usha.R;
 import dpusha.app.com.usha.adapter.CartItemsAdapter;
-import dpusha.app.com.usha.adapter.MyDividerItemDecoration;
+import dpusha.app.com.usha.adapter.recycler_decorator.MyDividerItemDecoration;
 import dpusha.app.com.usha.adapter.ProductListAdapter;
+import dpusha.app.com.usha.fragment.cart.CartFragment;
 import dpusha.app.com.usha.listeners.CartItemChangedListener;
 import dpusha.app.com.usha.listeners.MainListner;
-import dpusha.app.com.usha.model.AuthToken;
 import dpusha.app.com.usha.model.CartItem;
 import dpusha.app.com.usha.model.Item;
 import dpusha.app.com.usha.model.Material;
 import dpusha.app.com.usha.model.ProductCategory;
 import dpusha.app.com.usha.model.ProductDescription;
 import dpusha.app.com.usha.model.ProductDivision;
-import dpusha.app.com.usha.model.ProductItem;
 //import dpusha.app.com.usha.model.ProductSKU;
 import dpusha.app.com.usha.model.ProductSKU;
 import dpusha.app.com.usha.model.ShipToParty;
@@ -73,7 +72,7 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class OrderByItemCodeFragment extends Fragment implements RequestListener, CartItemChangedListener {
+public class OrderByItemCode extends Fragment implements RequestListener, CartItemChangedListener {
 
     @BindView(R.id.spinnerCategory)
     Spinner spinnerCategory;
@@ -119,12 +118,12 @@ public class OrderByItemCodeFragment extends Fragment implements RequestListener
 
     boolean APICallInProgress = false;
 
-    public OrderByItemCodeFragment() {
+    public OrderByItemCode() {
         // Required empty public constructor
     }
 
-    public static OrderByItemCodeFragment newInstance() {
-        return new OrderByItemCodeFragment();
+    public static OrderByItemCode newInstance() {
+        return new OrderByItemCode();
 
     }
 

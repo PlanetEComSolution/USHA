@@ -80,13 +80,15 @@ public interface API_Interface {
     @GET("api/Template/GetDraft")// GET /api/Template/GetDraft
     Call<ResponseBody> getDraft();
 
-    @FormUrlEncoded
+    @GET("api/Template/GetByUserId")// GET /api/Template/GetByUserId
+    Call<ResponseBody> getTemplate();
+
     @POST("/api/Template/InsertTemplate")
     Call<ResponseBody>saveTemplate(@Body CartItem cartItem);
 
-    @FormUrlEncoded
+
     @POST("/api/Order/InsertOrder")
-    Call<ResponseBody>saveOrder(@Field("cartDTO") CartItem cartItem);
+    Call<ResponseBody>saveOrder(@Body CartItem cartItem);
 
 
     @FormUrlEncoded

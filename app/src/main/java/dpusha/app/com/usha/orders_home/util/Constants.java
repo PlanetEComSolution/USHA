@@ -23,7 +23,8 @@ public class Constants {
             PLACE_ORDER("PLACE_ORDER"),
             ORDER_LIST("order_list"),
             ORDER_LIST_DETAILS("order_list_details"),
-            LOGIN("LOGIN");
+            LOGIN("LOGIN"),
+            TEMPLATE("TEMPLATE");
             private String url;
 
             API_TYPE(String url) {

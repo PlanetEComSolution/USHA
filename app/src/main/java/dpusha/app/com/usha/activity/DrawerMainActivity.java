@@ -5,13 +5,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,10 +26,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,17 +35,18 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dpusha.app.com.usha.Login;
-import dpusha.app.com.usha.fragment.OrderByItemCodeFragment;
-import dpusha.app.com.usha.fragment.orderListFragment;
+import dpusha.app.com.usha.fragment.book_order.by_category.OrderByItemCategory;
+import dpusha.app.com.usha.fragment.book_order.by_itemcode.OrderByItemCode;
+import dpusha.app.com.usha.fragment.book_order.by_template.OrderByTemplate;
+import dpusha.app.com.usha.fragment.orders.orderListFragment;
 import dpusha.app.com.usha.model.AuthToken;
 import dpusha.app.com.usha.model.DrawerItem;
 import dpusha.app.com.usha.R;
 import dpusha.app.com.usha.adapter.LeftMenuAdapter;
-import dpusha.app.com.usha.adapter.RecyclerViewMargin;
+import dpusha.app.com.usha.adapter.recycler_decorator.RecyclerViewMargin;
 import dpusha.app.com.usha.fragment.HomeFragment;
 import dpusha.app.com.usha.listeners.AppResumeListener;
 import dpusha.app.com.usha.listeners.MainListner;
-import dpusha.app.com.usha.model.LoginResponse;
 import dpusha.app.com.usha.network.APIError;
 import dpusha.app.com.usha.network.RequestListener;
 import dpusha.app.com.usha.network.RetrofitManager;
@@ -253,17 +249,18 @@ public class DrawerMainActivity extends AppCompatActivity
         closeLeftDrawer();
         switch (position) {
             case 0:
-                addFragment(new OrderByItemCodeFragment(), "OrderByItemCodeFragment", true);
+                addFragment(new OrderByItemCode(), "OrderByItemCodeFragment", true);
                 break;
 
             case 1:
-                // addFragment(new searchFragment(), "searchFragment", true);
+                addFragment(new OrderByItemCategory(), "OrderByItemCategory", true);
+
                 break;
             case 2:
-                // addFragment(new searchFragment(), "searchFragment", true);
+
                 break;
             case 3:
-                // addFragment(new searchFragment(), "searchFragment", true);
+                addFragment(new OrderByTemplate(), "OrderByTemplate", true);
                 break;
         }
 

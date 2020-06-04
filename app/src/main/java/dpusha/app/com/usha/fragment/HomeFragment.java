@@ -2,35 +2,23 @@ package dpusha.app.com.usha.fragment;
 
 
 import android.app.AlertDialog;
-import android.content.pm.ActivityInfo;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import dpusha.app.com.usha.R;
+import dpusha.app.com.usha.fragment.book_order.by_itemcode.OrderByItemCode;
+import dpusha.app.com.usha.fragment.orders.orderListFragment;
 import dpusha.app.com.usha.listeners.MainListner;
 
 
@@ -168,7 +156,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 alertDialog.dismiss();
-                listenerMainActivity.addFragment( new OrderByItemCodeFragment(), "OrderByItemCodeFragment", true);
+                listenerMainActivity.addFragment( new OrderByItemCode(), "OrderByItemCodeFragment", true);
             }
         });
         button_ByCategory.setOnClickListener(new View.OnClickListener() {
