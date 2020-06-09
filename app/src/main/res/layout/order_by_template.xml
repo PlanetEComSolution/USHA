@@ -3,17 +3,180 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="15dp">
+  >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="5dp"
+        >
+    <TextView
+
+        style="@style/largeTextViewStyle_grey"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textStyle="bold"
+        android:layout_marginBottom="5dp"
+        android:text="Templates" />
+
+    <TextView
+
+        style="@style/smallTextViewStyle_grey"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+
+        android:text="Template" />
+    <Spinner
+        android:id="@+id/spinnerTemplate"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/spinner_bg"
+        />
 
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+          android:layout_weight="1"
+            android:layout_marginRight="2dp"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+
+                style="@style/smallTextViewStyle_grey"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+
+                android:text="Month" />
+            <EditText
+                android:id="@+id/et_month"
+                style="@style/smallTextViewStyle_grey"
+                android:layout_width="match_parent"
+
+                android:layout_weight="1"
+                android:background="@drawable/edittext_bg"
+                android:hint="Month"
+                android:maxLines="3"
+                android:minHeight="40dp"
+                android:paddingLeft="10dp"
+
+                android:drawableTint="@color/colorPrimary"
+                android:editable="false"
+                android:focusableInTouchMode="false"
+                android:gravity="center_vertical"
+
+                android:inputType="none"
+
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="2dp"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+
+                style="@style/smallTextViewStyle_grey"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+
+                android:text="Year" />
+            <EditText
+                android:id="@+id/et_year"
+                style="@style/smallTextViewStyle_grey"
+                android:layout_width="match_parent"
+
+                android:layout_weight="1"
+                android:background="@drawable/edittext_bg"
+                android:hint="Year"
+                android:maxLines="3"
+                android:minHeight="40dp"
+                android:paddingLeft="10dp"
+
+                android:drawableTint="@color/colorPrimary"
+                android:editable="false"
+                android:focusableInTouchMode="false"
+                android:gravity="center_vertical"
+
+                android:inputType="none"
+
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_margin="5dp"
+        android:paddingTop="10dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="10dp"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal">
+
+        <TextView
+
+            style="@style/smallTextViewStyle_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+
+            android:text="Name" />
+        <TextView
+
+            style="@style/smallTextViewStyle_white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+          android:layout_weight="1"
+
+            android:gravity="center"
+            android:text="Created Date" />
+        <TextView
+
+            style="@style/smallTextViewStyle_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+         android:layout_gravity="end"
+
+            android:text="Action" />
+
+    </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_template"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="0dp"
         android:layout_weight="1"
+        android:visibility="visible"
         android:scrollbars="none" />
-
+    <TextView
+        android:id="@+id/txtvw_noItems"
+        style="@style/mediumTextViewStyle_grey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+       android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"
+android:gravity="center"
+        android:text="No item(s) found!" />
 
 
 </LinearLayout>
