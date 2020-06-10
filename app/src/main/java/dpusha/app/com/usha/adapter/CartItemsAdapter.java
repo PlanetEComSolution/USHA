@@ -73,8 +73,8 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.MyVi
         Picasso.with(context)
                 .load(Constants.PRODUCT_IMAGE_URL_PREFIX +items.get(position).getImageName())
                 .fit()
-                .placeholder(R.drawable.thumb_no_mage)
-                .error(R.drawable.thumb_no_mage)
+                .placeholder(R.drawable.puma_offer)
+                .error(R.drawable.puma_offer)
                 .into(holder.icon);
 
 
