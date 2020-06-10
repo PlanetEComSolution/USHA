@@ -5,6 +5,8 @@ import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import dpusha.app.com.usha.model.draft.Item;
+
 public class Template {
 
     @SerializedName("OrderId")
@@ -30,7 +32,7 @@ public class Template {
     private Integer fright;
     @SerializedName("Items")
     @Expose
-    private List<Object> items = null;
+    private List<Item> items = null;
     @SerializedName("DivCode")
     @Expose
     private Object divCode;
@@ -39,19 +41,19 @@ public class Template {
     private Object divName;
     @SerializedName("TotalNetPrice")
     @Expose
-    private Integer totalNetPrice;
+    private Double totalNetPrice;
     @SerializedName("TotalDiscounts")
     @Expose
-    private Integer totalDiscounts;
+    private Double totalDiscounts;
     @SerializedName("TaxableValue")
     @Expose
-    private Integer taxableValue;
+    private Double taxableValue;
     @SerializedName("TotalTax")
     @Expose
-    private Integer totalTax;
+    private Double totalTax;
     @SerializedName("TotalGrossPrice")
     @Expose
-    private Integer totalGrossPrice;
+    private Double totalGrossPrice;
     @SerializedName("SchId")
     @Expose
     private Object schId;
@@ -99,39 +101,7 @@ public class Template {
     public Template() {
     }
 
-    /**
-     * 
-     * @param divName
-     * @param orderId
-     * @param totalDiscounts
-     * @param iP
-     * @param shipToPartyId
-     * @param totalGrossPrice
-     * @param resultCode
-     * @param description
-     * @param orderStatus
-     * @param isActive
-     * @param callType
-     * @param totalTax
-     * @param schId
-     * @param isDeleted
-     * @param id
-     * @param unavailableItems
-     * @param dealerName
-     * @param referenceNo
-     * @param divCode
-     * @param totalNetPrice
-     * @param fright
-     * @param createdDate
-     * @param templateName
-     * @param taxableValue
-     * @param createdBy
-     * @param items
-     * @param shipToParty
-     * @param requestDeliveryDate
-     */
-    public Template(String orderId, String templateName, Object referenceNo, Object description, Object shipToPartyId, String requestDeliveryDate, Integer fright, List<Object> items, Object divCode, Object divName, Integer totalNetPrice, Integer totalDiscounts, Integer taxableValue, Integer totalTax, Integer totalGrossPrice, Object schId, Object orderStatus, String createdDate, Object shipToParty, Object unavailableItems, Object dealerName, Integer id, Object createdBy, Boolean isActive, Boolean isDeleted, Object iP, Object callType, Object resultCode) {
-        super();
+    public Template(String orderId, String templateName, Object referenceNo, Object description, Object shipToPartyId, String requestDeliveryDate, Integer fright, List<Item> items, Object divCode, Object divName, Double totalNetPrice, Double totalDiscounts, Double taxableValue, Double totalTax, Double totalGrossPrice, Object schId, Object orderStatus, String createdDate, Object shipToParty, Object unavailableItems, Object dealerName, Integer id, Object createdBy, Boolean isActive, Boolean isDeleted, Object iP, Object callType, Object resultCode) {
         this.orderId = orderId;
         this.templateName = templateName;
         this.referenceNo = referenceNo;
@@ -218,11 +188,11 @@ public class Template {
         this.fright = fright;
     }
 
-    public List<Object> getItems() {
+    public List<Item> getItems() {
         return items;
     }
 
-    public void setItems(List<Object> items) {
+    public void setItems(List<Item> items) {
         this.items = items;
     }
 
@@ -242,43 +212,43 @@ public class Template {
         this.divName = divName;
     }
 
-    public Integer getTotalNetPrice() {
+    public Double getTotalNetPrice() {
         return totalNetPrice;
     }
 
-    public void setTotalNetPrice(Integer totalNetPrice) {
+    public void setTotalNetPrice(Double totalNetPrice) {
         this.totalNetPrice = totalNetPrice;
     }
 
-    public Integer getTotalDiscounts() {
+    public Double getTotalDiscounts() {
         return totalDiscounts;
     }
 
-    public void setTotalDiscounts(Integer totalDiscounts) {
+    public void setTotalDiscounts(Double totalDiscounts) {
         this.totalDiscounts = totalDiscounts;
     }
 
-    public Integer getTaxableValue() {
+    public Double getTaxableValue() {
         return taxableValue;
     }
 
-    public void setTaxableValue(Integer taxableValue) {
+    public void setTaxableValue(Double taxableValue) {
         this.taxableValue = taxableValue;
     }
 
-    public Integer getTotalTax() {
+    public Double getTotalTax() {
         return totalTax;
     }
 
-    public void setTotalTax(Integer totalTax) {
+    public void setTotalTax(Double totalTax) {
         this.totalTax = totalTax;
     }
 
-    public Integer getTotalGrossPrice() {
+    public Double getTotalGrossPrice() {
         return totalGrossPrice;
     }
 
-    public void setTotalGrossPrice(Integer totalGrossPrice) {
+    public void setTotalGrossPrice(Double totalGrossPrice) {
         this.totalGrossPrice = totalGrossPrice;
     }
 
@@ -346,27 +316,27 @@ public class Template {
         this.createdBy = createdBy;
     }
 
-    public Boolean getIsActive() {
+    public Boolean getActive() {
         return isActive;
     }
 
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
+    public void setActive(Boolean active) {
+        isActive = active;
     }
 
-    public Boolean getIsDeleted() {
+    public Boolean getDeleted() {
         return isDeleted;
     }
 
-    public void setIsDeleted(Boolean isDeleted) {
-        this.isDeleted = isDeleted;
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
     }
 
-    public Object getIP() {
+    public Object getiP() {
         return iP;
     }
 
-    public void setIP(Object iP) {
+    public void setiP(Object iP) {
         this.iP = iP;
     }
 
@@ -386,4 +356,13 @@ public class Template {
         this.resultCode = resultCode;
     }
 
+    public Template(String templateName, Integer id) {
+        this.templateName = templateName;
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return  templateName;
+    }
 }

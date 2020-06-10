@@ -6,6 +6,8 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:orientation="vertical"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
    >
 
     <LinearLayout
@@ -41,8 +43,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-
-                android:text="Sign In" />
+android:textColor="@color/md_black_1000"
+                android:text="sku" />
 
             <TextView
                 android:id="@+id/txtvw_Description"
@@ -51,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
 
-                android:text="Sign In" />
+                android:text="Desc" />
 
 
         </LinearLayout>

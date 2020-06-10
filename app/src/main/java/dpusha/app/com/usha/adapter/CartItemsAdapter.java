@@ -9,13 +9,16 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 import dpusha.app.com.usha.R;
 import dpusha.app.com.usha.listeners.CartItemChangedListener;
+import dpusha.app.com.usha.listeners.MainListner;
 import dpusha.app.com.usha.model.CartItem;
 import dpusha.app.com.usha.model.Item;
-import dpusha.app.com.usha.model.ProductItem;
+import dpusha.app.com.usha.orders_home.util.Constants;
 import dpusha.app.com.usha.orders_home.util.utility;
 import dpusha.app.com.usha.shared_preference.SharedPreferencesUtil;
 
@@ -31,13 +34,19 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.MyVi
     CartItem cartItem;
     CartItemChangedListener cartItemChangedListener;
 
+
     Integer Icon[]={R.drawable.fan,R.drawable.fan,R.drawable.fan,R.drawable.fan};
 
-    public CartItemsAdapter(Context context, CartItem cartItem,CartItemChangedListener listener) {
+    MainListner mainListner;
+//    Integer Icon[]={R.drawable.fan,R.drawable.fan2,R.drawable.fan3,R.drawable.fan4};
+
+
+    public CartItemsAdapter(Context context, CartItem cartItem, CartItemChangedListener listener, MainListner mainListner) {
         this.context = context;
         this.cartItem = cartItem;
         this.items = cartItem.getItems();
         this.  cartItemChangedListener=listener;
+        this. mainListner=mainListner;
     }
 
     @Override
@@ -55,12 +64,20 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.MyVi
         holder.txtvw_Description.setText(items.get(position).getDescription());
 
         holder.txtvw_variable_qnty.setText(String.valueOf(items.get(position).getQuantity()));
-          if(position<Icon.length){
+         /* if(position<Icon.length){
               holder.icon.setImageResource(Icon[position]);
           }else {
               holder.icon.setImageResource(Icon[0]);
-          }
-        //   Picasso.load(items.get(position).getImage()).into( holder.menu_icon);
+          }*/
+
+        Picasso.with(context)
+                .load(Constants.PRODUCT_IMAGE_URL_PREFIX +items.get(position).getImageName())
+                .fit()
+                .placeholder(R.drawable.thumb_no_mage)
+                .error(R.drawable.thumb_no_mage)
+                .into(holder.icon);
+
+
     }
 
     @Override
@@ -91,8 +108,8 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.MyVi
                     cartItem.setItems(items);
 
                     notifyDataSetChanged();
-                    SharedPreferencesUtil.setCartItems(context,  utility.convertCartToJSONString(cartItem));
-
+                   // SharedPreferencesUtil.setCartItems(context,  utility.convertCartToJSONString(cartItem));
+utility.setCartItems(context, utility.convertCartToJSONString(cartItem),mainListner);
                     cartItemChangedListener.onCartRefresh();
 
                 }
@@ -108,7 +125,9 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.MyVi
 
                     cartItem.setItems(items);
                     notifyDataSetChanged();
-                    SharedPreferencesUtil.setCartItems(context,utility.convertCartToJSONString(cartItem));
+                    //SharedPreferencesUtil.setCartItems(context,utility.convertCartToJSONString(cartItem));
+                    utility.setCartItems(context,utility.convertCartToJSONString(cartItem),mainListner);
+
                     cartItemChangedListener.onCartRefresh();
 
 
@@ -122,7 +141,9 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.MyVi
                     items.get(getAdapterPosition()).setQuantity(quantity);
                     cartItem.setItems(items);
                     notifyDataSetChanged();
-                    SharedPreferencesUtil.setCartItems(context,utility.convertCartToJSONString(cartItem));
+                  //  SharedPreferencesUtil.setCartItems(context,utility.convertCartToJSONString(cartItem));
+                    utility.setCartItems(context,utility.convertCartToJSONString(cartItem),mainListner);
+
                     cartItemChangedListener.onCartRefresh();
                 }
             });

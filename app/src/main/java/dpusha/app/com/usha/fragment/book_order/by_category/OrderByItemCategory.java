@@ -79,25 +79,11 @@ public class OrderByItemCategory extends Fragment implements RequestListener {
         ButterKnife.bind(this, view);
 
         recycler_category.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-       // recycler_category.setLayoutManager(new LinearLayoutManager(getActivity()));
         recycler_category.setItemAnimator(new DefaultItemAnimator());
-
-         RecyclerViewMargin decoration = new RecyclerViewMargin(0, 2);
-       // MyDividerItemDecoration decoration1 = new MyDividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL, 50);
-       // recycler_category.addItemDecoration(new SpacesItemDecoration(20));
-       // recycler_category.addItemDecoration(decoration);
-
-        int spanCount = 2; // 3 columns
-        int spacing = 40; // 50px
-        boolean includeEdge = false;
-        //recycler_category.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
-        recycler_category.addItemDecoration(new ListSpacingDecoration(20));
-
-          includeEdge = true;
-      //  recycler_category.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
+     //   recycler_category.addItemDecoration(new ListSpacingDecoration(20));
+        recycler_category.addItemDecoration(new GridSpacingItemDecoration(2,10,true));
 
 
-        hitAPIGetProductCategory();
 
         return view;
     }
@@ -110,14 +96,10 @@ public class OrderByItemCategory extends Fragment implements RequestListener {
             activity = getActivity();
             listenerMainActivity = (MainListner) activity;
         }
+        hitAPIGetProductCategory();
     }
 
-   /* void initRecyclerAdapter() {
 
-        productListAdapter = new ProductListAdapter(getActivity(), productItemList);
-        recycler_items.setAdapter(productListAdapter);
-
-    }*/
 
 
     private void hitAPIGetProductCategory() {
@@ -140,7 +122,7 @@ public class OrderByItemCategory extends Fragment implements RequestListener {
                 List<ProductCategory> _productCategoryList = gson.fromJson(strResponse, listType);
                 productCategoryList.addAll(_productCategoryList);
                 if (_productCategoryList != null && !_productCategoryList.isEmpty()) {
-                    CategoryAdapter categoryAdapter = new CategoryAdapter(getActivity(), productCategoryList);
+                      CategoryAdapter categoryAdapter = new CategoryAdapter(getActivity(), productCategoryList,listenerMainActivity);
                       recycler_category.setAdapter(categoryAdapter);
                 } else {
                     recycler_category.setAdapter(null);
@@ -174,12 +156,7 @@ public class OrderByItemCategory extends Fragment implements RequestListener {
     }
 
 
-    void refreshCartRecyclerFromPreference() {
-        //  if (cartObject != null && cartObject.getItems() != null && cartObject.getItems().size() > 0) {
-        //     CartItemsAdapter cartItemsAdapter = new CartItemsAdapter(getActivity(), cartObject, this);
-        //  recycler_items.setAdapter(cartItemsAdapter);
 
-    }
 
 
 }

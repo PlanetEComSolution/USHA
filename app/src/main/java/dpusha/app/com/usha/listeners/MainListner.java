@@ -1,5 +1,7 @@
 package dpusha.app.com.usha.listeners;
 
+import android.content.Context;
+
 import androidx.fragment.app.Fragment;
 
 /**
@@ -7,5 +9,5 @@ import androidx.fragment.app.Fragment;
  */
 public interface MainListner {
     void addFragment(Fragment fragment, String tag, boolean flag);
-
+     void refreshCartCount(Context context);
 }

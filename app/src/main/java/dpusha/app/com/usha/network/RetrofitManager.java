@@ -27,6 +27,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Field;
 
 //import com.bumptech.glide.request.RequestListener;
 import com.android.volley.BuildConfig;
@@ -123,9 +124,12 @@ public class RetrofitManager implements OnRetryCallback {
                         // error = ErrorUtils.parseError(response, retrofitManager);
 
                         if (error == null) {
+                           // Log.e("Log_Response", response.body().string());
                             mRequestListener.onSuccess(response, mApiType);
 
+
                         } else {
+                            //Log.e("Log_Error", response.toString());
                             mRequestListener.onApiException(error, response, mApiType);
                         }
 
@@ -149,6 +153,7 @@ public class RetrofitManager implements OnRetryCallback {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                  //  Log.e("Log_Failure", response.toString());
                     mRequestListener.onFailure(response, mApiType);
                 }
 
@@ -314,6 +319,65 @@ public class RetrofitManager implements OnRetryCallback {
         performCallback(mRequestListener, mContext, mApiType, showProgress);
 
     }
+    public void getDivisionByCategoryCode(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            final String catCode,
+            final boolean showProgress) {
+
+        call = retroService.getDivisionByCategoryCode(catCode);
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+
+    }
+    public void getCategoryTypeByProductCategory(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            final String CatCode,
+            final String DivCode,
+            final String callType,
+            final boolean showProgress) {
+
+        call = retroService.getCategoryTypeByProductCategory(CatCode, DivCode, callType);
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+
+    }
+
+    public void getSubCategoryByProductCategory(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            final String CatCode,
+            final String DivCode,
+            final String CatType,
+            final String callType,
+            final boolean showProgress) {
+
+        call = retroService.getSubCategoryByProductCategory(CatCode, DivCode, CatType, callType);
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+
+    }
+
+
+    public void getProductsForList(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+
+            final String DivCode,
+            final String CategoryType,
+            final String SubCategory,
+            final String callType,
+            final int PageNo,
+            final int PageSize,
+            final boolean showProgress) {
+//        Log.e("Log_ Api: GetProductsForList", "DivCode " + DivCode + " CategoryType " + CategoryType + " SubCategory " + SubCategory + " callType " + callType + " PageNo " + PageNo + " PageSize " + PageSize);
+        call = retroService.getProductsForList(DivCode, CategoryType, SubCategory, callType, PageNo, PageSize);
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+
+    }
+
 
     public void getSKU(
             final RequestListener mRequestListener,
@@ -409,6 +473,20 @@ public class RetrofitManager implements OnRetryCallback {
 
     }
 
+
+    public void getProductDetails(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            final String SKU,
+
+            final boolean showProgress) {
+
+        call = retroService.getProductDetails(SKU);
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+
+    }
+
     public void getShipToParty(
             final RequestListener mRequestListener,
             final Context mContext,
@@ -428,6 +506,33 @@ public class RetrofitManager implements OnRetryCallback {
     ) {
 
         call = retroService.getTemplate();
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+
+    }
+
+
+    public void getTemplateDetailsByTemplateId(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            final String TemplateId,
+            final boolean showProgress
+    ) {
+
+        call = retroService.getTemplateDetails(TemplateId);
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+
+    }
+
+    public void deleteTemplate(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            final String TemplateId,
+            final boolean showProgress
+    ) {
+
+        call = retroService.deleteTemplate(TemplateId);
         performCallback(mRequestListener, mContext, mApiType, showProgress);
 
     }

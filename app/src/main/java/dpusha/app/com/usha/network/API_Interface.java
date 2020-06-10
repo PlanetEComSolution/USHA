@@ -12,6 +12,7 @@ import dpusha.app.com.usha.orders_home.model.OrderList;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -72,6 +73,46 @@ public interface API_Interface {
                                                     @Field("Catcode") String Catcode,@Field("CallType") String CallType
     );
 
+
+
+    @FormUrlEncoded
+    @POST("api/Division/GetDivisionsByCatCode")
+    Call<ResponseBody> getDivisionByCategoryCode(
+                                                    @Field("CatCode") String CatCode );
+
+
+//  http://dpwebservicesbeta.businesstowork.com/api/ProductCategory/GetDropDownsByProductCategory
+
+    @FormUrlEncoded
+    @POST("api/ProductCategory/GetDropDownsByProductCategory")
+    Call<ResponseBody> getCategoryTypeByProductCategory(@Field("CatCode") String CatCode,
+                                                    @Field("DivCode") String DivCode,
+                                                        @Field("CallType") String CallType
+    );
+
+
+    @FormUrlEncoded
+    @POST("api/ProductCategory/GetDropDownsByProductCategory")
+    Call<ResponseBody> getSubCategoryByProductCategory(@Field("CatCode") String CatCode,
+                                                        @Field("DivCode") String DivCode,
+                                                       @Field("CatType") String CatType,
+                                                        @Field("CallType") String CallType
+    );
+
+
+
+    @FormUrlEncoded
+    @POST("/api/Order/GetProductsForList")
+    Call<ResponseBody>getProductsForList(@Field("DivCode") String DivCode,
+                                         @Field("CategoryType") String CategoryType,
+                                         @Field("SubCategory") String SubCategory,
+                                                        @Field("CallType") String CallType,
+                                                        @Field("PageNo") int PageNo,
+                                         @Field("PageSize") int PageSize
+    );
+
+
+
     @FormUrlEncoded
     @POST("/api/Order/GetProductForAutoComplete")
     Call<ResponseBody> getSKU(@Field("UserId") String UserId,
@@ -95,12 +136,25 @@ public interface API_Interface {
     @GET("api/Template/GetByUserId")// GET /api/Template/GetByUserId
     Call<ResponseBody> getTemplate();
 
+    @GET("api/Template/GetDetailsByTemplateId")//api/Template/GetDetailsByTemplateId?id=1591373624457
+    Call<ResponseBody> getTemplateDetails(@Query("id") String id);
+
+    @DELETE("api/Template/Delete")//api/Template/GetDetailsByTemplateId?id=1591373624457
+    Call<ResponseBody> deleteTemplate(@Query("Id") String id);
+
+
     @POST("/api/Template/InsertTemplate")
     Call<ResponseBody>saveTemplate(@Body CartItem cartItem);
 
 
     @POST("/api/Order/InsertOrder")
     Call<ResponseBody>saveOrder(@Body CartItem cartItem);
+
+    // @Field parameters can only be used with form encoding.
+
+    @FormUrlEncoded
+    @POST("/api/Order/GetProductDetails")
+    Call<ResponseBody>getProductDetails(@Field("SKU") String SKU);
 
 
     @FormUrlEncoded

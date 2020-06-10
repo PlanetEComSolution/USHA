@@ -45,7 +45,6 @@ import butterknife.OnClick;
 import dpusha.app.com.usha.R;
 import dpusha.app.com.usha.adapter.CartItemsAdapter;
 import dpusha.app.com.usha.adapter.recycler_decorator.MyDividerItemDecoration;
-import dpusha.app.com.usha.adapter.ProductListAdapter;
 import dpusha.app.com.usha.fragment.cart.CartFragment;
 import dpusha.app.com.usha.listeners.CartItemChangedListener;
 import dpusha.app.com.usha.listeners.MainListner;
@@ -101,19 +100,16 @@ public class OrderByItemCode extends Fragment implements RequestListener, CartIt
     private String CategoryCode = "", DivisionCode = "";
     private List<ProductDescription> productDescriptionList = new ArrayList<>();
     private List<ProductSKU> productSKUList = new ArrayList<>();
-    //  private List<ProductDescription> productSKUList = new ArrayList<>();
     private List<ProductCategory> productCategoryList = new ArrayList<>();
     private List<ProductDivision> productDivisionList = new ArrayList<>();
-    //  private List<ProductItem> productItemList = new ArrayList<>();
+
 
 
     private ProductDescription item;
-    private ProductListAdapter productListAdapter;
     boolean autoCompleteSKU_ItemClicked = false, autoCompleteDescription_ItemClicked = false;
 
     private MainListner listenerMainActivity;
     private FragmentActivity activity;
-    // CartItem cartItem = new CartItem();
     AlertDialog alertDialog;
 
     boolean APICallInProgress = false;
@@ -144,13 +140,9 @@ public class OrderByItemCode extends Fragment implements RequestListener, CartIt
 
         recycler_items.setLayoutManager(new LinearLayoutManager(getActivity()));
         recycler_items.setItemAnimator(new DefaultItemAnimator());
-
-        // RecyclerViewMargin decoration = new RecyclerViewMargin(20, 1);
-        MyDividerItemDecoration decoration1 = new MyDividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL, 50);
+        MyDividerItemDecoration decoration1 = new MyDividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL, 0);
         recycler_items.addItemDecoration(decoration1);
-        hitAPIGetDraft();
-        hitAPIGetProductCategory();
-        setViewListener();
+
         return view;
     }
 
@@ -162,14 +154,13 @@ public class OrderByItemCode extends Fragment implements RequestListener, CartIt
             activity = getActivity();
             listenerMainActivity = (MainListner) activity;
         }
+
+        hitAPIGetDraft();
+        hitAPIGetProductCategory();
+        setViewListener();
     }
 
-   /* void initRecyclerAdapter() {
 
-        productListAdapter = new ProductListAdapter(getActivity(), productItemList);
-        recycler_items.setAdapter(productListAdapter);
-
-    }*/
 
     void setViewListener() {
         setTemporaryAdapterForCategorySpinner();
@@ -312,7 +303,7 @@ public class OrderByItemCode extends Fragment implements RequestListener, CartIt
 
             @Override
             public void onItemClick(AdapterView<?> parent, View arg1, int pos, long id) {
-                Log.e("Log_autoCompleteSKU", "onItemClick");
+
                 ProductSKU productSKU = (ProductSKU) parent.getItemAtPosition(pos);
                 item = utility.convertSKU_To_Description(productSKU);
                 autoCompleteDescription.setText(item.getDescription());
@@ -322,7 +313,6 @@ public class OrderByItemCode extends Fragment implements RequestListener, CartIt
             @Override
             public void onItemClick(AdapterView<?> parent, View arg1, int pos,
                                     long id) {
-                Log.e("Log_autoCompleteDesc", "onItemClick");
                 item = (ProductDescription) parent.getItemAtPosition(pos);
                 autoCompleteSKU.setText(item.getsKU());
 
@@ -383,7 +373,9 @@ public class OrderByItemCode extends Fragment implements RequestListener, CartIt
     private void hitAPIGetPrice(Material material) {
         retrofitManager.getPrice(this, getActivity(), Constants.API_TYPE.GET_PRICE, material, true);
     }
-
+    private void hitAPIGetProductDetails(String SKU) {
+        retrofitManager.getProductDetails(this, getActivity(), Constants.API_TYPE.GET_PRODUCT_DETAILS, SKU,true);
+    }
     @OnClick({
             R.id.button_addItem,
             R.id.button_proceed,
@@ -397,7 +389,11 @@ public class OrderByItemCode extends Fragment implements RequestListener, CartIt
         switch (view.getId()) {
             case R.id.button_addItem:
                 if (validation()) {
-                    addItemToSharedpref();
+                    utility.addItemToCartPreference(item,getActivity(),listenerMainActivity);
+                    refreshCartRecyclerFromPreference();
+                    autoCompleteSKU.setText("");
+                    autoCompleteDescription.setText("");
+                   // hitAPIGetProductDetails(item.getsKU());//to get product image and id
                 }
 
                 break;
@@ -413,7 +409,7 @@ public class OrderByItemCode extends Fragment implements RequestListener, CartIt
                 break;
             case R.id.button_emptyCart:
 
-                SharedPreferencesUtil.clearCartItems(getActivity());
+                SharedPreferencesUtil.clearCartItems(getActivity(),listenerMainActivity);
                 refreshCartRecyclerFromPreference();
 
                 break;
@@ -520,11 +516,20 @@ public class OrderByItemCode extends Fragment implements RequestListener, CartIt
                 Toast.makeText(getActivity(), strResponse, Toast.LENGTH_SHORT).show();
             } else if (apiType == Constants.API_TYPE.GET_DRAFT) {
                 GetDraft draft = new Gson().fromJson(strResponse, GetDraft.class);
-                utility.saveDraftToPreference(draft, getActivity());
+                utility.saveDraftToCartPreference(draft, getActivity(),listenerMainActivity);
                 refreshCartRecyclerFromPreference();
                 // Toast.makeText(getActivity(), strResponse, Toast.LENGTH_SHORT).show();
             }
-
+            else if (apiType == Constants.API_TYPE.GET_PRODUCT_DETAILS) {
+                ProductSKU sku = new Gson().fromJson(strResponse, ProductSKU.class);
+                item.setImageName(sku.getImageName());
+                item.setId(sku.getId());
+                item.setQuantity(1);
+                utility.addItemToCartPreference(item,getActivity(),listenerMainActivity);
+                refreshCartRecyclerFromPreference();
+                autoCompleteSKU.setText("");
+                autoCompleteDescription.setText("");
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -556,6 +561,7 @@ public class OrderByItemCode extends Fragment implements RequestListener, CartIt
         ProductDivision productDivision = (ProductDivision) spinnerDivision.getSelectedItem();
         String sku = autoCompleteSKU.getText().toString().trim();
         String desc = autoCompleteDescription.getText().toString().trim();
+        item.setQuantity(1);
         boolean isCorrectSKU = false;
         boolean isCorrectDescription = false;
         for (ProductSKU productSKU : productSKUList) {
@@ -602,49 +608,14 @@ public class OrderByItemCode extends Fragment implements RequestListener, CartIt
 
 
 
-    void addItemToSharedpref() {
-        String strCartItem = SharedPreferencesUtil.getCartItems(getActivity());
-        CartItem cartObject = utility.convertJSONStringToCartObject(strCartItem);
-        if (cartObject == null) {
-            cartObject = new CartItem();
-        }
-        cartObject.setOrderId(utility.getCurrentTimestamp());
-        cartObject.setOrderStatus(null);
-        cartObject.setShipToPartyId(null);
-        // cartObject.setId(SharedPreferencesUtil.getUserId(getActivity()));
 
-        List<Item> list = cartObject.getItems();
-        if (list == null || list.isEmpty()) {
-            list = new ArrayList<>();
-        }
-        String imageName = "";
-        if (item.getImageName() == null || item.getImageName().equals("")) {
-            imageName = "NoImage.png";
-        }
-
-        list.add(new Item(item.getsKU(),
-                item.getDescription(), item.getuOM(), item.getUnitPrice(), item.getDiscount(),
-                item.getTaxPercent(), item.getAvailableInStock(), 1,
-                item.getApprovedQuantity(),
-                imageName, item.getDivCode(), null,
-               null));
-
-
-        cartObject.setItems(list);
-        String newCartJson = utility.convertCartToJSONString(cartObject);
-        SharedPreferencesUtil.setCartItems(getActivity(), newCartJson);
-        refreshCartRecyclerFromPreference();
-
-        autoCompleteSKU.setText("");
-        autoCompleteDescription.setText("");
-    }
 
     void refreshCartRecyclerFromPreference() {
         String strCartItem = SharedPreferencesUtil.getCartItems(getActivity());
         if (!strCartItem.equals("")) {
             CartItem cartObject = utility.convertJSONStringToCartObject(strCartItem);
             if (cartObject != null && cartObject.getItems() != null && cartObject.getItems().size() > 0) {
-                CartItemsAdapter cartItemsAdapter = new CartItemsAdapter(getActivity(), cartObject, this);
+                CartItemsAdapter cartItemsAdapter = new CartItemsAdapter(getActivity(), cartObject, this,listenerMainActivity);
                 recycler_items.setAdapter(cartItemsAdapter);
             } else {
                 recycler_items.setAdapter(null);
