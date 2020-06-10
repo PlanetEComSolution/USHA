@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -42,6 +43,7 @@ import dpusha.app.com.usha.R;
 import dpusha.app.com.usha.adapter.CartItemsAdapter;
 import dpusha.app.com.usha.adapter.recycler_decorator.MyDividerItemDecoration;
 import dpusha.app.com.usha.listeners.CartItemChangedListener;
+import dpusha.app.com.usha.listeners.MainListner;
 import dpusha.app.com.usha.model.CartItem;
 import dpusha.app.com.usha.model.GetPriceResponse;
 import dpusha.app.com.usha.model.Item;
@@ -83,16 +85,13 @@ public class CartFragment extends Fragment implements RequestListener, DatePicke
     EditText et_deliveryDate;
     @BindView(R.id.spinnerShipToParty)
     Spinner spinnerShipToParty;
-//   @BindView(R.id.etShipToParty)
-    // EditText etShipToParty;
-
 
     @BindView(R.id.et_referenceNumber)
     EditText et_referenceNumber;
     @BindView(R.id.et_remarks)
     EditText et_remarks;
-
-
+    private MainListner listenerMainActivity;
+    private FragmentActivity activity;
     private RetrofitManager retrofitManager = RetrofitManager.getInstance();
     CartItem cartItems;
     List<ShipToParty> shipToPartyList = new ArrayList<>();
@@ -113,7 +112,21 @@ public class CartFragment extends Fragment implements RequestListener, DatePicke
 
 
     }
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
+        if (activity == null) {
+            activity = getActivity();
+            listenerMainActivity = (MainListner) activity;
+        }
+
+        setViewListener();
+        setTemporaryAdapterForPartySpinner();
+        hitAPIGetShipToParty();
+        refreshCartRecyclerFromPreference();
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -123,19 +136,44 @@ public class CartFragment extends Fragment implements RequestListener, DatePicke
         ButterKnife.bind(this, view);
         recycler_items.setLayoutManager(new LinearLayoutManager(getActivity()));
         recycler_items.setItemAnimator(new DefaultItemAnimator());
-
         // RecyclerViewMargin decoration = new RecyclerViewMargin(20, 1);
-        MyDividerItemDecoration decoration1 = new MyDividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL, 50);
+        MyDividerItemDecoration decoration1 = new MyDividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL, 0);
         recycler_items.addItemDecoration(decoration1);
 
 
-        setViewListener();
-        setTemporaryAdapterForPartySpinner();
-        hitAPIGetShipToParty();
-        refreshCartRecyclerFromPreference();
+
+
         return view;
     }
+   void checkArguments(){
 
+    Bundle bundle=getArguments();
+    if(bundle!=null){
+        if(bundle.containsKey("ReferenceNum")){
+          String ReferenceNum=  bundle.getString("ReferenceNum");
+          et_referenceNumber.setText(ReferenceNum);
+        }
+        if(bundle.containsKey("Remarks")){
+            String Remarks=  bundle.getString("Remarks");
+            et_remarks.setText(Remarks);
+        }
+        if(bundle.containsKey("Party")){
+            String Party=  bundle.getString("Party");
+            for(int i=0;i<shipToPartyList.size();i++){
+                ShipToParty shipToParty=shipToPartyList.get(i);
+                if(shipToParty.getColumnValue().equals(Party)){
+                    spinnerShipToParty.setSelection(i);
+                    break;
+                }
+            }
+        }
+        if(bundle.containsKey("DeliveryDate")){
+            String DeliveryDate=  bundle.getString("DeliveryDate");
+            et_deliveryDate.setText(DeliveryDate);
+        }
+    }
+
+    }
     void getPrice(CartItem cartItems) {
         List<String> sku = new ArrayList<>();
         List<Item> items = cartItems.getItems();
@@ -153,7 +191,7 @@ public class CartFragment extends Fragment implements RequestListener, DatePicke
             if (cartItems != null && cartItems.getItems() != null && cartItems.getItems().size() > 0) {
                 getPriceSample();
                 // getPrice(cartItems);
-                CartItemsAdapter cartItemsAdapter = new CartItemsAdapter(getActivity(), cartItems, this);
+                CartItemsAdapter cartItemsAdapter = new CartItemsAdapter(getActivity(), cartItems, this,listenerMainActivity);
                 recycler_items.setAdapter(cartItemsAdapter);
 
             } else {
@@ -177,6 +215,7 @@ public class CartFragment extends Fragment implements RequestListener, DatePicke
     }
 
     private void hitAPIPlaceOrder() {
+     Log.e("Log_cartPlaceOrder",   utility.convertCartToJSONString(cartItems));
         retrofitManager.placeOrder(this, getActivity(), Constants.API_TYPE.PLACE_ORDER, cartItems, true);
     }
 
@@ -193,6 +232,7 @@ public class CartFragment extends Fragment implements RequestListener, DatePicke
                 break;
             case R.id.button_proceed:
                 if (validation()) {
+
                     hitAPIPlaceOrder();
                 }
                 break;
@@ -228,6 +268,7 @@ public class CartFragment extends Fragment implements RequestListener, DatePicke
                     setTemporaryAdapterForPartySpinner();
                     Toast.makeText(getActivity(), "No data found!", Toast.LENGTH_SHORT).show();
                 }
+                checkArguments();
             } else if (apiType == Constants.API_TYPE.GET_PRICE) {
                 GetPriceResponse priceResponse = new Gson().fromJson(strResponse, GetPriceResponse.class);
                 if (priceResponse != null && priceResponse.getIsSuccess() && priceResponse.getResult() != null && priceResponse.getResult().size() > 0) {
@@ -323,14 +364,17 @@ public class CartFragment extends Fragment implements RequestListener, DatePicke
         }
 
         txtvw_totalNetPrice.setText(String.format("%.2f", totalNetPrice));
-
         txtvw_totalDiscount.setText(String.format("%.2f", totalDiscount));
-
         txtvw_taxableValue.setText(String.format("%.2f", totalTaxableValue));
-
         txtvw_totalTax.setText(String.format("%.2f", totalTax));
-
         txtvw_totalGrossPrice.setText(String.format("%.2f", totalGrossPrice));//String.valueOf(totalGrossPrice));
+
+
+        cartItems.setTotalNetPrice(totalNetPrice);
+        cartItems.setTotalDiscounts(totalDiscount);
+        cartItems.setTaxableValue(totalTaxableValue);
+        cartItems.setTotalTax(totalTax);
+        cartItems.setTotalGrossPrice(totalGrossPrice);
     }
 
     @Override
@@ -371,57 +415,17 @@ public class CartFragment extends Fragment implements RequestListener, DatePicke
 
     }
 
-    public void showDialogNew(String dialog_title, final Context context, final EditText editText, List<ShipToParty> list) {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        final View dialogView = inflater.inflate(R.layout.custom_spinner_dialog, null);
-        dialogBuilder.setView(dialogView);
-
-        final EditText autoText = (EditText) dialogView.findViewById(R.id.autoText);
-        final ListView listvw = (ListView) dialogView.findViewById(R.id.listview);
-
-        autoText.setVisibility(View.GONE);
-        final ImageView imgvwSearch = (ImageView) dialogView.findViewById(R.id.imgvwSearch);
-        imgvwSearch.setVisibility(View.GONE);
-
-        ArrayAdapter<ShipToParty> adapter = new ArrayAdapter<ShipToParty>(context,
-                android.R.layout.simple_list_item_1, android.R.id.text1, list);
-        listvw.setAdapter(adapter);
-
-        listvw.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-
-                ShipToParty spinner_ = (ShipToParty) listvw.getItemAtPosition(position);
-                String txt = spinner_.getColumnName();
-                editText.setText(txt);
-
-
-                try {
-                    alertDialog1.dismiss();
-                } catch (Exception e) {
-                    e.getMessage();
-                }
-
-
-            }
-        });
-
-
-        dialogBuilder.setTitle(dialog_title);
-
-        alertDialog1 = dialogBuilder.create();
-        if (!alertDialog1.isShowing()) {
-            alertDialog1.show();
-        }
-    }
-
     public boolean validation() {
         boolean validate = true;
         ShipToParty _shipToParty = (ShipToParty) spinnerShipToParty.getSelectedItem();
         String shipToParty = _shipToParty.getColumnValue();
         // String shipToParty = etShipToParty.getText().toString().trim();
         String date = et_deliveryDate.getText().toString().trim();
+
+        cartItems.setReferenceNo(et_referenceNumber.getText().toString().trim());
+        cartItems.setShipToPartyId(shipToParty);
+        cartItems.setRequestDeliveryDate(date);
+        //cartItems.setremarks
 
         if (cartItems == null || cartItems.getItems() == null || cartItems.getItems().size() == 0) {
             Toast.makeText(getActivity(), "Cart is empty!", Toast.LENGTH_SHORT).show();

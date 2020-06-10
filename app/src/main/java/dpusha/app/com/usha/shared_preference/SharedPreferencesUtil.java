@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import dpusha.app.com.usha.MyUtils;
+import dpusha.app.com.usha.listeners.MainListner;
 
 public class SharedPreferencesUtil {
 
@@ -12,12 +13,13 @@ public class SharedPreferencesUtil {
         try {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
             SharedPreferences.Editor editor = preferences.edit();
-            editor.putString("token",token);
+            editor.putString("token", token);
             editor.apply();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     public static String getAuthToken(Context context) {
         String val = "";
         try {
@@ -36,12 +38,13 @@ public class SharedPreferencesUtil {
         try {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
             SharedPreferences.Editor editor = preferences.edit();
-            editor.putString("user_id",id);
+            editor.putString("user_id", id);
             editor.commit();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     public static String getUserId(Context context) {
         String val = "";
         try {
@@ -55,16 +58,18 @@ public class SharedPreferencesUtil {
         }
         return "";
     }
+
     public static void setPassword(Context context, String password) {
         try {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
             SharedPreferences.Editor editor = preferences.edit();
-            editor.putString("password",password);
+            editor.putString("password", password);
             editor.apply();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     public static String getPassword(Context context) {
         String val = "";
         try {
@@ -82,16 +87,17 @@ public class SharedPreferencesUtil {
     public static boolean clearPrefernce(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = preferences.edit();
-       boolean res = editor.clear().commit();
+        boolean res = editor.clear().commit();
 
 
         return res;
     }
-    public static boolean clearCartItems(Context context) {
+
+    public static boolean clearCartItems(Context context, MainListner mainListner) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = preferences.edit();
-        boolean res =   editor.remove("CartItems").commit();; // will delete key key_name4
-
+        boolean res = editor.remove("CartItems").commit();
+        mainListner.refreshCartCount(context);
         return res;
     }
 
@@ -99,12 +105,13 @@ public class SharedPreferencesUtil {
         try {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
             SharedPreferences.Editor editor = preferences.edit();
-            editor.putString("CartItems",jsonCartItem);
+            editor.putString("CartItems", jsonCartItem);
             editor.apply();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     public static String getCartItems(Context context) {
         String val = "";
         try {

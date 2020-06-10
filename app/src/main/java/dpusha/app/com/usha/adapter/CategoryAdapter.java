@@ -1,12 +1,14 @@
 package dpusha.app.com.usha.adapter;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
@@ -14,12 +16,10 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import dpusha.app.com.usha.R;
-import dpusha.app.com.usha.listeners.CartItemChangedListener;
-import dpusha.app.com.usha.model.CartItem;
-import dpusha.app.com.usha.model.Item;
+import dpusha.app.com.usha.fragment.book_order.by_category.Division;
+import dpusha.app.com.usha.listeners.MainListner;
 import dpusha.app.com.usha.model.ProductCategory;
-import dpusha.app.com.usha.orders_home.util.utility;
-import dpusha.app.com.usha.shared_preference.SharedPreferencesUtil;
+import dpusha.app.com.usha.orders_home.util.Constants;
 
 
 /**
@@ -30,15 +30,15 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
     private Context context;
 
     List<ProductCategory> productCategoryList;
-
+    MainListner listenerMainActivity;
 
 
     Integer Icon[]={R.drawable.fan,R.drawable.fan2,R.drawable.fan3,R.drawable.fan4};
 
-    public CategoryAdapter(Context context, List<ProductCategory> productCategoryList) {
+    public CategoryAdapter(Context context, List<ProductCategory> productCategoryList,MainListner listenerMainActivity) {
         this.context = context;
         this.productCategoryList = productCategoryList;
-
+        this.listenerMainActivity = listenerMainActivity;
 
     }
 
@@ -54,12 +54,17 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
     public void onBindViewHolder(MyViewHolder holder, final int position) {
 
         holder.txtvw_categoryName.setText(String.valueOf(productCategoryList.get(position).getCatName()));
-          if(position<Icon.length){
+         /* if(position<Icon.length){
               holder.imgvw_category.setImageResource(Icon[position]);
           }else {
               holder.imgvw_category.setImageResource(Icon[0]);
-          }
-         //  Picasso.load(productCategoryList.get(position).getImageName()).into( holder.imgvw_category);
+          }*/
+        Picasso.with(context)
+                .load(Constants.CATEGORY_IMAGE_URL_PREFIX +productCategoryList.get(position).getCatName()+".png")
+                .fit()
+                .placeholder(R.drawable.thumb_no_mage)
+                .error(R.drawable.thumb_no_mage)
+                .into(holder.imgvw_category);
     }
 
     @Override
@@ -82,6 +87,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Bundle b=new Bundle();
+                    b.putString("CategoryCode",productCategoryList.get(getAdapterPosition()).getCatCode());
+
+                    Fragment fragment=new Division();
+                    fragment.setArguments(b);
+                    listenerMainActivity.addFragment(fragment, "Division", true);
 
 
                 }

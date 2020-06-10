@@ -8,17 +8,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.gson.Gson;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import dpusha.app.com.usha.listeners.MainListner;
 import dpusha.app.com.usha.model.AuthToken;
+import dpusha.app.com.usha.model.Cart;
 import dpusha.app.com.usha.model.CartItem;
 import dpusha.app.com.usha.model.Item;
 import dpusha.app.com.usha.model.ProductDescription;
 import dpusha.app.com.usha.model.ProductSKU;
+import dpusha.app.com.usha.model.Template;
 import dpusha.app.com.usha.model.draft.GetDraft;
 import dpusha.app.com.usha.shared_preference.SharedPreferencesUtil;
 
@@ -71,14 +75,14 @@ public class utility {
 
     // get date range between data
 
-    public static boolean getFronDate_toDate_data(String fromDate, String toDate,String actualDate, String format) {
+    public static boolean getFronDate_toDate_data(String fromDate, String toDate, String actualDate, String format) {
 
         boolean isDate = false;
         try {
             SimpleDateFormat sdf = new SimpleDateFormat(format);
             Date _fromDate = sdf.parse(fromDate);
             Date _toDate = sdf.parse(toDate);
-            Date _actualDate=sdf.parse(actualDate);
+            Date _actualDate = sdf.parse(actualDate);
 
 
             if (_actualDate.after(_fromDate) && _actualDate.before(_toDate)) {
@@ -92,34 +96,45 @@ public class utility {
         return isDate;
     }
 
-    public static String convertCartToJSONString(CartItem cartItem){
-        String json="";
+    public static String convertCartToJSONString(CartItem cartItem) {
+        String json = "";
         try {
             ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
             json = ow.writeValueAsString(cartItem);
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
         return json;
     }
 
 
-
-    public static CartItem convertJSONStringToCartObject(String jsonCart){
-        CartItem cartItem=null;
+    public static CartItem convertJSONStringToCartObject(String jsonCart) {
+        CartItem cartItem = null;
         try {
-          //   cartItem = new Gson().fromJson(jsonCart, CartItem.class);
+            //   cartItem = new Gson().fromJson(jsonCart, CartItem.class);
 
             ObjectMapper mapper = new ObjectMapper();
             cartItem = mapper.readValue(jsonCart, CartItem.class);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.getMessage();
         }
         return cartItem;
     }
 
-    public static String sampeResponseGetPrice(){
+
+    public static int getCartItemCount(Context context) {
+        String strCartItem = SharedPreferencesUtil.getCartItems(context);
+        CartItem cartObject = utility.convertJSONStringToCartObject(strCartItem);
+        if (cartObject == null || cartObject.getItems() == null || cartObject.getItems().size() == 0) {
+            return 0;
+        } else return cartObject.getItems().size();
+
+
+    }
+
+
+    public static String sampeResponseGetPrice() {
         return "{\n" +
                 "    \"IsSuccess\": true,\n" +
                 "    \"Result\": [\n" +
@@ -163,35 +178,37 @@ public class utility {
                 "    \"Message\": \"Success\"\n" +
                 "}\n";
     }
-    public static  String getCurrentTimestamp(){
-       return String.valueOf(System.currentTimeMillis());
+
+    public static String getCurrentTimestamp() {
+        return String.valueOf(System.currentTimeMillis());
     }
-   public static void showToast(Context context,String msg){
-       Toast.makeText(context,msg,Toast.LENGTH_SHORT).show();
-   }
 
-   public static CartItem getCartFromPreference(Context context){
-       String strCartItem = SharedPreferencesUtil.getCartItems(context);
-       Log.e("Log_Cart",strCartItem);
-        if(strCartItem.equals(""))
-            return null;
-       CartItem cartItem= utility.convertJSONStringToCartObject(strCartItem);
-       if(cartItem==null) return null;
-       if(cartItem.getItems()==null) return null;
-       if (cartItem.getItems().size()<1) return null;
-       return cartItem;
-   }
+    public static void showToast(Context context, String msg) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+    }
 
-   public static boolean isCartEmpty(Context context){
-       boolean empty=false;
+    public static CartItem getCartFromPreference(Context context) {
         String strCartItem = SharedPreferencesUtil.getCartItems(context);
-        if(strCartItem.equals("")) return true;
-       CartItem cartObject = utility.convertJSONStringToCartObject(strCartItem);
-       if (cartObject == null && cartObject.getItems()!=null && cartObject.getItems().size()>0) {
-           empty=true;
-       }
-       return empty;
-   }
+        Log.e("Log_Cart", strCartItem);
+        if (strCartItem.equals(""))
+            return null;
+        CartItem cartItem = utility.convertJSONStringToCartObject(strCartItem);
+        if (cartItem == null) return null;
+        if (cartItem.getItems() == null) return null;
+        if (cartItem.getItems().size() < 1) return null;
+        return cartItem;
+    }
+
+    public static boolean isCartEmpty(Context context) {
+        boolean empty = false;
+        String strCartItem = SharedPreferencesUtil.getCartItems(context);
+        if (strCartItem.equals("")) return true;
+        CartItem cartObject = utility.convertJSONStringToCartObject(strCartItem);
+        if (cartObject == null && cartObject.getItems() != null && cartObject.getItems().size() > 0) {
+            empty = true;
+        }
+        return empty;
+    }
 
 
     //start
@@ -203,7 +220,6 @@ public class utility {
             SimpleDateFormat sdf = new SimpleDateFormat(format);
             Date _fromDate = sdf.parse(fromDate);
             Date _toDate = sdf.parse(toDate);
-
 
 
             if (_toDate.after(_fromDate) || _toDate.equals(_fromDate)) {
@@ -218,9 +234,9 @@ public class utility {
     }
 
     //end
-    public static ProductDescription convertSKU_To_Description(ProductSKU productSKU){
+    public static ProductDescription convertSKU_To_Description(ProductSKU productSKU) {
 
-       return  new ProductDescription(productSKU.getOrderId(),
+        return new ProductDescription(productSKU.getOrderId(),
                 productSKU.getsKU(),
                 productSKU.getDescription(),
                 productSKU.getuOM(),
@@ -252,40 +268,178 @@ public class utility {
                 productSKU.getResultCode());
     }
 
-    public static void saveDraftToPreference(GetDraft draft,Context context) {
+    public static ProductDescription convertCart_To_Description(Cart items) {
+        ProductDescription item = new ProductDescription();
+
+        item.setsKU(items.getSKU());
+        item.setDescription(items.getDescription());
+        item.setImageName(items.getImageName());
+        item.setQuantity(items.getQuantity());
+        item.setActive(items.getIsActive());
+        return item;
+    }
+
+    public static void addItemToCartPreference(ProductDescription item, Context context, MainListner mainListner) {
+        String strCartItem = SharedPreferencesUtil.getCartItems(context);
+        CartItem cartObject = utility.convertJSONStringToCartObject(strCartItem);
+        if (cartObject == null) {
+            cartObject = new CartItem();
+        }
+        cartObject.setOrderId(utility.getCurrentTimestamp());
+        cartObject.setOrderStatus(null);
+        cartObject.setShipToPartyId(null);
+        // cartObject.setId(SharedPreferencesUtil.getUserId(getActivity()));
+
+        String imageName = "";
+        if (item.getImageName() == null || item.getImageName().equals("") || item.getImageName().equals("null")) {
+            imageName = "NoImage.png";
+        } else {
+            imageName = String.valueOf(item.getImageName());
+        }
+
+        Item item1 = new Item(item.getsKU(),
+                item.getDescription(), item.getuOM(), item.getUnitPrice(), item.getDiscount(),
+                item.getTaxPercent(), true, item.getQuantity(),
+                item.getQuantity(),
+                imageName, null, null,
+                null);
+        List<Item> list = cartObject.getItems();
+        if (list == null || list.isEmpty()) {
+            list = new ArrayList<>();
+            list.add(item1);
+
+        } else {
+
+            // check item already in cart ?
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).getsKU().equals(item.getsKU())) {  // item exist inn cart already
+
+                    list.set(i, item1);
+                    break;
+                   /*int quantityInCart= list.get(i).getQuantity();
+                    int newQuantity= item.getQuantity();
+                    if(newQuantity>quantityInCart){
+                        list.set(i,item1);
+                    }else {
+                        item1.setQuantity(quantityInCart+newQuantity);
+                        list.set(i,item1);
+                    }*/
+
+                } else if (i == list.size() - 1) {   //  item does not exist in cart
+                    list.add(item1);
+                }
+            }
+        }
+
+
+        cartObject.setItems(list);
+        String newCartJson = utility.convertCartToJSONString(cartObject);
+        // SharedPreferencesUtil.setCartItems(context, newCartJson);
+        utility.setCartItems(context, newCartJson, mainListner);
+
+
+    }
+
+    public static void setCartItems(Context context, String newCartJson, MainListner mainListner) {
+        SharedPreferencesUtil.setCartItems(context, newCartJson);
+        mainListner.refreshCartCount(context);
+    }
+
+    public static void saveDraftToCartPreference(GetDraft draft, Context context, MainListner mainListner) {
 
         if (draft != null && draft.getItems() != null && draft.getItems().size() > 0) {
 
 
-            List<dpusha.app.com.usha.model.draft.Item> draftItemsFromAPI=draft.getItems();
-            List<Item> items=new ArrayList<>();
-            for(dpusha.app.com.usha.model.draft.Item item:draftItemsFromAPI){
-                items.add(new Item(item.getsKU(),item.getDescription(),item.getuOM(),
-                        item.getUnitPrice(),item.getDiscount(),item.getTaxPercent(),
-                        item.getAvailableInStock(),item.getQuantity(),item.getApprovedQuantity(),item.getImageName(),
+            List<dpusha.app.com.usha.model.draft.Item> draftItemsFromAPI = draft.getItems();
+            List<Item> items = new ArrayList<>();
+            for (dpusha.app.com.usha.model.draft.Item item : draftItemsFromAPI) {
+                items.add(new Item(item.getsKU(), item.getDescription(), item.getuOM(),
+                        item.getUnitPrice(), item.getDiscount(), item.getTaxPercent(),
+                        item.getAvailableInStock(), item.getQuantity(), item.getApprovedQuantity(), item.getImageName(),
                         item.getDivCode(),
-                       null,null));
+                        null, null));
             }
 
 
-            CartItem cartItem=new CartItem(draft.getOrderId(),draft.getTemplateName()
-                    ,draft.getReferenceNo(), draft.getDescription(),null,
-                    draft.getRequestDeliveryDate(),items,draft.getDivCode(),
-                    draft.getTotalNetPrice(),draft.getTotalDiscounts(),draft.getTaxableValue(),draft.getTotalTax(),
-                    draft.getTotalGrossPrice(),draft.getSchId(),null);
+            CartItem cartItem = new CartItem(draft.getOrderId(), draft.getTemplateName()
+                    , draft.getReferenceNo(), draft.getDescription(), null,
+                    draft.getRequestDeliveryDate(), items, draft.getDivCode(),
+                    draft.getTotalNetPrice(), draft.getTotalDiscounts(), draft.getTaxableValue(), draft.getTotalTax(),
+                    draft.getTotalGrossPrice(), draft.getSchId(), null);
 
 
             cartItem.setOrderId(utility.getCurrentTimestamp());
             cartItem.setOrderStatus("Created");
 
             String newCartJson = utility.convertCartToJSONString(cartItem);
-            SharedPreferencesUtil.setCartItems(context, newCartJson);
+            utility.setCartItems(context, newCartJson, mainListner);
 
 
         }
 
 
+    }
 
+    public static void saveTemplateToCartPreference(Template template, Context context, MainListner mainListner) {
+
+        if (template != null && template.getItems() != null && template.getItems().size() > 0) {
+
+            List<dpusha.app.com.usha.model.draft.Item> draftItemsFromAPI = template.getItems();
+            List<Item> items = new ArrayList<>();
+            for (dpusha.app.com.usha.model.draft.Item item : draftItemsFromAPI) {
+                items.add(new Item(item.getsKU(), item.getDescription(), item.getuOM(),
+                        item.getUnitPrice(), item.getDiscount(), item.getTaxPercent(),
+                        item.getAvailableInStock(), item.getQuantity(), item.getApprovedQuantity(), item.getImageName(),
+                        item.getDivCode(),
+                        null, null));
+            }
+
+
+            CartItem cartItem = new CartItem(template.getOrderId(), template.getTemplateName()
+                    , template.getReferenceNo(), template.getDescription(), null,
+                    template.getRequestDeliveryDate(), items, template.getDivCode(),
+                    template.getTotalNetPrice(), template.getTotalDiscounts(), template.getTaxableValue(), template.getTotalTax(),
+                    template.getTotalGrossPrice(), template.getSchId(), null);
+
+
+            cartItem.setOrderId(utility.getCurrentTimestamp());
+            cartItem.setOrderStatus("Created");
+
+            String newCartJson = utility.convertCartToJSONString(cartItem);
+
+            utility.setCartItems(context, newCartJson, mainListner);
+
+
+        }
+
+
+    }
+
+    public static String chageDateFormat(String inputDateFormat, String dateStr, String outputDateFormat) {
+        String formattedDate = "";
+        try {
+            DateFormat fromFormat = new SimpleDateFormat(inputDateFormat);
+            fromFormat.setLenient(false);
+            DateFormat toFormat = new SimpleDateFormat(outputDateFormat);
+            toFormat.setLenient(false);
+            Date date = fromFormat.parse(dateStr);
+            formattedDate = toFormat.format(date);
+        } catch (ParseException e) {
+            e.getMessage();
+        }
+        return formattedDate;
+    }
+
+    public static String formatMonth(String month) {
+        String mnth = "";
+        try {
+            SimpleDateFormat monthParse = new SimpleDateFormat("MM");
+            SimpleDateFormat monthDisplay = new SimpleDateFormat("MMMM");
+            mnth = monthDisplay.format(monthParse.parse(month));
+        } catch (ParseException e) {
+            e.getMessage();
+        }
+        return mnth;
     }
 
 }

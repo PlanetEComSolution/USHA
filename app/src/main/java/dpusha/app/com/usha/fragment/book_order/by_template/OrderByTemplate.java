@@ -117,9 +117,7 @@ public class OrderByTemplate extends Fragment implements RequestListener, BookOr
         recycler_template.setItemAnimator(new DefaultItemAnimator());
         RecyclerViewMargin decoration = new RecyclerViewMargin(20, 1);
         recycler_template.addItemDecoration(decoration);
-        hitAPIGetTemplate();
 
-        setViewListener();
         return view;
     }
 
@@ -131,6 +129,8 @@ public class OrderByTemplate extends Fragment implements RequestListener, BookOr
             activity = getActivity();
             listenerMainActivity = (MainListner) activity;
         }
+        hitAPIGetTemplate();
+        setViewListener();
     }
 
 

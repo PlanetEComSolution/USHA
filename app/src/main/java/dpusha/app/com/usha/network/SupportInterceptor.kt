@@ -24,7 +24,8 @@ class SupportInterceptor: Interceptor, Authenticator {
         val initialResponse = chain.proceed(authenticationRequest)
 
         Log.e("Log_originalRequest",originalRequest.toString());
-        Log.e("Log_initialResponse",initialResponse.toString());
+        Log.e("Log_ResponseCode",initialResponse.toString());
+     //   Log.e("Log_initialResponse",initialResponse.body.toString());
         when {
             //initialResponse.code() == 401 -> {
              initialResponse.code == 401 -> {

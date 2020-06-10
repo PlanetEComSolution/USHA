@@ -151,7 +151,7 @@
                 android:layout_width="100dp"
              android:gravity="right"
                 android:layout_height="wrap_content"
-                android:text="Sign In"
+                android:text=""
                 />
         </LinearLayout>
         <LinearLayout
@@ -175,7 +175,7 @@
                 android:layout_width="100dp"
                 android:gravity="right"
                 android:layout_height="wrap_content"
-                android:text="Sign In"
+                android:text=""
                 />
         </LinearLayout>
         <LinearLayout
@@ -199,7 +199,7 @@
             android:layout_width="100dp"
             android:gravity="right"
             android:layout_height="wrap_content"
-            android:text="Sign In"
+            android:text=""
             />
     </LinearLayout>
         <LinearLayout
@@ -223,7 +223,7 @@
                 android:layout_width="100dp"
                 android:gravity="right"
                 android:layout_height="wrap_content"
-                android:text="Sign In"
+                android:text=""
                 />
         </LinearLayout>
         <View
@@ -254,7 +254,7 @@
                 android:layout_width="100dp"
                 android:gravity="right"
                 android:layout_height="wrap_content"
-                android:text="Sign In"
+                android:text=""
                 android:textStyle="bold"
                 />
         </LinearLayout>

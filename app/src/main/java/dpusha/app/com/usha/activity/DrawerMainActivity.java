@@ -1,6 +1,7 @@
 package dpusha.app.com.usha.activity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,9 +37,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dpusha.app.com.usha.Login;
+import dpusha.app.com.usha.fragment.book_order.by_cart.OrderByCart;
 import dpusha.app.com.usha.fragment.book_order.by_category.OrderByItemCategory;
 import dpusha.app.com.usha.fragment.book_order.by_itemcode.OrderByItemCode;
 import dpusha.app.com.usha.fragment.book_order.by_template.OrderByTemplate;
+import dpusha.app.com.usha.fragment.cart.CartFragment;
 import dpusha.app.com.usha.fragment.orders.orderListFragment;
 import dpusha.app.com.usha.model.AuthToken;
 import dpusha.app.com.usha.model.DrawerItem;
@@ -51,6 +55,7 @@ import dpusha.app.com.usha.network.APIError;
 import dpusha.app.com.usha.network.RequestListener;
 import dpusha.app.com.usha.network.RetrofitManager;
 import dpusha.app.com.usha.orders_home.util.Constants;
+import dpusha.app.com.usha.orders_home.util.utility;
 import dpusha.app.com.usha.shared_preference.SharedPreferencesUtil;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
@@ -78,6 +83,13 @@ public class DrawerMainActivity extends AppCompatActivity
     @BindView(R.id.txtvw_user_mail)
     TextView txtvw_user_mail;
 
+    @BindView(R.id.imgvw_cart)
+    ImageView imgvw_cart;
+
+
+    @BindView(R.id.button_cartCount)
+    Button button_cartCount;
+
   /*  @BindView(R.id.ll_logout)
     LinearLayout ll_logout;*/
 
@@ -98,12 +110,19 @@ public class DrawerMainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_drawer);
         ButterKnife.bind(this);
+
         hitAPIAccessToken();
         drawerActivityListener();
         initBottomViewAndLoadFragments();
         initLeftDrawerMenu();
+        refreshCartCount(DrawerMainActivity.this);
     }
 
+    @Override
+    public void refreshCartCount(Context context) {
+        int count=utility.getCartItemCount(context);
+        button_cartCount.setText(String.valueOf(count));
+    }
 
     @Override
     public void addFragment(Fragment fragment, String tag, boolean isReplace) {
@@ -185,14 +204,20 @@ public class DrawerMainActivity extends AppCompatActivity
 
     }
 
-    @OnClick({R.id.menuLeft,R.id.ll_logout})
+    @OnClick({R.id.menuLeft,R.id.ll_logout,R.id.imgvw_cart})
     public void onClick(@NonNull View view) {
         switch (view.getId()) {
             case R.id.menuLeft:
                 openLeftDrawer();
                 break;
             case R.id.ll_logout:
+                closeLeftDrawer();
                 logout();
+
+                break;
+
+            case R.id.imgvw_cart:
+                addFragment(new CartFragment(), "CartFragment", true);
                 break;
         }
     }
@@ -257,7 +282,7 @@ public class DrawerMainActivity extends AppCompatActivity
 
                 break;
             case 2:
-
+                addFragment(new OrderByCart(), "OrderByCart", true);
                 break;
             case 3:
                 addFragment(new OrderByTemplate(), "OrderByTemplate", true);

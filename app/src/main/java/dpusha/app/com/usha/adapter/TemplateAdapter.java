@@ -13,8 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import dpusha.app.com.usha.R;
+import dpusha.app.com.usha.listeners.BookOrderByTemplateListener;
 import dpusha.app.com.usha.model.ProductCategory;
 import dpusha.app.com.usha.model.Template;
+import dpusha.app.com.usha.orders_home.util.utility;
 
 
 /**
@@ -25,13 +27,13 @@ public class TemplateAdapter extends RecyclerView.Adapter<TemplateAdapter.MyView
     private Context context;
 
     List<Template> templateList;
+BookOrderByTemplateListener bookOrderByTemplateListener;
 
-
-    public TemplateAdapter(Context context, List<Template> templateList) {
+    public TemplateAdapter(Context context, List<Template> templateList, BookOrderByTemplateListener bookOrderByTemplateListener) {
         this.context = context;
         this.templateList = templateList;
 
-
+        this.bookOrderByTemplateListener = bookOrderByTemplateListener;
     }
 
     @Override
@@ -46,7 +48,15 @@ public class TemplateAdapter extends RecyclerView.Adapter<TemplateAdapter.MyView
     public void onBindViewHolder(MyViewHolder holder, final int position) {
 
         holder.txtvw_templateName.setText(String.valueOf(templateList.get(position).getTemplateName()));
-        holder.txtvw_templateDate.setText(String.valueOf(templateList.get(position).getCreatedDate()));
+
+        String date=templateList.get(position).getCreatedDate();
+        if(date.contains("T")){
+            date=date.substring(0,date.indexOf("T"));
+            date=  utility.chageDateFormat("yyyy-MM-dd",date,"dd-MM-yyyy");
+        }
+
+
+        holder.txtvw_templateDate.setText(date);
         //  Picasso.load(templateList.get(position).getImageName()).into( holder.imgvw_category);
     }
 
@@ -74,14 +84,14 @@ public class TemplateAdapter extends RecyclerView.Adapter<TemplateAdapter.MyView
                 @Override
                 public void onClick(View v) {
 
-
+                    bookOrderByTemplateListener.onDeleteTemplateClick(String.valueOf(templateList.get(getAdapterPosition()).getId()));
                 }
             });
             button_book_order.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-
+                    bookOrderByTemplateListener.onBookOrderClick(templateList.get(getAdapterPosition()).getOrderId());
                 }
             });
 
