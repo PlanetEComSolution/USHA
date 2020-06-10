@@ -1,4 +1,4 @@
-package dpusha.app.com.usha.adapter;
+package dpusha.app.com.usha.adapter.recycler_decorator;
 
 import android.content.Context;
 import android.content.res.Resources;

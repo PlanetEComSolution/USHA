@@ -1,4 +1,5 @@
 package dpusha.app.com.usha.network;
+import okhttp3.OkHttpClient;
 
 import android.accounts.NetworkErrorException;
 import android.content.Context;
@@ -11,7 +12,7 @@ import org.json.JSONObject;
 import java.net.SocketTimeoutException;
 import java.util.concurrent.TimeUnit;
 
-import dpusha.app.com.usha.BuildConfig;
+//import dpusha.app.com.usha.BuildConfig;
 import dpusha.app.com.usha.R;
 import dpusha.app.com.usha.activity.USHAApplication;
 import dpusha.app.com.usha.model.CartItem;
@@ -28,7 +29,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 //import com.bumptech.glide.request.RequestListener;
-//import com.android.volley.BuildConfig;
+import com.android.volley.BuildConfig;
 
 
 public class RetrofitManager implements OnRetryCallback {
@@ -61,9 +62,8 @@ public class RetrofitManager implements OnRetryCallback {
         httpClient.addInterceptor(new ConnectivityInterceptor(USHAApplication.get()));
         httpClient.addInterceptor(new SupportInterceptor());
 
+        if (BuildConfig.DEBUG) {
 
-        if(BuildConfig.DEBUG)
-        {
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);
             httpClient.addInterceptor(logging);
@@ -110,7 +110,7 @@ public class RetrofitManager implements OnRetryCallback {
         }*/
 
         if (showProgress) {
-          Dialogs.showProgressDialog(activity, "Please wait..");
+            Dialogs.showProgressDialog(activity, "Please wait..");
         }
 
         mCallback = new Callback<ResponseBody>() {
@@ -120,7 +120,7 @@ public class RetrofitManager implements OnRetryCallback {
                 if (response.isSuccessful()) {
                     APIError error = null;
                     try {
-                       // error = ErrorUtils.parseError(response, retrofitManager);
+                        // error = ErrorUtils.parseError(response, retrofitManager);
 
                         if (error == null) {
                             mRequestListener.onSuccess(response, mApiType);
@@ -141,9 +141,9 @@ public class RetrofitManager implements OnRetryCallback {
                         JSONObject obj = new JSONObject(strResponse);
                         String s = obj.getString("details");
                         if (s.equalsIgnoreCase("Expired token") || s.equalsIgnoreCase("Signature verification failed")) {
-                           // Intent in = new Intent(activity, SplashActivity.class);
-                          //  activity.startActivity(in);
-                          //  activity.finish();
+                            // Intent in = new Intent(activity, SplashActivity.class);
+                            //  activity.startActivity(in);
+                            //  activity.finish();
                         }
 
                     } catch (Exception e) {
@@ -152,7 +152,7 @@ public class RetrofitManager implements OnRetryCallback {
                     mRequestListener.onFailure(response, mApiType);
                 }
 
-               Dialogs.hideProgressDialog(mContext);
+                Dialogs.hideProgressDialog(mContext);
             }
 
             @Override
@@ -166,7 +166,7 @@ public class RetrofitManager implements OnRetryCallback {
                         Dialogs.showAlert(mContext, mContext.getString(R.string.ERROR_INTERNET));
 
                     } else if (t instanceof NetworkErrorException) {
-                       // Dialogs.showAlert(mContext, t.getMessage());
+                        // Dialogs.showAlert(mContext, t.getMessage());
                         Dialogs.showAlert(mContext, mContext.getString(R.string.ERROR_SOMETHING_WENT_WRONG));
                     }
                     Dialogs.hideProgressDialog(mContext);
@@ -188,7 +188,7 @@ public class RetrofitManager implements OnRetryCallback {
     @Override
     public void OnRetry(boolean isRetry) {
         if (isRetry) {
-          Dialogs.showProgressDialog(activity, "Please wait..");
+            Dialogs.showProgressDialog(activity, "Please wait..");
             call.clone().enqueue(mCallback);
         } else {
 
@@ -207,11 +207,11 @@ public class RetrofitManager implements OnRetryCallback {
             final RequestListener mRequestListener,
             final Context mContext,
             final Constants.API_TYPE mApiType,
-            final  String userId,
-            final  String password,
+            final String userId,
+            final String password,
             final boolean showProgress) {
 
-        call= retroService.getAuthorizationToken(userId,password,"password","U");
+        call = retroService.getAuthorizationToken(userId, password, "password", "U");
         performCallback(mRequestListener, mContext, mApiType, showProgress);
 
     }
@@ -225,11 +225,38 @@ public class RetrofitManager implements OnRetryCallback {
             final String password,
             final boolean showProgress) {
 
-        call = retroService.getUser(userID,password);
+        call = retroService.getUser(userID, password);
         performCallback(mRequestListener, mContext, mApiType, showProgress);
 
     }
 
+    public void getPassword(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            final String userID,
+            //test
+            //String token,
+            final boolean showProgress){
+        call = retroService.getPassword(userID);
+        //   call = retroService.getUser(SharedPreferencesUtil.getAuthToken(mContext),userID,password);
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+    }
+
+    public void changePassword(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            String oldPass,
+            String password,
+            String newPass,
+
+            String token,
+            final boolean showProgress){
+        call = retroService.changePassword(token,oldPass,password,newPass);
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+
+    }
     // get orderList
 
     public void GetOrderList(
@@ -262,8 +289,6 @@ public class RetrofitManager implements OnRetryCallback {
     }
 
 
-
-
     public void getProductCategory(
             final RequestListener mRequestListener,
             final Context mContext,
@@ -275,6 +300,7 @@ public class RetrofitManager implements OnRetryCallback {
         performCallback(mRequestListener, mContext, mApiType, showProgress);
 
     }
+
     public void getDivisionByProductCategory(
             final RequestListener mRequestListener,
             final Context mContext,
@@ -284,10 +310,11 @@ public class RetrofitManager implements OnRetryCallback {
             final String callType,
             final boolean showProgress) {
 
-        call = retroService.getDivisionByProductCategory(userID,catCode,callType);
+        call = retroService.getDivisionByProductCategory(userID, catCode, callType);
         performCallback(mRequestListener, mContext, mApiType, showProgress);
 
     }
+
     public void getSKU(
             final RequestListener mRequestListener,
             final Context mContext,
@@ -298,7 +325,7 @@ public class RetrofitManager implements OnRetryCallback {
             final String callType,
             final boolean showProgress) {
 
-        call = retroService.getSKU(userID,preFix,divCode,callType);
+        call = retroService.getSKU(userID, preFix, divCode, callType);
         performCallback(mRequestListener, mContext, mApiType, showProgress);
 
     }
@@ -313,7 +340,7 @@ public class RetrofitManager implements OnRetryCallback {
             final String callType,
             final boolean showProgress) {
 
-        call = retroService.getDescription(userID,preFix,divCode,callType);
+        call = retroService.getDescription(userID, preFix, divCode, callType);
         performCallback(mRequestListener, mContext, mApiType, showProgress);
 
     }
@@ -330,6 +357,7 @@ public class RetrofitManager implements OnRetryCallback {
         performCallback(mRequestListener, mContext, mApiType, showProgress);
 
     }
+
     public void getDraft(
             final RequestListener mRequestListener,
             final Context mContext,
@@ -387,7 +415,19 @@ public class RetrofitManager implements OnRetryCallback {
             final Constants.API_TYPE mApiType,
             final boolean showProgress) {
 
-        call = retroService.getShipToParty("LookupName","LookupValue","LookUps","ShipToParty");
+        call = retroService.getShipToParty("LookupName", "LookupValue", "LookUps", "ShipToParty");
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+
+    }
+
+    public void getTemplate(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            final boolean showProgress
+    ) {
+
+        call = retroService.getTemplate();
         performCallback(mRequestListener, mContext, mApiType, showProgress);
 
     }

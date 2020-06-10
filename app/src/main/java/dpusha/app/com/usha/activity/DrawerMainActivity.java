@@ -1,22 +1,31 @@
 package dpusha.app.com.usha.activity;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -29,28 +38,29 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dpusha.app.com.usha.Login;
-import dpusha.app.com.usha.fragment.OrderByItemCodeFragment;
-import dpusha.app.com.usha.fragment.orderListFragment;
+import dpusha.app.com.usha.fragment.book_order.by_category.OrderByItemCategory;
+import dpusha.app.com.usha.fragment.book_order.by_itemcode.OrderByItemCode;
+import dpusha.app.com.usha.fragment.book_order.by_template.OrderByTemplate;
+import dpusha.app.com.usha.fragment.orders.orderListFragment;
 import dpusha.app.com.usha.model.AuthToken;
 import dpusha.app.com.usha.model.DrawerItem;
 import dpusha.app.com.usha.R;
 import dpusha.app.com.usha.adapter.LeftMenuAdapter;
-import dpusha.app.com.usha.adapter.RecyclerViewMargin;
+import dpusha.app.com.usha.adapter.recycler_decorator.RecyclerViewMargin;
 import dpusha.app.com.usha.fragment.HomeFragment;
 import dpusha.app.com.usha.listeners.AppResumeListener;
 import dpusha.app.com.usha.listeners.MainListner;
-import dpusha.app.com.usha.model.LoginResponse;
 import dpusha.app.com.usha.network.APIError;
 import dpusha.app.com.usha.network.RequestListener;
 import dpusha.app.com.usha.network.RetrofitManager;
@@ -82,10 +92,11 @@ public class DrawerMainActivity extends AppCompatActivity
     @BindView(R.id.txtvw_user_mail)
     TextView txtvw_user_mail;
 
-  /*  @BindView(R.id.ll_logout)
-    LinearLayout ll_logout;*/
+    /*  @BindView(R.id.ll_logout)
+      LinearLayout ll_logout;*/
+    NavigationView navigationView;
 
-
+    Dialog changePassDialog;
     @BindView(R.id.profile_username)
     TextView profile_username;
 
@@ -94,18 +105,47 @@ public class DrawerMainActivity extends AppCompatActivity
 
     @BindView(R.id.profile_userimage)
     ImageView profile_userimage;
+    EditText oldPassword;
+    EditText newPassword;
+    EditText confirmPassword;
+    private String userPassword,newPass,confirmPass;
+    private String uToken;
+    ImageView icProfile;
 
     LeftMenuAdapter leftMenuAdapter;
     private RetrofitManager retrofitManager = RetrofitManager.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        changePassDialog = new Dialog(this, R.style.Theme_AppCompat_Light_Dialog);
+        changePassDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main_drawer);
+        final ActionBar actionBar = getSupportActionBar();
+        navigationView = findViewById(R.id.nav_view_live_stream);
+
+        Toolbar toolbar=findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        //actionBar.setDisplayHomeAsUpEnabled(true);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        navigationView.setNavigationItemSelectedListener(this); // You missed this line, add this to your code
+
         ButterKnife.bind(this);
         hitAPIAccessToken();
         drawerActivityListener();
         initBottomViewAndLoadFragments();
         initLeftDrawerMenu();
+        //icProfile=toolbar.findViewById(R.id.profile_username);
+        profile_userimage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(DrawerMainActivity.this,"jhvfgbdhvfd",Toast.LENGTH_LONG).show();
+                showChangePassDialog();
+            }
+        });
     }
 
 
@@ -142,17 +182,17 @@ public class DrawerMainActivity extends AppCompatActivity
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 item -> {
-                       switch (item.getItemId()) {
-                            case R.id.nav_home:
-                                addFragment(new HomeFragment(), "HomeFragment", true);
-                                break;
+                    switch (item.getItemId()) {
+                        case R.id.nav_home:
+                            addFragment(new HomeFragment(), "HomeFragment", true);
+                            break;
 
-                            case R.id.nav_search:
-                               // addFragment(new searchFragment(), "searchFragment", true);
-                                Toast.makeText(DrawerMainActivity.this,"Add your search fragment HERE:",Toast.LENGTH_SHORT).show();
-                                break;
+                        case R.id.nav_search:
+                            // addFragment(new searchFragment(), "searchFragment", true);
+                            Toast.makeText(DrawerMainActivity.this,"Add your search fragment HERE:",Toast.LENGTH_SHORT).show();
+                            break;
 
-                        }
+                    }
 
 
                     return true;
@@ -184,7 +224,7 @@ public class DrawerMainActivity extends AppCompatActivity
         }
         recycler_left_menu.addItemDecoration(decoration);
         //recycler_left_menu.addItemDecoration(new SimpleDividerItemDecoration(this));
-         leftMenuAdapter=new LeftMenuAdapter(this, drawerItemList);
+        leftMenuAdapter=new LeftMenuAdapter(this, drawerItemList);
         recycler_left_menu.setAdapter(leftMenuAdapter);
 
     }
@@ -201,7 +241,7 @@ public class DrawerMainActivity extends AppCompatActivity
         }
     }
     public void onLeftDrawerItemClick(int position) {
-       // Toast.makeText(this,"Drawer Clicked ,Postion: "+position,Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this,"Drawer Clicked ,Postion: "+position,Toast.LENGTH_SHORT).show();
         closeLeftDrawer();
         switch (position) {
             case 0:
@@ -249,28 +289,29 @@ public class DrawerMainActivity extends AppCompatActivity
     }
 
     public void onLeftDrawerBookOrderItemClick(int position) {
-       // Toast.makeText(this,"Drawer Clicked ,Postion: "+position,Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this,"Drawer Clicked ,Postion: "+position,Toast.LENGTH_SHORT).show();
         closeLeftDrawer();
         switch (position) {
             case 0:
-                addFragment(new OrderByItemCodeFragment(), "OrderByItemCodeFragment", true);
+                addFragment(new OrderByItemCode(), "OrderByItemCodeFragment", true);
                 break;
 
             case 1:
-                // addFragment(new searchFragment(), "searchFragment", true);
+                addFragment(new OrderByItemCategory(), "OrderByItemCategory", true);
+
                 break;
             case 2:
-                // addFragment(new searchFragment(), "searchFragment", true);
+
                 break;
             case 3:
-                // addFragment(new searchFragment(), "searchFragment", true);
+                addFragment(new OrderByTemplate(), "OrderByTemplate", true);
                 break;
         }
 
 
     }
     public void onLeftDrawerDownloadsItemClick(int position) {
-       // Toast.makeText(this,"Drawer Clicked ,Postion: "+position,Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this,"Drawer Clicked ,Postion: "+position,Toast.LENGTH_SHORT).show();
         closeLeftDrawer();
 
     }
@@ -288,7 +329,7 @@ public class DrawerMainActivity extends AppCompatActivity
 
     @Override
     public void onAppResume() {
-      //  hitAPIAccessTokenNews();
+        //  hitAPIAccessTokenNews();
     }
     @Override
     public void onBackPressed() {
@@ -302,13 +343,13 @@ public class DrawerMainActivity extends AppCompatActivity
                 getSupportFragmentManager().popBackStackImmediate();
             } else {
                 showExitDialog();
-               // finish();
+                // finish();
 
             }
         }
     }
     public  void showExitDialog() {
-      //  final long[] mLastClickTime = {0};
+        //  final long[] mLastClickTime = {0};
         final AlertDialog.Builder builder = new AlertDialog.Builder(DrawerMainActivity.this);
         final AlertDialog dialog = builder.create();
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -320,7 +361,7 @@ public class DrawerMainActivity extends AppCompatActivity
               /*  if (SystemClock.elapsedRealtime() - mLastClickTime[0] < 1000) {
                     return;
                 }*/
-               // mLastClickTime[0] = SystemClock.elapsedRealtime();
+                // mLastClickTime[0] = SystemClock.elapsedRealtime();
                 dialog.dismiss();
                 finish();
 
@@ -360,7 +401,7 @@ public class DrawerMainActivity extends AppCompatActivity
                /* if (!drawer.isDrawerOpen(GravityCompat.END)) {
                     showBottomNavigation(true);
                 }*/
-              //  leftMenuAdapter.onDrawerClosed();
+                //  leftMenuAdapter.onDrawerClosed();
                 initLeftDrawerMenu();
             }
 
@@ -378,8 +419,8 @@ public class DrawerMainActivity extends AppCompatActivity
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
                         SharedPreferencesUtil.clearPrefernce(DrawerMainActivity.this);
-                       startActivity(new Intent(DrawerMainActivity.this,Login.class));
-                       finish();
+                        startActivity(new Intent(DrawerMainActivity.this,Login.class));
+                        finish();
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -390,6 +431,143 @@ public class DrawerMainActivity extends AppCompatActivity
 
 
     }
+
+
+    //test
+
+    public void showChangePassDialog(){
+        changePassDialog=new Dialog(DrawerMainActivity.this);
+        changePassDialog.setContentView(R.layout.alert_change_password);
+        changePassDialog.setCanceledOnTouchOutside(false);
+        int width = (int) (DrawerMainActivity.this.getResources().getDisplayMetrics().widthPixels * 0.90);
+        int height = (int) (DrawerMainActivity.this.getResources().getDisplayMetrics().heightPixels * 0.90);
+        LayoutInflater inflater = DrawerMainActivity.this.getLayoutInflater();
+        Button btn_save = changePassDialog.findViewById(R.id.btn_save);
+        Button btn_reset = changePassDialog.findViewById(R.id.btn_reset);
+        oldPassword=changePassDialog.findViewById(R.id.edit_pass_old);
+        newPassword=changePassDialog.findViewById(R.id.edit_new_pass);
+        confirmPassword=changePassDialog.findViewById(R.id.edit_confirm_pass1);
+        changePassDialog.getWindow().setLayout(width, height);
+        btn_save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //changePassDialog.dismiss();
+
+                hitChangePasswordApi();
+
+                changePassDialog.dismiss();
+            }
+        });
+        btn_reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                oldPassword.setText("");
+                newPassword.setText("");
+                confirmPassword.setText("");
+            }
+        });
+        changePassDialog.show();
+    }
+
+    private void hitChangePasswordApi() {
+        //user_id = user_email.getText().toString();
+        userPassword = oldPassword.getText().toString();
+        newPass=newPassword.getText().toString();
+        confirmPass=confirmPassword.getText().toString();
+        if (isConnectingToInternet()) {
+            // new ForgotPassword().execute();slider
+            //ForgotPassword_REST_api();
+            uToken = SharedPreferencesUtil.getAuthToken(this);
+           /* if(newPassword.getText().toString().length()<8 &&!isValidPassword(newPassword.getText().toString())){
+                Toast.makeText(DrawerMainActivity.this," Invalid Password",Toast.LENGTH_LONG).show();
+            }else{
+                Toast.makeText(DrawerMainActivity.this, "Valid Password",Toast.LENGTH_LONG).show();
+                hitAPIChangePassword(newPass,confirmPass,userPassword);
+            }
+            if(isValidPassword(newPass)){
+                hitAPIChangePassword(newPass,confirmPass,userPassword);
+
+            }*/
+           /* if(newPassword.getText().toString().length()<8 &&!isValidPassword(newPassword.getText().toString())){
+                Toast.makeText(DrawerMainActivity.this," Invalid Password",Toast.LENGTH_LONG).show();
+
+            }
+            else{
+                Toast.makeText(DrawerMainActivity.this, "Valid Password",Toast.LENGTH_LONG).show();
+                hitAPIChangePassword(newPass,confirmPass,userPassword);
+            }*/
+            if (newPassword.getText().toString().isEmpty() || confirmPassword.getText().toString().isEmpty()) {
+                Toast.makeText(DrawerMainActivity.this, " empty Password", Toast.LENGTH_LONG).show();
+
+            }
+            if ((newPassword.getText().toString().length() < 8) || (newPassword.getText().toString().length() < 8)) {
+                Toast.makeText(DrawerMainActivity.this, " less than 8 character Password", Toast.LENGTH_LONG).show();
+            }
+            //hitAPIChangePassword(userPassword,newPass,confirmPass);
+            if (!newPassword.getText().toString().matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*+=?-]).{8,15}$") || !newPassword.getText().toString().matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[!@#$%^&*+=?-]).{8,15}$")) {
+                Toast.makeText(DrawerMainActivity.this, " provide special char", Toast.LENGTH_LONG).show();
+            } else {
+                hitAPIChangePassword(userPassword,newPass,confirmPass);
+                //hitAPIChangePassword(newPass, confirmPass, userPassword);
+                Toast.makeText(DrawerMainActivity.this, " SUCCESS", Toast.LENGTH_LONG).show();
+            }
+        }
+        if (isConnectingToInternet()) {
+            //new ForgotPassword_CRG().execute();
+            //test
+            //ChangPassword();
+
+        } else {
+            Toast.makeText(getApplicationContext(),
+                    "No Internet Connection....", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+   /* public static boolean isValidPassword(final String password) {
+        Pattern pattern;
+        Matcher matcher;
+        final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{4,}$";
+        pattern = Pattern.compile(PASSWORD_PATTERN);
+        matcher = pattern.matcher(password);
+        return matcher.matches();
+
+    }
+*/
+    public static boolean isValidPassword(String s) {
+        Pattern PASSWORD_PATTERN
+                = Pattern.compile(
+                "[a-zA-Z0-9\\!\\@\\#\\$]{8,24}");
+
+        return !TextUtils.isEmpty(s) && PASSWORD_PATTERN.matcher(s).matches();
+    }
+
+    private void hitAPIChangePassword(String userPass,String userNewPass,String userConfirmPass){
+        retrofitManager.changePassword(this,this, Constants.API_TYPE.CHANGEPASSWORD,userPass,userNewPass,userConfirmPass,uToken,true);
+
+        /*if(userNewPass.equals(userConfirmPass)){
+       retrofitManager.changePassword(this,this, Constants.API_TYPE.CHANGEPASSWORD,userPass,userNewPass,userConfirmPass,uToken,true);
+   }
+   else{
+       Toast.makeText(DrawerMainActivity.this,"password not matched",Toast.LENGTH_LONG).show();
+   }*/
+    }
+    private boolean isConnectingToInternet() {
+        ConnectivityManager connectivity = (ConnectivityManager) DrawerMainActivity.this
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity != null) {
+            NetworkInfo[] info = connectivity.getAllNetworkInfo();
+            if (info != null)
+                for (int i = 0; i < info.length; i++)
+                    if (info[i].getState() == NetworkInfo.State.CONNECTED) {
+                        return true;
+                    }
+
+        }
+        return false;
+    }
+
+
+    //
     private void hitAPIAccessToken() {
 
         retrofitManager.getAuthToken(this, this, Constants.API_TYPE.TOKEN,SharedPreferencesUtil.getUserId(this),SharedPreferencesUtil.getPassword(this) ,true);
@@ -424,4 +602,27 @@ public class DrawerMainActivity extends AppCompatActivity
     public void onApiException(APIError error, Response<ResponseBody> response, Constants.API_TYPE apiType) {
         Toast.makeText(this, apiType+" onApiException "+response.toString(),Toast.LENGTH_SHORT).show();
     }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                //onBackPressed();
+                break;
+            case R.id.profile_userimage:
+                //showChangePassDialog();
+                //Log.d(TAG, "SHARE BUTTON");
+                Toast.makeText(this, "hiiiiiiii",Toast.LENGTH_SHORT).show();
+
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
+
+    }
+
 }

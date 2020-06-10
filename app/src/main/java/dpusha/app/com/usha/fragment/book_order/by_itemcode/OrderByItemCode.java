@@ -1,4 +1,4 @@
-package dpusha.app.com.usha.fragment;
+package dpusha.app.com.usha.fragment.book_order.by_itemcode;
 
 
 import android.content.Context;
@@ -44,18 +44,17 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dpusha.app.com.usha.R;
 import dpusha.app.com.usha.adapter.CartItemsAdapter;
-import dpusha.app.com.usha.adapter.MyDividerItemDecoration;
+import dpusha.app.com.usha.adapter.recycler_decorator.MyDividerItemDecoration;
 import dpusha.app.com.usha.adapter.ProductListAdapter;
+import dpusha.app.com.usha.fragment.cart.CartFragment;
 import dpusha.app.com.usha.listeners.CartItemChangedListener;
 import dpusha.app.com.usha.listeners.MainListner;
-import dpusha.app.com.usha.model.AuthToken;
 import dpusha.app.com.usha.model.CartItem;
 import dpusha.app.com.usha.model.Item;
 import dpusha.app.com.usha.model.Material;
 import dpusha.app.com.usha.model.ProductCategory;
 import dpusha.app.com.usha.model.ProductDescription;
 import dpusha.app.com.usha.model.ProductDivision;
-import dpusha.app.com.usha.model.ProductItem;
 //import dpusha.app.com.usha.model.ProductSKU;
 import dpusha.app.com.usha.model.ProductSKU;
 import dpusha.app.com.usha.model.ShipToParty;
@@ -73,7 +72,7 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class OrderByItemCodeFragment extends Fragment implements RequestListener, CartItemChangedListener {
+public class OrderByItemCode extends Fragment implements RequestListener, CartItemChangedListener {
 
     @BindView(R.id.spinnerCategory)
     Spinner spinnerCategory;
@@ -117,12 +116,14 @@ public class OrderByItemCodeFragment extends Fragment implements RequestListener
     // CartItem cartItem = new CartItem();
     AlertDialog alertDialog;
 
-    public OrderByItemCodeFragment() {
+    boolean APICallInProgress = false;
+
+    public OrderByItemCode() {
         // Required empty public constructor
     }
 
-    public static OrderByItemCodeFragment newInstance() {
-        return new OrderByItemCodeFragment();
+    public static OrderByItemCode newInstance() {
+        return new OrderByItemCode();
 
     }
 
@@ -174,7 +175,7 @@ public class OrderByItemCodeFragment extends Fragment implements RequestListener
         setTemporaryAdapterForCategorySpinner();
         setTemporaryAdapterForDivsionSpinner();
         // initRecyclerAdapter();
-       // refreshCartRecyclerFromPreference();
+        // refreshCartRecyclerFromPreference();
 
         spinnerCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -183,6 +184,7 @@ public class OrderByItemCodeFragment extends Fragment implements RequestListener
                 setTemporaryAdapterForDivsionSpinner();
                 autoCompleteSKU.setText("");
                 autoCompleteDescription.setText("");
+
 
                 ProductCategory item = (ProductCategory) parent.getItemAtPosition(position);
                 CategoryCode = item.getCatCode();
@@ -223,46 +225,39 @@ public class OrderByItemCodeFragment extends Fragment implements RequestListener
                 if (autoCompleteSKU.isPerformingCompletion()) {
                     // An item has been selected from the list. Ignore.
                     autoCompleteSKU_ItemClicked = true;
-                    Log.e("selected", "");
-                } else if (!autoCompleteDescription_ItemClicked) {
+                    Log.e("Log_autoCompleteSKU", "isPerformingCompletion");
+                } else if (!autoCompleteDescription_ItemClicked) { //
+                    //  autoCompleteSKU_ItemClicked = false;
                     // Perform your task here... Like calling web service, Reading data from SQLite database, etc..
+                    Log.e("Log_autoCompleteSKU", "notPerformingCompletion");
                     autoCompleteDescription.setAdapter(null);
-                    String Prefix = s.toString().trim();
-                    if (!Prefix.isEmpty()) {
-                        final Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
+                   /* String Prefix = s.toString().trim();
+                    if (!Prefix.isEmpty()) {*/
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (APICallInProgress) return;
+                            String Prefix = autoCompleteSKU.getText().toString().trim();
+                            if (!Prefix.isEmpty()) {
+                                setAPICallInProgress();
                                 hitAPIGetSKU(Prefix, DivisionCode);
-                            }
-                        }, 1000);
+                            } /*else {
+                                    autoCompleteDescription.setText("");
+                                }*/
+                        }
+                    }, 1500);
 
-                    } else {
+                   /* } else {
                         autoCompleteDescription.setText("");
-                    }
+                    }*/
                 }
+                setAutoCompleteSKUClickedFalse();
 
-                autoCompleteSKU_ItemClicked = false;
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-         /*       if (!(autoCompleteSKU_ItemClicked && autoCompleteDescription_ItemClicked)) {
-                    autoCompleteDescription.setAdapter(null);
-                    String Prefix = s.toString().trim();
-                    if (!Prefix.isEmpty()) {
-                        final Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                hitAPIGetSKU(Prefix, DivisionCode);
-                            }
-                        }, 2000);
-                    } else {
-                        autoCompleteDescription.setText("");
-                    }
-                }
-                autoCompleteSKU_ItemClicked = false;*/
             }
         });
         autoCompleteDescription.addTextChangedListener(new TextWatcher() {
@@ -275,75 +270,62 @@ public class OrderByItemCodeFragment extends Fragment implements RequestListener
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (autoCompleteDescription.isPerformingCompletion()) {
                     // An item has been selected from the list. Ignore.
+                    Log.e("Log_autoCompleteDesc", "isPerformingCompletion");
                     autoCompleteDescription_ItemClicked = true;
-                    Log.e("selected", "");
-                } else if (!autoCompleteSKU_ItemClicked) {
+
+                } else if (!autoCompleteSKU_ItemClicked) {//
+                    //autoCompleteDescription_ItemClicked = false;
                     // Perform your task here... Like calling web service, Reading data from SQLite database, etc..
-
+                    Log.e("Log_autoCompleteDesc", "notPerformingCompletion");
                     autoCompleteSKU.setAdapter(null);
-                    String desc = s.toString().trim();
-                    if (!desc.isEmpty()) {
-                        final Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
+                   /* String desc = s.toString().trim();
+                    if (!desc.isEmpty()) {*/
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (APICallInProgress) return;
+                            String desc = autoCompleteDescription.getText().toString().trim();
+                            if (!desc.isEmpty()) {
+                                setAPICallInProgress();
                                 hitAPIGetDescription(desc, DivisionCode);
-                            }
-                        }, 1000);
+                            } /*else {
+                                    autoCompleteSKU.setText("");
+                                }*/
+                        }
+                    }, 1500);
 
-                    }
+                    /*} else {
+                        autoCompleteSKU.setText("");
+                }*/
                 }
-                autoCompleteDescription_ItemClicked = false;
+                setAutoCompleteDescriptionClickedFalse();
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                /*if (!(autoCompleteSKU_ItemClicked && autoCompleteDescription_ItemClicked)) {
-                    String desc = s.toString().trim();
-                    if (!desc.isEmpty()) {
-                        final Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                hitAPIGetDescription(desc, DivisionCode);
-                            }
-                        }, 2000);
 
-                    }
-                }
-                autoCompleteDescription_ItemClicked = false;*/
             }
         });
 
         autoCompleteSKU.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
-            public void onItemClick(AdapterView<?> parent, View arg1, int pos,
-                                    long id) {
-                // autoCompleteSKU_ItemClicked = true;
+            public void onItemClick(AdapterView<?> parent, View arg1, int pos, long id) {
+                Log.e("Log_autoCompleteSKU", "onItemClick");
                 ProductSKU productSKU = (ProductSKU) parent.getItemAtPosition(pos);
                 item = utility.convertSKU_To_Description(productSKU);
-                //  autoCompleteSKU.setText(item.getsKU());
                 autoCompleteDescription.setText(item.getDescription());
             }
         });
         autoCompleteDescription.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
             @Override
             public void onItemClick(AdapterView<?> parent, View arg1, int pos,
                                     long id) {
-                // autoCompleteDescription_ItemClicked = true;
+                Log.e("Log_autoCompleteDesc", "onItemClick");
                 item = (ProductDescription) parent.getItemAtPosition(pos);
-                //  autoCompleteDescription.setText(item.getDescription());
                 autoCompleteSKU.setText(item.getsKU());
 
-
-               /* UnitPrice = item.getUnitPrice();
-                Discount = item.getDiscount();
-                TaxPercent = item.getTaxPercent();
-                AvailableInStock = item.getAvailableInStock();
-                DivCode = item.getDivCode().toString();
-                Id = item.getId();*/
             }
         });
 
@@ -415,7 +397,6 @@ public class OrderByItemCodeFragment extends Fragment implements RequestListener
         switch (view.getId()) {
             case R.id.button_addItem:
                 if (validation()) {
-                    // addItemToRecyclerView();
                     addItemToSharedpref();
                 }
 
@@ -423,13 +404,6 @@ public class OrderByItemCodeFragment extends Fragment implements RequestListener
             case R.id.button_proceed:
                 CartItem cartObject3 = utility.getCartFromPreference(getActivity());
                 if (cartObject3 != null) {
-                  /*  List<String> sku = new ArrayList<>();
-                    List<Item> items = cartObject3.getItems();
-                    for (int i = 0; i < items.size(); i++) {
-                        sku.add(items.get(i).getSKU());
-                    }
-                    Material material = new Material(SharedPreferencesUtil.getUserId(, sku));
-                    hitAPIGetPrice(material);*/
                     listenerMainActivity.addFragment(new CartFragment(), "CartFragment", true);
                 } else {
                     utility.showToast(getActivity(), "Cart is empty!");
@@ -447,7 +421,7 @@ public class OrderByItemCodeFragment extends Fragment implements RequestListener
 
                 CartItem cartObject = utility.getCartFromPreference(getActivity());
                 if (cartObject != null) {
-                    hitAPISaveDraft(utility.getCartFromPreference(getActivity()));
+                    hitAPISaveDraft(cartObject);
                 } else {
                     utility.showToast(getActivity(), "Cart is empty!");
                 }
@@ -546,9 +520,9 @@ public class OrderByItemCodeFragment extends Fragment implements RequestListener
                 Toast.makeText(getActivity(), strResponse, Toast.LENGTH_SHORT).show();
             } else if (apiType == Constants.API_TYPE.GET_DRAFT) {
                 GetDraft draft = new Gson().fromJson(strResponse, GetDraft.class);
-                utility.saveDraftToPreference(draft,getActivity());
+                utility.saveDraftToPreference(draft, getActivity());
                 refreshCartRecyclerFromPreference();
-               // Toast.makeText(getActivity(), strResponse, Toast.LENGTH_SHORT).show();
+                // Toast.makeText(getActivity(), strResponse, Toast.LENGTH_SHORT).show();
             }
 
         } catch (IOException e) {
@@ -583,14 +557,32 @@ public class OrderByItemCodeFragment extends Fragment implements RequestListener
         String sku = autoCompleteSKU.getText().toString().trim();
         String desc = autoCompleteDescription.getText().toString().trim();
         boolean isCorrectSKU = false;
-        for (ProductSKU productSKU : productSKUList) {
-            if (productSKU.getsKU().equals(sku)) ;
-            isCorrectSKU = true;
-        }
         boolean isCorrectDescription = false;
+        for (ProductSKU productSKU : productSKUList) {
+            if (productSKU.getsKU().equals(sku)) {
+                isCorrectSKU = true;
+                break;
+            }
+        }
+
         for (ProductDescription productDescription : productDescriptionList) {
-            if (productDescription.getDescription().equals(desc)) ;
-            isCorrectDescription = true;
+            if (productDescription.getDescription().equals(desc)) {
+                isCorrectDescription = true;
+                break;
+            }
+        }
+        for (ProductSKU productSKU : productSKUList) {
+            if (productSKU.getDescription().equals(desc)) {
+                isCorrectDescription = true;
+                break;
+            }
+        }
+
+        for (ProductDescription productDescription : productDescriptionList) {
+            if (productDescription.getsKU().equals(sku)) {
+                isCorrectSKU = true;
+                break;
+            }
         }
         if (productCategory.getCatCode().equals("0")) {
             Toast.makeText(getActivity(), "Please select Product Category", Toast.LENGTH_SHORT).show();
@@ -608,17 +600,7 @@ public class OrderByItemCodeFragment extends Fragment implements RequestListener
         return validate;
     }
 
-   /* void addItemToRecyclerView() {
-        productItemList.add(new ProductItem(String.valueOf(item.getImageName()), item.getsKU(),
-                item.getDescription(), "1", item.getUnitPrice(), item.getDiscount(),
-                item.getTaxPercent(),
-                item.getAvailableInStock(), item.getDivCode().toString(), item.getId()));
-        productListAdapter.notifyDataSetChanged();
-        autoCompleteSKU.setText("");
-        autoCompleteDescription.setText("");
 
-
-    }*/
 
     void addItemToSharedpref() {
         String strCartItem = SharedPreferencesUtil.getCartItems(getActivity());
@@ -627,7 +609,8 @@ public class OrderByItemCodeFragment extends Fragment implements RequestListener
             cartObject = new CartItem();
         }
         cartObject.setOrderId(utility.getCurrentTimestamp());
-        cartObject.setOrderStatus("Created");
+        cartObject.setOrderStatus(null);
+        cartObject.setShipToPartyId(null);
         // cartObject.setId(SharedPreferencesUtil.getUserId(getActivity()));
 
         List<Item> list = cartObject.getItems();
@@ -643,7 +626,8 @@ public class OrderByItemCodeFragment extends Fragment implements RequestListener
                 item.getDescription(), item.getuOM(), item.getUnitPrice(), item.getDiscount(),
                 item.getTaxPercent(), item.getAvailableInStock(), 1,
                 item.getApprovedQuantity(),
-                imageName, item.getDivCode(), String.valueOf(item.getStatus()), String.valueOf(item.getCreatedBy())));
+                imageName, item.getDivCode(), null,
+               null));
 
 
         cartObject.setItems(list);
@@ -772,5 +756,35 @@ public class OrderByItemCodeFragment extends Fragment implements RequestListener
 
     }
 
+    void setAutoCompleteSKUClickedFalse() {
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                autoCompleteSKU_ItemClicked = false;
+            }
+        }, 1000);
 
+    }
+
+    private void setAutoCompleteDescriptionClickedFalse() {
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                autoCompleteDescription_ItemClicked = false;
+            }
+        }, 1000);
+    }
+
+    private void setAPICallInProgress() {
+        APICallInProgress = true;
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                APICallInProgress = false;
+            }
+        }, 2000);
+    }
 }

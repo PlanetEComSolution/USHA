@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -63,13 +64,21 @@ public class Login extends AppCompatActivity implements View.OnClickListener ,Ba
     public static final String FROM = "EDIT";
     Button btn;
     private Dialog dialog3;
+    Dialog changePassDialog;
+
     private Button back;
     private TextView forgot_pass;
     private String user_id, password, status, NewPassword, OldPassword;
+    private String userPassword,newPass,confirmPass;
     private EditText user_name, pass, user_email;
+    EditText uId;
+    EditText name_edit;
+    EditText oldPassword;
+    EditText newPassword;
+    EditText confirmPassword;
     private JSONArray jArray;
     private String inValid_username = "", inValid_otp = "", inValid_Email = "";
-
+    private String uToken;
 
     private ProgressDialog progressDialog;
 
@@ -85,6 +94,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener ,Ba
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        changePassDialog = new Dialog(this, R.style.Theme_AppCompat_Light_Dialog);
+        changePassDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_login);
 
        // hitAPIAccessToken();
@@ -146,6 +157,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener ,Ba
                 Toast.makeText(Login.this, ((TextView) view).getText().toString(), Toast.LENGTH_SHORT).show();
             }
         });
+
 
 
     }
@@ -215,8 +227,17 @@ public class Login extends AppCompatActivity implements View.OnClickListener ,Ba
 
         Button back = dialog.findViewById(R.id.back);
         Button sub_btn = dialog.findViewById(R.id.sub_btn);
-        final EditText name_edit = dialog.findViewById(R.id.user_email);
+        name_edit = dialog.findViewById(R.id.user_email);
+        sub_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hitForgotPasswordApi();
+                dialog.dismiss();
+                //showChangePassDialog();
 
+
+            }
+        });
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -232,20 +253,45 @@ public class Login extends AppCompatActivity implements View.OnClickListener ,Ba
 
     }
 
+    /*public void showChangePassDialog(){
+         changePassDialog=new Dialog(Login.this);
+        changePassDialog.setContentView(R.layout.alert_change_password);
+        changePassDialog.setCanceledOnTouchOutside(false);
+        int width = (int) (Login.this.getResources().getDisplayMetrics().widthPixels * 0.90);
+        int height = (int) (Login.this.getResources().getDisplayMetrics().heightPixels * 0.90);
+        LayoutInflater inflater = Login.this.getLayoutInflater();
+        Button btn_save = changePassDialog.findViewById(R.id.btn_save);
+        Button btn_reset = changePassDialog.findViewById(R.id.btn_reset);
+         oldPassword=changePassDialog.findViewById(R.id.edit_old_pass);
+         newPassword=changePassDialog.findViewById(R.id.edit_new_pass);
+         confirmPassword=changePassDialog.findViewById(R.id.edit_confirm_pass);
+        changePassDialog.getWindow().setLayout(width, height);
+        btn_save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //changePassDialog.dismiss();
+                hitChangePasswordApi();
+            }
+        });
+        changePassDialog.show();
+    }
+*/
 
     private void hitForgotPasswordApi() {
-        user_id = user_email.getText().toString();
-
+        //user_id = user_email.getText().toString();
+        user_id = name_edit.getText().toString();
         if (isConnectingToInternet()) {
             // new ForgotPassword().execute();slider
-            ForgotPassword_REST_api();
+            //ForgotPassword_REST_api();
+            hitAPIForgotPassword(user_id);
         } else
             Toast.makeText(getApplicationContext(),
                     "No Internet Connection....", Toast.LENGTH_SHORT).show();
 
         if (isConnectingToInternet()) {
             //new ForgotPassword_CRG().execute();
-            ChangPassword();
+            //test
+            //ChangPassword();
 
         } else {
             Toast.makeText(getApplicationContext(),
@@ -253,12 +299,39 @@ public class Login extends AppCompatActivity implements View.OnClickListener ,Ba
         }
     }
 
+    private void hitChangePasswordApi() {
+        //user_id = user_email.getText().toString();
+        userPassword = newPassword.getText().toString();
+        newPass=newPassword.getText().toString();
+        confirmPass=confirmPassword.getText().toString();
+        if (isConnectingToInternet()) {
+            // new ForgotPassword().execute();slider
+            //ForgotPassword_REST_api();
+            uToken = SharedPreferencesUtil.getAuthToken(this);
+            hitAPIChangePassword(userPassword,newPass,confirmPass);
+        } else
+            Toast.makeText(getApplicationContext(),
+                    "No Internet Connection....", Toast.LENGTH_SHORT).show();
+
+        if (isConnectingToInternet()) {
+            //new ForgotPassword_CRG().execute();
+            //test
+            //ChangPassword();
+
+        } else {
+            Toast.makeText(getApplicationContext(),
+                    "No Internet Connection....", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
     private void ForgotPassword_REST_api() {
 
         /* showDialog();*/
         Dp_Usha_Interface apiInterface = ApiClient.getClient().create(Dp_Usha_Interface.class);
         Call<List<ForgotPassword>> call1 = apiInterface.ForgetPasswordApi("bearer", this.user_id);
-        Dp_Usha_Interface apiService = (Dp_Usha_Interface) ApiClient.getClient().create(CRG_API_Interface.class);
+
+        //Dp_Usha_Interface apiService = (Dp_Usha_Interface) ApiClient.getClient().create(CRG_API_Interface.class);
 
 
         call1.enqueue(new Callback<List<ForgotPassword>>() {
@@ -348,7 +421,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener ,Ba
                 showMyAlertDialog();
                 break;
             case R.id.sub_btn:
-                hitForgotPasswordApi();
+                //hitForgotPasswordApi();
+                hitAPIForgotPassword(user_id);
                 break;
             /*case R.id.sliderView:
                 sliderView.slideToPreviousPosition();
@@ -374,6 +448,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener ,Ba
 
             }
         }
+    }
+
+    private void forgot_password(){
+
     }
 
     private boolean validateLogin(String user_id, String password) {
@@ -536,6 +614,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener ,Ba
                   }
                }else
                    Toast.makeText(getApplicationContext(),"Invalid user",Toast.LENGTH_SHORT).show();
+            }else if(apiType == Constants.API_TYPE.PASSWORD){
+                Toast.makeText(this, apiType+" result "+response.toString(),Toast.LENGTH_SHORT).show();
+                //dialog.show
+
+            }else if(apiType == Constants.API_TYPE.CHANGEPASSWORD){
+                Toast.makeText(this, apiType+" result "+response.toString(),Toast.LENGTH_SHORT).show();
             }
 
         } catch (IOException e) {
@@ -544,6 +628,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener ,Ba
     }
     private void hitAPILogin(String user_id,String password) {
         retrofitManager.Login(this, this, Constants.API_TYPE.LOGIN, user_id,password,true);
+    }
+    private void hitAPIForgotPassword(String userId){
+        retrofitManager.getPassword(this,this, Constants.API_TYPE.PASSWORD,userId,true);
+    }
+    private void hitAPIChangePassword(String userPass,String userNewPass,String userConfirmPass){
+        retrofitManager.changePassword(this,this, Constants.API_TYPE.CHANGEPASSWORD,userPass,userNewPass,userConfirmPass,uToken,true);
+
     }
     @Override
     public void onFailure(Response<ResponseBody> response, Constants.API_TYPE apiType) {
@@ -554,4 +645,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener ,Ba
     public void onApiException(APIError error, Response<ResponseBody> response, Constants.API_TYPE apiType) {
            Toast.makeText(this, apiType+" onApiException "+response.toString(),Toast.LENGTH_SHORT).show();
     }
+
+
 }

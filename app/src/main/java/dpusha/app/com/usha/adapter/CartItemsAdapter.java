@@ -31,7 +31,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.MyVi
     CartItem cartItem;
     CartItemChangedListener cartItemChangedListener;
 
-    Integer Icon[]={R.drawable.fan,R.drawable.fan2,R.drawable.fan3,R.drawable.fan4};
+    Integer Icon[]={R.drawable.fan,R.drawable.fan,R.drawable.fan,R.drawable.fan};
 
     public CartItemsAdapter(Context context, CartItem cartItem,CartItemChangedListener listener) {
         this.context = context;

@@ -26,6 +26,7 @@
     <color name="colorTxtGrey">#666666</color>
     <color name="colorTxtBlack">#000000</color>
     <color name="colorTxtWhite">#ffffff</color>
+ <color name="light_black">#2E2E2E</color>
 
     <color name="colorHeadText">#000000</color>
     <color name="colorGreen_thumb_corner">#049348</color>

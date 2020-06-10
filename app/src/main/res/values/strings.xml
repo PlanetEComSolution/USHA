@@ -14,6 +14,9 @@
     <string name="ERROR_SOMETHING_WENT_WRONG">Something went wrong</string>
 
     <string name="title_activity_main3">Main3Activity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="desc_change_pass">Note:Password must contain one small character,one upper case character,one numeric,one special character and length should be equal or greater than 8 characters</string>
 
 
 </resources>

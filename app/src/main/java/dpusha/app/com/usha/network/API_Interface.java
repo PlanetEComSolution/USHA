@@ -4,7 +4,9 @@ package dpusha.app.com.usha.network;
 import java.util.List;
 
 import dpusha.app.com.usha.GetLoginResponse;
+import dpusha.app.com.usha.Login;
 import dpusha.app.com.usha.model.CartItem;
+import dpusha.app.com.usha.model.ForgotPassword;
 import dpusha.app.com.usha.model.Material;
 import dpusha.app.com.usha.orders_home.model.OrderList;
 import okhttp3.ResponseBody;
@@ -27,22 +29,32 @@ public interface API_Interface {
     @FormUrlEncoded
     @POST("token")
     Call<ResponseBody> getAuthorizationToken(@Field("UserName") String UserName,
-                                                 @Field("Password") String Password,
-                                                 @Field("grant_type") String grant_type,
-                                                 @Field("scope") String scope);
+                                             @Field("Password") String Password,
+                                             @Field("grant_type") String grant_type,
+                                             @Field("scope") String scope);
 
 
     @FormUrlEncoded
     @POST("api/Login/GetUser")
     Call<ResponseBody> getUser(@Field("UserId") String UserId,
                                @Field("Password") String Password
-            );
+    );
 
+    @FormUrlEncoded
+    @POST("api/Login/ForgotPassword")
+    Call<ResponseBody> getPassword(@Field("UserId") String id);
+
+    @FormUrlEncoded
+    @POST("api/Login/ChangePassword")
+    Call<ResponseBody> changePassword(@Header("Authorization") String fina_token,
+                                      @Field("OldPassword") String oldPass,
+                                      @Field("Password") String password,
+                                      @Field("NewPassword") String newPass);
 
     //get orderList
 
     @GET("/api/TrackOrder/GetOrdersByUserId")// get list of order
-    Call<ResponseBody> getOrderList(@Query("id") String id);
+    Call<ResponseBody> getOrderList(@Query("UserId") String id);
 
 
     // get orderList Details
@@ -57,39 +69,38 @@ public interface API_Interface {
     @FormUrlEncoded
     @POST("api/ProductCategory/GetDropDownsByProductCategory")
     Call<ResponseBody> getDivisionByProductCategory(@Field("UserId") String UserId,
-                               @Field("Catcode") String Catcode,@Field("CallType") String CallType
+                                                    @Field("Catcode") String Catcode,@Field("CallType") String CallType
     );
 
     @FormUrlEncoded
     @POST("/api/Order/GetProductForAutoComplete")
     Call<ResponseBody> getSKU(@Field("UserId") String UserId,
-                                                    @Field("PreFix") String PreFix,@Field("DivCode") String DivCode,@Field("CallType") String CallType
+                              @Field("PreFix") String PreFix,@Field("DivCode") String DivCode,@Field("CallType") String CallType
     );
     @FormUrlEncoded
     @POST("/api/Order/GetProductForAutoComplete")
     Call<ResponseBody> getDescription(@Field("UserId") String UserId,
-                              @Field("PreFix") String PreFix,@Field("DivCode") String DivCode,@Field("CallType") String CallType
+                                      @Field("PreFix") String PreFix,@Field("DivCode") String DivCode,@Field("CallType") String CallType
     );
 
-    @FormUrlEncoded
-    @POST("/api/Template/InsertDraft")
-    Call<ResponseBody>saveDraft(@Field("cartDTO") CartItem cartItem);
 
-
+    //@Headers( "Content-Type: application/json" )
     @POST("/api/Template/InsertDraft")
-    Call<ResponseBody>saveDraft2(@Body CartItem cartItem);
+    Call<ResponseBody>saveDraft(@Body CartItem cartItem);
 
 
     @GET("api/Template/GetDraft")// GET /api/Template/GetDraft
     Call<ResponseBody> getDraft();
 
-    @FormUrlEncoded
-    @POST("/api/Template/InsertTemplate")
-    Call<ResponseBody>saveTemplate(@Field("cartDTO") CartItem cartItem);
+    @GET("api/Template/GetByUserId")// GET /api/Template/GetByUserId
+    Call<ResponseBody> getTemplate();
 
-    @FormUrlEncoded
+    @POST("/api/Template/InsertTemplate")
+    Call<ResponseBody>saveTemplate(@Body CartItem cartItem);
+
+
     @POST("/api/Order/InsertOrder")
-    Call<ResponseBody>saveOrder(@Field("cartDTO") CartItem cartItem);
+    Call<ResponseBody>saveOrder(@Body CartItem cartItem);
 
 
     @FormUrlEncoded
@@ -100,8 +111,8 @@ public interface API_Interface {
     @FormUrlEncoded
     @POST("/api/Common/GetDropDowns")
     Call<ResponseBody>getShipToParty(@Field("ColumnName") String ColumnName,
-                                   @Field("ColumnValue") String ColumnValue,
-                                   @Field("TableName") String TableName,
-                                   @Field("LookupType") String LookupType);
+                                     @Field("ColumnValue") String ColumnValue,
+                                     @Field("TableName") String TableName,
+                                     @Field("LookupType") String LookupType);
 
 }

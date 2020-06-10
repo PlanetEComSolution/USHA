@@ -1,4 +1,4 @@
-package dpusha.app.com.usha.fragment;
+package dpusha.app.com.usha.fragment.cart;
 
 
 import android.content.Context;
@@ -40,13 +40,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dpusha.app.com.usha.R;
 import dpusha.app.com.usha.adapter.CartItemsAdapter;
-import dpusha.app.com.usha.adapter.MyDividerItemDecoration;
+import dpusha.app.com.usha.adapter.recycler_decorator.MyDividerItemDecoration;
 import dpusha.app.com.usha.listeners.CartItemChangedListener;
 import dpusha.app.com.usha.model.CartItem;
 import dpusha.app.com.usha.model.GetPriceResponse;
 import dpusha.app.com.usha.model.Item;
 import dpusha.app.com.usha.model.Material;
-import dpusha.app.com.usha.model.ProductDivision;
 import dpusha.app.com.usha.model.Result;
 import dpusha.app.com.usha.model.ShipToParty;
 import dpusha.app.com.usha.network.APIError;
