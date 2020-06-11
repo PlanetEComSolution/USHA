@@ -140,9 +140,6 @@ public class CartFragment extends Fragment implements RequestListener, DatePicke
         MyDividerItemDecoration decoration1 = new MyDividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL, 0);
         recycler_items.addItemDecoration(decoration1);
 
-
-
-
         return view;
     }
    void checkArguments(){

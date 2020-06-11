@@ -230,7 +230,8 @@ public class OrderByTemplate extends Fragment implements RequestListener, BookOr
                 }
             } else if (apiType == Constants.API_TYPE.TEMPLATE_DETAILS) {
                 Template template = new Gson().fromJson(strResponse, Template.class);
-                SharedPreferencesUtil.clearCartItems(getActivity(),listenerMainActivity);
+                //SharedPreferencesUtil.clearCartItems(getActivity(),listenerMainActivity);
+                listenerMainActivity.clearCart(getActivity());
                 utility.saveTemplateToCartPreference(template, getActivity(),listenerMainActivity);
                 listenerMainActivity.addFragment(new CartFragment(), "CartFragment", true);
 

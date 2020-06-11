@@ -10,4 +10,5 @@ import androidx.fragment.app.Fragment;
 public interface MainListner {
     void addFragment(Fragment fragment, String tag, boolean flag);
      void refreshCartCount(Context context);
+    void clearCart(Context context);
 }

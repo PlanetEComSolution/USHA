@@ -50,6 +50,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dpusha.app.com.usha.Login;
 //import dpusha.app.com.usha.fragment.book_order.by_cart.OrderByCart;
+import dpusha.app.com.usha.fragment.book_order.by_cart.OrderByCart;
 import dpusha.app.com.usha.fragment.book_order.by_category.OrderByItemCategory;
 import dpusha.app.com.usha.fragment.book_order.by_itemcode.OrderByItemCode;
 import dpusha.app.com.usha.fragment.book_order.by_template.OrderByTemplate;
@@ -171,6 +172,12 @@ public class DrawerMainActivity extends AppCompatActivity
     public void refreshCartCount(Context context) {
         int count=utility.getCartItemCount(context);
         button_cartCount.setText(String.valueOf(count));
+    }
+
+    @Override
+    public void clearCart(Context context) {
+        SharedPreferencesUtil.clearCartItems(context);
+        refreshCartCount(context);
     }
 
     @Override
@@ -331,7 +338,7 @@ public class DrawerMainActivity extends AppCompatActivity
 
                 break;
             case 2:
-//                addFragment(new OrderByCart(), "OrderByCart", true);
+               addFragment(new OrderByCart(), "OrderByCart", true);
                 break;
             case 3:
                 addFragment(new OrderByTemplate(), "OrderByTemplate", true);

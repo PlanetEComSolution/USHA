@@ -409,7 +409,8 @@ public class OrderByItemCode extends Fragment implements RequestListener, CartIt
                 break;
             case R.id.button_emptyCart:
 
-                SharedPreferencesUtil.clearCartItems(getActivity(),listenerMainActivity);
+               // SharedPreferencesUtil.clearCartItems(getActivity(),listenerMainActivity);
+                listenerMainActivity.clearCart(getActivity());
                 refreshCartRecyclerFromPreference();
 
                 break;

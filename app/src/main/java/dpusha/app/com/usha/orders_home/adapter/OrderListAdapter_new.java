@@ -1,6 +1,7 @@
 package dpusha.app.com.usha.orders_home.adapter;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,8 @@ import java.util.Collection;
 import java.util.List;
 
 import dpusha.app.com.usha.R;
+import dpusha.app.com.usha.activity.DrawerMainActivity;
+import dpusha.app.com.usha.fragment.orders.Order_List_Details;
 import dpusha.app.com.usha.listeners.MainListner;
 import dpusha.app.com.usha.orders_home.model.OrderList;
 import dpusha.app.com.usha.orders_home.util.utility;
@@ -38,10 +41,11 @@ public class OrderListAdapter_new extends RecyclerView.Adapter<OrderListAdapter_
     FragmentManager fragmentManager ;
 
 
-    public OrderListAdapter_new(Context context, List<OrderList> List_order) {
+    public OrderListAdapter_new(Context context, List<OrderList> List_order,MainListner listenerMainActivity) {
         this.context = context;
         this.List_order = List_order;
         this.All_List_order=new ArrayList<>(List_order);
+        this.listenerMainActivity=listenerMainActivity;
     }
 
     @Override
@@ -85,24 +89,21 @@ public class OrderListAdapter_new extends RecyclerView.Adapter<OrderListAdapter_
 
 
 
-        /*holder.l_detail_list.setOnClickListener(new View.OnClickListener() {
+        holder.l_detail_list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 Bundle b = new Bundle();
                 b.putString("id",reference_no);
 
-
-                if (context instanceof DrawerMainActivity) {
-
                     Order_List_Details fr = new Order_List_Details();
                     fr.setArguments(b);
-                    ((DrawerMainActivity)context).addFragment(fr,"Order_List_Details",true);
+                    listenerMainActivity.addFragment(fr,"Order_List_Details",true);
 
-                }
+
 
                                                 }
-        });*/
+        });
 
         holder.create_date.setText(create_date2);
 

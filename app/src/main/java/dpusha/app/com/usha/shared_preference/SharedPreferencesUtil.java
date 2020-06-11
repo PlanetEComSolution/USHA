@@ -97,11 +97,10 @@ public class SharedPreferencesUtil {
         return res;
     }
 
-    public static boolean clearCartItems(Context context, MainListner mainListner) {
+    public static boolean clearCartItems(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = preferences.edit();
         boolean res = editor.remove("CartItems").commit();
-        mainListner.refreshCartCount(context);
         return res;
     }
 

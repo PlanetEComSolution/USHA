@@ -8,13 +8,18 @@
     android:foreground="?android:attr/selectableItemBackground"
     card_view:cardCornerRadius="5dp"
     card_view:cardElevation="5sp"
-    card_view:cardUseCompatPadding="true">
+    card_view:cardUseCompatPadding="false">
 
     <LinearLayout
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:paddingLeft="0dp"
+        android:paddingTop="0dp"
+        android:paddingRight="0dp"
+        android:layout_margin="5dp"
+        android:paddingBottom="0dp"
         >
 
 
@@ -23,48 +28,47 @@
                 android:id="@+id/l_detail_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="left"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/serial_no"
-                    android:layout_width="30dp"
+                    android:layout_width="40dp"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
+                    style="@style/smallTextViewStyle_grey"
                     android:text="1"
                     android:textColor="@android:color/black"
-                    android:textSize="10sp" />
+                    />
                 <TextView
                     android:id="@+id/Creates_date"
-                    android:layout_width="75dp"
+                    android:layout_width="85dp"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:text="11/11/2020"
-                    android:textColor="@android:color/black"
-                    android:textSize="10sp" />
+                    style="@style/smallTextViewStyle_grey"/>
                 <TextView
                     android:id="@+id/reference_no"
-                    android:layout_width="110dp"
+
                     android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="5dp"
                     android:background="@android:color/transparent"
-                    android:text="12345678999999999"
-                    android:textColor="@android:color/black"
-                    android:textSize="10sp" />
+                    android:text="123456789999999"
+                    style="@style/smallTextViewStyle_grey" />
                 <TextView
                     android:id="@+id/order_status"
-                    android:layout_width="70dp"
+                    android:layout_width="100dp"
+
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:text="Progress in ERP"
-                    android:textColor="@android:color/black"
-                    android:textSize="10sp" />
+                    android:layout_marginLeft="0dp"
+                    style="@style/smallTextViewStyle_grey" />
 
                 <ImageView
-
-                    android:layout_marginTop="15dp"
                     android:id="@+id/filter_date"
-                    android:layout_toRightOf="@+id/imageView4"
-
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_search" />

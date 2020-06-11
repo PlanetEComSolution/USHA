@@ -7,7 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import dpusha.app.com.usha.R;
+import dpusha.app.com.usha.listeners.MainListner;
 import dpusha.app.com.usha.model.AuthToken;
 import dpusha.app.com.usha.network.APIError;
 import dpusha.app.com.usha.network.RequestListener;
@@ -49,7 +52,8 @@ public class Order_List_Details extends Fragment implements RequestListener {
 
     private RetrofitManager retrofitManager = RetrofitManager.getInstance();
     View rootView;
-
+    private MainListner listenerMainActivity;
+    private FragmentActivity activity;
     public Order_List_Details() {
         // Required empty public constructor
     }
@@ -76,7 +80,17 @@ public class Order_List_Details extends Fragment implements RequestListener {
             Toast.makeText(getContext(),id,Toast.LENGTH_SHORT).show();
         }
     }
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
+        if (activity == null) {
+            activity = getActivity();
+            listenerMainActivity = (MainListner) activity;
+        }
+
+
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -112,12 +126,7 @@ public class Order_List_Details extends Fragment implements RequestListener {
 
     }
 
-    private void hitAPIAccessToken() {
 
-
-
-        retrofitManager.getAuthToken(this, getActivity(), Constants.API_TYPE.TOKEN,SharedPreferencesUtil.getUserId(getActivity()),SharedPreferencesUtil.getPassword(getActivity()) ,true);
-    }
 
     @Override
     public void onSuccess(Response<ResponseBody> response, Constants.API_TYPE apiType) {

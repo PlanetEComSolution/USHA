@@ -17,9 +17,12 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -34,6 +37,8 @@ import java.util.Calendar;
 import java.util.List;
 
 import dpusha.app.com.usha.R;
+import dpusha.app.com.usha.adapter.recycler_decorator.MyDividerItemDecoration;
+import dpusha.app.com.usha.listeners.MainListner;
 import dpusha.app.com.usha.model.AuthToken;
 import dpusha.app.com.usha.network.APIError;
 import dpusha.app.com.usha.network.RequestListener;
@@ -77,7 +82,8 @@ public class orderListFragment extends Fragment implements RequestListener {
     TextView msg;
 
     final ArrayList<OrderList> filterList= new ArrayList<>();
-
+    private MainListner listenerMainActivity;
+    private FragmentActivity activity;
 
     public orderListFragment() {
         // Required empty public constructor
@@ -109,6 +115,17 @@ public class orderListFragment extends Fragment implements RequestListener {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (activity == null) {
+            activity = getActivity();
+            listenerMainActivity = (MainListner) activity;
+        }
+
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -132,7 +149,8 @@ public class orderListFragment extends Fragment implements RequestListener {
         recycler_orderlist.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recycler_orderlist.setItemAnimator(new DefaultItemAnimator());
 
-
+        MyDividerItemDecoration decoration1 = new MyDividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL, 0);
+        recycler_orderlist.addItemDecoration(decoration1);
        // hitAPIAccessToken();
         getOrderList();
 
@@ -368,7 +386,7 @@ public class orderListFragment extends Fragment implements RequestListener {
 
 
 
-        orderListAdapter = new OrderListAdapter_new(getContext(),filterByDate);
+        orderListAdapter = new OrderListAdapter_new(getContext(),filterByDate,listenerMainActivity);
         recycler_orderlist.setAdapter(orderListAdapter);
 
 
@@ -420,7 +438,7 @@ public class orderListFragment extends Fragment implements RequestListener {
                 if(OrderListResponse!=null && !OrderListResponse.isEmpty()){
                     filterList.addAll(OrderListResponse);
 
-                    orderListAdapter = new OrderListAdapter_new(getContext(),OrderListResponse);
+                    orderListAdapter = new OrderListAdapter_new(getContext(),OrderListResponse,listenerMainActivity);
                     recycler_orderlist.setAdapter(orderListAdapter);
 
 
