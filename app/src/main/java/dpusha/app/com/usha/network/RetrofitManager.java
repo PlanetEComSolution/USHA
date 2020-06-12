@@ -262,6 +262,16 @@ public class RetrofitManager implements OnRetryCallback {
         performCallback(mRequestListener, mContext, mApiType, showProgress);
 
     }
+
+    public void getContactUsDetails(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            String token,
+            final boolean showProgress){
+        call = retroService.getContactDetails(token);
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+    }
     // get orderList
 
     public void GetOrderList(

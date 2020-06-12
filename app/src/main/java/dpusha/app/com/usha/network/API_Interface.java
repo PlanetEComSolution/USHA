@@ -54,6 +54,9 @@ public interface API_Interface {
 
     //get orderList
 
+ @GET("api/ContactUs/GetUshaContactDetails")
+    Call<ResponseBody> getContactDetails(@Header("Authorization") String token);
+
     @GET("/api/TrackOrder/GetOrdersByUserId")// get list of order
     Call<ResponseBody> getOrderList(@Query("UserId") String id);
 
