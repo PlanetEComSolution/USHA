@@ -51,15 +51,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dpusha.app.com.usha.Login;
 //import dpusha.app.com.usha.fragment.book_order.by_cart.OrderByCart;
-<<<<<<< HEAD
 import dpusha.app.com.usha.fragment.AnnounceFragment;
 import dpusha.app.com.usha.fragment.ContactUsFragment;
 import dpusha.app.com.usha.fragment.ProductCatolugeFragment;
 import dpusha.app.com.usha.fragment.SocialNetworkingFragment;
 import dpusha.app.com.usha.fragment.UsefulLinkFragment;
-=======
-import dpusha.app.com.usha.fragment.ContactUsFragment;
->>>>>>> f0614ef911028e5aa8ef461c12b0bd32abf264c8
 import dpusha.app.com.usha.fragment.book_order.by_cart.OrderByCart;
 import dpusha.app.com.usha.fragment.book_order.by_category.OrderByItemCategory;
 import dpusha.app.com.usha.fragment.book_order.by_itemcode.OrderByItemCode;

@@ -71,8 +71,6 @@ public interface API_Interface {
     @GET("api/Announcement/GetByRole")
     Call<ResponseBody> getAnnouncement(@Header("Authorization") String token);
 
- @GET("api/ContactUs/GetUshaContactDetails")
-    Call<ResponseBody> getContactDetails(@Header("Authorization") String token);
 
     @GET("/api/TrackOrder/GetOrdersByUserId")// get list of order
     Call<ResponseBody> getOrderList(@Query("UserId") String id);
