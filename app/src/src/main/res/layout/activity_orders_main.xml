@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/l1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+
+    <!--        <TextView
+                android:id="@+id/v1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:text="No orders to show!"
+                android:textSize="15sp"
+                android:visibility="visible" />-->
+
+
+    <!--<androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_orderlist"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical" />-->
+
+    <!--<android.support.v7.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/pullToRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/menuRight"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/menu" />
+        <!--<ImageView
+            android:id="@+id/order_search"
+            android:layout_toRightOf="@+id/menuRight"
+
+
+            android:layout_width="50dp"
+            android:layout_height="70dp"
+
+
+            android:src="@drawable/ic_search_black_24dp" />-->
+
+        <!--<SearchView
+            android:id="@+id/search"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/menuRight"
+            />-->
+
+
+
+        <ImageView
+            android:id="@+id/imageView4"
+
+            android:layout_width="115dp"
+            android:layout_height="115dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/space_10"
+
+            app:srcCompat="@drawable/logo" />
+
+        <ImageView
+            android:id="@+id/filter_date"
+            android:layout_toRightOf="@+id/imageView4"
+
+            android:paddingLeft="15dp"
+
+
+            android:layout_width="50dp"
+            android:layout_height="76dp"
+            android:src="@drawable/ic_filter_list_black_24dp" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/cartimage"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            app:srcCompat="@drawable/adminmodule"
+
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cartimage"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="@dimen/space_20"
+            android:text="Profile"
+            android:textColor="#000"
+
+            />
+
+
+    </RelativeLayout>
+
+
+    <SearchView
+        android:id="@+id/search"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:queryHint="Search here" />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/pull_refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_orderlist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"/>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+    </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

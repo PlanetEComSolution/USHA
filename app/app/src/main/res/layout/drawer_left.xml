@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/light_red"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="15dp"
+        android:paddingTop="30dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="30dp">
+
+
+        <com.github.abdularis.civ.CircleImageView
+            android:id="@+id/profile_image"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@drawable/bg_round"
+            android:padding="10dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_person_outline_black_24dp"
+            android:tint="@color/colorPrimary"
+            app:highlightColor="#80fb1743"
+            app:strokeColor="@color/colorAccent"
+            app:strokeWidth="2px" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtvw_userName"
+                style="@style/mediumTextViewStyle_grey"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="0dp"
+                android:text="Nakul Sharma" />
+
+            <TextView
+                android:id="@+id/txtvw_userid"
+                style="@style/smallTextViewStyle_grey"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="SJFHt8787777" />
+
+            <TextView
+                android:id="@+id/txtvw_user_mail"
+                style="@style/smallTextViewStyle_grey"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="nakulsharma@gmail.com" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_left_menu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_logout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+
+        <TextView
+
+            style="@style/mediumTextViewStyle_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="0dp"
+            android:text="Logout"
+            android:textColor="@color/white" />
+        <!--  android:fontFamily="@font/helvetica_neue_me_bold"-->
+        <ImageView
+
+            android:layout_width="25dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/logout"
+            android:tint="@color/colorAccent" />
+    </LinearLayout>
+
+
+</LinearLayout>

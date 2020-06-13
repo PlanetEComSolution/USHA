@@ -1,0 +1,191 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="mdtp_theme_dark">true</item>
+        <item name="android:alertDialogTheme">@style/AlertDialogCustom</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="ProgressHUD" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">#99a2b3</item>
+        <item name="colorControlActivated">#f9d631</item>
+
+    </style>
+    <style name="RobotoBoldTextAppearance">
+
+        <item name="android:textColor">#fff</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+
+    </style>
+    <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+        <!-- Customize color of navigation drawer icon and back arrow -->
+        <item name="colorControlNormal">#000</item>
+    </style>
+
+    <!--No Action Bar Activities-->
+    <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:screenOrientation">portrait</item>
+        <item name="colorControlNormal">@color/colorTxtGrey</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
+    </style>
+
+  <!--  <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:screenOrientation">portrait</item>
+        <item name="colorControlNormal">@color/colorTxtGrey</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
+    </style>-->
+    <!-- Splash Screen theme. -->
+    <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="windowNoTitle">true</item>
+
+    </style>
+
+
+    <!--No Action Bar Activities-->
+    <style name="VideoPlayerTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:screenOrientation">landscape</item>
+        <item name="colorControlNormal">@color/colorTxtGrey</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
+    </style>
+
+
+    <!-- <style name="HeadTextViewStyle" parent="android:Widget.TextView">
+         <item name="android:textStyle">normal</item>
+         <item name="android:textColor">@color/md_black_1000</item>
+         <item name="android:layout_width">wrap_content</item>
+         <item name="android:layout_height">wrap_content</item>
+         <item name="android:textSize">@dimen/extraLargeTextSize</item>
+     </style>-->
+
+
+    <style name="smallTextViewStyle_white" parent="android:Widget.TextView">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">@android:style/TextAppearance.DeviceDefault.Small</item>
+    </style>
+
+
+
+
+    <style name="mediumTextViewStyle_white" parent="android:Widget.TextView">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">@android:style/TextAppearance.DeviceDefault.Medium
+        </item>
+    </style>
+
+    <style name="smallTextViewStyle_grey" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/colorTxtGrey</item><!--  <item name="android:textColor">@color/nav_text_color</item>-->
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">@android:style/TextAppearance.DeviceDefault.Small</item>
+    </style>
+    <style name="mediumTextViewStyle_grey" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/colorTxtGrey</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">@android:style/TextAppearance.DeviceDefault.Medium
+        </item>
+    </style>
+    <style name="AlertDialogCustom" parent="android:Theme.Material.Light.Dialog.Alert">
+        <item name="android:colorPrimary">@color/colorPrimary</item>
+        <item name="android:colorAccent">@color/colorPrimary</item>
+    </style>
+    <style name="largeTextViewStyle_grey" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/colorTxtGrey</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">@android:style/TextAppearance.DeviceDefault.Large</item>
+    </style>
+    <style name="SCBSwitch" parent="Theme.AppCompat.Light">
+        <!-- active thumb & track color (30% transparency) -->
+        <item name="colorControlActivated">#4CAF50</item>
+        <!--<item name="colorControlActivated">#D53845</item>-->
+        <!-- inactive thumb color -->
+        <item name="colorSwitchThumbNormal">#f1f1f1</item>
+        <!-- inactive track color (30% transparency) -->
+        <item name="android:colorForeground">#42221f1f
+        </item>
+    </style>
+    <style name="largeTextViewStyle_white" parent="android:Widget.TextView">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">@android:style/TextAppearance.DeviceDefault.Large</item>
+    </style>
+
+
+    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="android:editTextColor">@color/colorTxtBlack</item>
+        <item name="android:textColorHint">@color/colorTxtGrey</item>
+
+
+    </style>
+
+    <style name="MySwitch" parent="@style/Widget.AppCompat.CompoundButton.Switch">
+
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Medium</item>
+
+    </style>
+
+
+    <style name="BottomNavigationViewTextStyle">
+
+        <item name="android:color">@color/md_grey_900</item>
+
+    </style>
+
+    <style name="BottomNavigationActiveViewTextStyle">
+
+        <item name="android:color">@color/colorTxtGrey</item>
+
+    </style>
+
+
+    <style name="customfontstyle" parent="@android:style/TextAppearance.Small">
+
+    </style>
+
+
+</resources>

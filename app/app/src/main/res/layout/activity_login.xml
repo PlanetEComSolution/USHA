@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.daimajia.slider.demo.Login"
+   >
+    <com.daimajia.slider.library.SliderLayout
+        android:id="@+id/slider"
+        android:layout_width="match_parent"
+        custom:pager_animation="Accordion"
+        custom:auto_cycle="true"
+
+        android:layout_marginTop="30dp"
+        android:background="@drawable/background_dark"
+        custom:indicator_visibility="visible"
+        android:layout_marginLeft="25dp"
+        custom:pager_animation_span="1100"
+        android:layout_marginRight="25dp"
+        android:layout_height="180dp"/>
+
+    <com.daimajia.slider.library.Indicators.PagerIndicator
+        android:id="@+id/custom_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="178dp"
+        android:gravity="center"
+        custom:selected_color="#f5140c"
+        custom:unselected_color="#FFFF"
+        custom:selected_drawable="@drawable/home"
+        custom:shape="oval"
+        custom:selected_padding_left="5dp"
+        custom:selected_padding_right="5dp"
+        custom:unselected_padding_left="5dp"
+        custom:unselected_padding_right="5dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        custom:selected_width="6dp"
+        custom:selected_height="6dp"
+        custom:unselected_width="6dp"
+        custom:unselected_height="6dp"
+        android:layout_marginBottom="20dp"
+        />
+     <com.daimajia.slider.library.Indicators.PagerIndicator
+         android:id="@+id/custom_indicator2"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         style="@style/AndroidImageSlider_Corner_Oval_Orange"
+         android:layout_centerHorizontal="true"
+
+
+         />
+    <ListView
+        android:layout_below="@+id/slider"
+        android:id="@+id/transformers"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="wrap_content">
+
+    </ListView>
+
+<!--
+</RelativeLayout>-->
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/butt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/bottom"
+                    android:layout_marginBottom="50dp"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="130dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:visibility="gone"
+
+                        app:srcCompat="@drawable/logo" />
+                   <!-- <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+-->
+
+                  <!--  <com.daimajia.slider.library.SliderLayout
+                        android:id="@+id/slider"
+                        android:layout_width="match_parent"
+                        custom:pager_animation="Accordion"
+                        custom:auto_cycle="true"
+                        android:layout_marginLeft="@dimen/space_20"
+                        android:layout_marginRight="@dimen/space_20"
+                        android:background="@drawable/background_dark"
+                        custom:indicator_visibility="visible"
+                        custom:pager_animation_span="1100"
+                        android:layout_height="170dp"/>
+
+                    <com.daimajia.slider.library.Indicators.PagerIndicator
+                        android:id="@+id/custom_indicator"
+                        android:layout_width="match_parent"
+                        android:layout_height="160dp"
+                        android:gravity="center"
+                        custom:selected_color="#dc0a23"
+                        custom:unselected_color="@color/all"
+                        custom:selected_drawable="@drawable/home"
+                        custom:shape="oval"
+                        android:layout_marginRight="@dimen/space_20"
+                        android:layout_marginLeft="@dimen/space_20"
+                        custom:selected_padding_left="5dp"
+                        custom:selected_padding_right="5dp"
+                        custom:unselected_padding_left="5dp"
+                        custom:unselected_padding_right="5dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_alignParentBottom="true"
+                        custom:selected_width="7dp"
+                        custom:selected_height="7dp"
+                        custom:unselected_width="7dp"
+                        custom:unselected_height="7dp"
+                        android:layout_marginBottom="7dp"
+                        />
+                    <com.daimajia.slider.library.Indicators.PagerIndicator
+                        android:id="@+id/custom_indicator2"
+                        android:background="@color/all"
+                        style="@style/AndroidImageSlider_Magnifier_Oval_Black"                        android:layout_centerHorizontal="true"
+                        android:layout_alignParentBottom="true"
+                        />
+                    <ListView
+                        android:layout_below="@+id/slider"
+                        android:id="@+id/transformers"
+                        android:layout_width="match_parent"
+                        android:visibility="gone"
+                        android:layout_height="wrap_content">
+
+                    </ListView>-->
+                  <!--  </RelativeLayout>-->
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:orientation="vertical">
+
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+
+
+                        android:background="@drawable/address_button"
+                        android:gravity="center"
+android:layout_marginTop="250dp"
+                        android:orientation="vertical"
+                        android:padding="20dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="10dp"
+                            android:text="Sign In"
+                            android:textColor="#000000"
+                            android:textSize="21sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="5dp"
+                            android:text="Welcome back ! Pleae signin to Continue"
+                            android:textColor="#000000"
+                            android:textSize="15sp" />
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+
+                            android:layout_marginTop="15dp"
+                            android:text="Email"
+
+                            android:textColor="#000000"
+                            android:textSize="15sp" />
+
+                        <EditText
+                            android:id="@+id/user_id"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="05dp"
+                            android:background="@drawable/edittext_bg"
+                            android:hint="YourName@Yourmail.com"
+                            android:padding="10dp"
+                            android:textColor="#000"
+                            android:textColorHighlight="@color/white"
+                            android:textColorHint="#FFC6BEBE" />
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+                          android:layout_marginTop="15dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="left"
+                                android:text="Password"
+                                android:textColor="#000000" />
+
+                            <TextView
+                                android:id="@+id/forg_pass"
+
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="right"
+
+                                android:text="ForgotPassword ?"
+                                android:textColor="#372994" />
+                        </LinearLayout>
+
+                        <EditText
+                            android:id="@+id/user_pass"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="05dp"
+                            android:background="@drawable/edittext_bg"
+                            android:hint="Password"
+                            android:password="true"
+                            android:padding="10dp"
+                            android:textColor="#000000"
+                            android:textColorHighlight="#FFC6BEBE"
+                            android:textColorHint="#FFC6BEBE" />
+
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/login_button"
+                        android:layout_width="320dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/btn_bg"
+
+
+                        android:text="Sign In"
+                        android:textColor="#FFFFFF" />
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+
+
+
+
+</RelativeLayout>

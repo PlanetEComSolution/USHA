@@ -6,6 +6,7 @@ import java.util.List;
 import dpusha.app.com.usha.GetLoginResponse;
 import dpusha.app.com.usha.Login;
 import dpusha.app.com.usha.model.CartItem;
+import dpusha.app.com.usha.model.ContactResponse;
 import dpusha.app.com.usha.model.ForgotPassword;
 import dpusha.app.com.usha.model.Material;
 import dpusha.app.com.usha.orders_home.model.OrderList;
@@ -53,6 +54,22 @@ public interface API_Interface {
                                       @Field("NewPassword") String newPass);
 
     //get orderList
+    @GET("api/ContactUs/GetUshaContactDetails")
+    Call<ResponseBody> getContactDetails(@Header("Authorization") String token);
+
+    @GET("api/ContactUs/ContactDetails")
+    Call<ContactResponse> getContact(@Header("Authorization") String token);
+    @GET("/api/Tile/GetByType/Others")
+    Call<ResponseBody>getUsefulLinks();
+
+    @GET("api/Tile/GetByType/ProductCatalogue")
+    Call<ResponseBody> getProductCatolugeDetails();
+
+    @GET("api/Tile/GetByType/SocialNetworking")
+    Call<ResponseBody> getSocialNetworking();
+
+    @GET("api/Announcement/GetByRole")
+    Call<ResponseBody> getAnnouncement(@Header("Authorization") String token);
 
     @GET("/api/TrackOrder/GetOrdersByUserId")// get list of order
     Call<ResponseBody> getOrderList(@Query("UserId") String id);

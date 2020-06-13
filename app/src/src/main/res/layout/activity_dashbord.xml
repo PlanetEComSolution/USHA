@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Dashbord">
+
+
+
+
+
+
+<!--
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_above="@+id/bottom"
+                    android:layout_marginBottom="50dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#f7f7f7"
+                        android:orientation="vertical">
+
+
+
+
+
+
+                       <TextView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_centerHorizontal="true"
+                           android:layout_below="@+id/car1"
+                           android:text="Dharam Welcome Back"
+                           android:textColor="#000"
+                           android:layout_gravity="center"
+                           android:textSize="14sp"
+                           android:layout_marginTop="@dimen/space_20"
+
+                           android:textAlignment="center"
+                           />
+
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:layout_marginBottom="50dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="150dp"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginStart="10dp"
+
+                                android:layout_marginEnd="10dp"
+                                >
+                                <RelativeLayout
+                                    android:id="@+id/cardenting"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginStart="10dp"
+
+                                    android:layout_marginEnd="10dp"
+                                    android:background="@drawable/bluebackground">
+
+                                    <ImageView
+                                        android:id="@+id/car2"
+                                        android:layout_width="60dp"
+                                        android:visibility="gone"
+                                        android:layout_height="60dp"
+                                        android:layout_marginTop="15dp"
+                                        android:background="@drawable/adminmodule"
+                                        android:layout_centerHorizontal="true" />
+
+                                    <TextView
+                                        android:id="@+id/saleperformance"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/space_10"
+                                        android:layout_below="@+id/car2"
+                                        android:text="Sale Performance"
+                                        android:textColor="@color/white"
+                                        android:layout_marginTop="@dimen/space_20"
+
+                                        android:textSize="18sp"
+                                        android:textAlignment="center" />
+
+                                   <TextView
+                                       android:id="@+id/dattill"
+
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:layout_marginLeft="@dimen/space_10"
+                                       android:layout_below="@+id/saleperformance"
+                                       android:text="Year Till Date: Rs. Lac"
+                                       android:textColor="@color/white"
+
+
+                                       android:textSize="11sp"
+                                       android:textAlignment="center" />
+                                   <TextView
+                                       android:id="@+id/time"
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:layout_marginLeft="@dimen/space_10"
+                                       android:layout_below="@+id/dattill"
+                                       android:text="Year Till Date: Rs. Lac"
+                                       android:textColor="@color/white"
+                                       android:layout_marginTop="@dimen/space_10"
+
+                                       android:textSize="11sp"
+                                       android:textAlignment="center" />
+                                   <TextView
+                                       android:id="@+id/view"
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:layout_marginLeft="@dimen/space_10"
+                                       android:layout_below="@+id/time"
+                                       android:text="view more"
+                                       android:textColor="@color/white"
+                                       android:layout_marginTop="@dimen/text_size_25"
+                                       android:textSize="11sp"
+                                       android:textAlignment="center" />
+                                   <LinearLayout
+                                       android:layout_below="@+id/view"
+                                       android:layout_width="55dp"
+                                       android:background="@color/white"
+                                       android:layout_marginLeft="@dimen/space_10"
+                                       android:layout_height="2dp">
+
+                                   </LinearLayout>
+
+                                </RelativeLayout>
+
+
+                            </LinearLayout>
+
+
+                            <LinearLayout
+
+                                android:layout_width="match_parent"
+                                android:layout_height="150dp"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginEnd="10dp"
+                               >
+                               <LinearLayout
+                                   android:layout_width="match_parent"
+                                   android:layout_height="150dp"
+                                   android:orientation="horizontal"
+                                   android:layout_marginTop="10dp"
+                                   android:layout_marginStart="10dp"
+
+                                   android:layout_marginEnd="10dp"
+                                   >
+                                  <RelativeLayout
+                                      android:id="@+id/kjk"
+                                      android:layout_width="match_parent"
+                                      android:layout_height="match_parent"
+
+                                      android:background="@drawable/orangebackground">
+
+
+
+                                     <TextView
+                                         android:id="@+id/nm"
+                                         android:layout_width="wrap_content"
+                                         android:layout_height="wrap_content"
+                                         android:layout_marginLeft="@dimen/space_10"
+
+                                         android:text="Credit Limit"
+                                         android:textColor="@color/white"
+                                         android:layout_marginTop="@dimen/space_20"
+
+                                         android:textSize="18sp"
+                                         android:textAlignment="center" />
+
+                                     <TextView
+                                         android:id="@+id/mn"
+
+                                         android:layout_width="wrap_content"
+                                         android:layout_height="wrap_content"
+                                         android:layout_marginLeft="@dimen/space_10"
+                                         android:layout_below="@+id/nm"
+                                         android:text="Total Credit Limit Rs: 100 Lac"
+                                         android:textColor="@color/white"
+
+
+                                         android:textSize="11sp"
+                                         android:textAlignment="center" />
+                                     <TextView
+                                         android:id="@+id/ad"
+                                         android:layout_width="wrap_content"
+                                         android:layout_height="wrap_content"
+                                         android:layout_marginLeft="@dimen/space_10"
+                                         android:layout_below="@+id/mn"
+                                         android:text="Balance Credit Limit: Rs.25 Lac"
+                                         android:textColor="@color/white"
+                                         android:layout_marginTop="@dimen/space_5"
+
+                                         android:textSize="11sp"
+                                         android:textAlignment="center" />
+                                     <TextView
+                                        android:id="@+id/xc"
+                                         android:layout_width="wrap_content"
+                                         android:layout_height="wrap_content"
+                                         android:layout_marginLeft="@dimen/space_10"
+                                         android:layout_below="@+id/ad"
+                                         android:text="view more"
+                                         android:textColor="@color/white"
+                                         android:layout_marginTop="@dimen/text_size_25"
+                                         android:textSize="11sp"
+                                         android:textAlignment="center" />
+                                     <LinearLayout
+                                         android:layout_below="@+id/xc"
+                                         android:layout_width="55dp"
+                                         android:background="@color/white"
+                                         android:layout_marginLeft="@dimen/space_10"
+                                         android:layout_height="2dp">
+
+                                     </LinearLayout>
+
+                                  </RelativeLayout>
+
+
+                               </LinearLayout>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="150dp"
+                                    android:orientation="horizontal"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_marginStart="10dp"
+                                    android:layout_marginEnd="10dp"
+                                    >
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="150dp"
+                                        android:orientation="horizontal"
+                                        android:layout_marginTop="10dp"
+                                        android:layout_marginStart="10dp"
+
+                                        android:layout_marginEnd="10dp"
+                                        >
+                                        <RelativeLayout
+                                            android:id="@+id/createdlimitrl"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+
+                                            android:background="@drawable/orangebackground">
+
+
+
+                                            <TextView
+                                                android:id="@+id/createdlimit"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginLeft="@dimen/space_10"
+
+                                                android:text="Credit Limit"
+                                                android:textColor="@color/white"
+                                                android:layout_marginTop="@dimen/space_20"
+
+                                                android:textSize="18sp"
+                                                android:textAlignment="center" />
+
+                                            <TextView
+                                                android:id="@+id/TotalCredit"
+
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginLeft="@dimen/space_10"
+                                                android:layout_below="@+id/createdlimit"
+                                                android:text="Total Credit Limit Rs: 100 Lac"
+                                                android:textColor="@color/white"
+
+
+                                                android:textSize="11sp"
+                                                android:textAlignment="center" />
+                                            <TextView
+                                                android:id="@+id/BalanceCredit"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginLeft="@dimen/space_10"
+                                                android:layout_below="@+id/TotalCredit"
+                                                android:text="Balance Credit Limit: Rs.25 Lac"
+                                                android:textColor="@color/white"
+                                                android:layout_marginTop="@dimen/space_5"
+
+                                                android:textSize="11sp"
+                                                android:textAlignment="center" />
+                                            <TextView
+                                                android:id="@+id/view1"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginLeft="@dimen/space_10"
+                                                android:layout_below="@+id/BalanceCredit"
+                                                android:text="view more"
+                                                android:textColor="@color/white"
+                                                android:layout_marginTop="@dimen/text_size_25"
+                                                android:textSize="11sp"
+                                                android:textAlignment="center" />
+                                            <LinearLayout
+                                                android:layout_below="@+id/view1"
+                                                android:layout_width="55dp"
+                                                android:background="@color/white"
+                                                android:layout_marginLeft="@dimen/space_10"
+                                                android:layout_height="2dp">
+
+                                            </LinearLayout>
+
+                                        </RelativeLayout>
+
+
+                                    </LinearLayout>
+
+
+
+
+                                    <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="150dp"
+                                    android:orientation="horizontal"
+                                    android:layout_marginTop="20dp"
+                                    android:layout_marginStart="10dp"
+
+                                    android:layout_marginEnd="10dp"
+                                    >
+                                    <RelativeLayout
+                                        android:id="@+id/rloutstandingstatus"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_marginStart="10dp"
+
+                                        android:layout_marginEnd="10dp"
+                                        android:background="@drawable/bluebackground">
+
+                                        <ImageView
+                                            android:id="@+id/car3"
+                                            android:layout_width="60dp"
+                                            android:visibility="gone"
+                                            android:layout_height="60dp"
+                                            android:layout_marginTop="15dp"
+                                            android:background="@drawable/adminmodule"
+                                            android:layout_centerHorizontal="true" />
+
+                                        <TextView
+                                            android:id="@+id/outstandingtext"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginLeft="@dimen/space_10"
+                                            android:layout_below="@+id/car3"
+                                            android:text="OutStanding Statu"
+                                            android:textColor="@color/white"
+                                            android:layout_marginTop="@dimen/space_20"
+
+                                            android:textSize="18sp"
+                                            android:textAlignment="center" />
+
+                                        <TextView
+                                            android:id="@+id/totaloutastanding"
+
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginLeft="@dimen/space_10"
+                                            android:layout_below="@+id/outstandingtext"
+                                            android:text="Total OutStanding Rs. 65 Lc"
+                                            android:textColor="@color/white"
+
+
+                                            android:textSize="11sp"
+                                            android:textAlignment="center" />
+
+
+                                        <LinearLayout
+                                            android:layout_below="@+id/totaloutastanding"
+                                            android:layout_width="55dp"
+                                            android:background="@color/white"
+                                            android:layout_marginLeft="@dimen/space_10"
+                                            android:layout_height="2dp">
+
+                                        </LinearLayout>
+
+                                    </RelativeLayout>
+
+
+                                </LinearLayout>
+
+
+                            </LinearLayout>
+
+
+
+                        </LinearLayout>
+
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </ScrollView>
+
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:id="@+id/bottom"
+            android:layout_alignParentBottom="true">
+
+            <android.support.design.widget.BottomNavigationView
+                android:id="@+id/navigationView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                android:background="?android:attr/windowBackground"
+                app:itemBackground="@color/all"
+                app:itemIconTint="@color/white"
+                app:itemTextColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:menu="@menu/navigation"
+                />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+-->
+
+
+
+
+</LinearLayout>
