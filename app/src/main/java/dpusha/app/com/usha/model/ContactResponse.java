@@ -13,6 +13,7 @@ public class ContactResponse {
     private String CustomerCareNo;
     private String CallType;
 
+
     public String getId() {
         return Id;
     }
@@ -93,3 +94,4 @@ public class ContactResponse {
         CallType = callType;
     }
 }
+
