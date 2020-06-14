@@ -56,7 +56,10 @@ public class Constants {
 
     //   http://beta.usha.businesstowork.com/assets/images/ProductImages/db6557b0-aee1-473a-b8a5-d8944d6acc4f.jpg
     //   http://beta.usha.businesstowork.com/assets/images/ProductImages/thumb-NoImage.png
-    public static final String CATEGORY_IMAGE_URL_PREFIX = Constants.IMAGE_URL_LIVE + "/assets/images/CategoryImages/";
-    public static final String PRODUCT_IMAGE_URL_PREFIX = Constants.IMAGE_URL_LIVE + "/assets/images/ProductImages/";
-    public static final String DIVISION_IMAGE_URL_PREFIX = Constants.IMAGE_URL_LIVE + "/assets/images/DivisionImages/";
+    public static final String CATEGORY_IMAGE_URL_PREFIX =  Constants.IMAGE_URL_LIVE+"/assets/images/CategoryImages/";
+    public static final String PRODUCT_IMAGE_URL_PREFIX =  Constants.IMAGE_URL_LIVE+"/assets/images/ProductImages/";
+    public static final String DIVISION_IMAGE_URL_PREFIX =  Constants.IMAGE_URL_LIVE+"/assets/images/DivisionImages/";
+    public static final String FROM_PLACED_ORDER ="FROM_PLACED_ORDER";
+    public static final String ORDER_EDITABLE ="ORDER_EDITABLE";
+
 }
