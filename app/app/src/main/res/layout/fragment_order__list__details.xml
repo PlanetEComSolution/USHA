@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="15dp">
+
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/ref_no"
+            style="@style/mediumTextViewStyle_grey"
+            android:layout_width="60dp"
+            android:layout_height="30dp"
+            android:textSize="12sp"
+            android:hint="Reference No."
+            android:textAlignment="center"
+            android:layout_weight="1"
+            android:background="@drawable/edittext_bg" />
+
+        <View
+            android:layout_width="5dp"
+            android:layout_height="match_parent" />
+
+        <EditText
+            style="@style/mediumTextViewStyle_grey"
+            android:layout_width="60dp"
+            android:layout_height="30dp"
+            android:textSize="12sp"
+            android:textAlignment="center"
+            android:hint="Remarks"
+            android:layout_weight="1"
+            android:background="@drawable/edittext_bg" />
+
+        <View
+            android:layout_width="5dp"
+            android:layout_height="match_parent" />
+
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/ship_party"
+            style="@style/mediumTextViewStyle_grey"
+            android:layout_width="60dp"
+            android:layout_height="30dp"
+            android:textSize="12sp"
+            android:textAlignment="center"
+            android:hint="Ship to Party"
+            android:layout_weight="1"
+            android:background="@drawable/edittext_bg" />
+
+        <View
+            android:layout_width="5dp"
+            android:layout_height="match_parent" />
+
+        <EditText
+            android:id="@+id/r_del_date"
+            style="@style/mediumTextViewStyle_grey"
+            android:layout_width="60dp"
+            android:layout_height="30dp"
+            android:textSize="12sp"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:hint="Request delivery Date"
+            android:background="@drawable/edittext_bg" />
+
+        <View
+            android:layout_width="5dp"
+            android:layout_height="match_parent" />
+
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/colorTxtGrey" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_orderlist_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"
+        android:scrollbars="none" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorTxtGrey" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+
+            android:orientation="horizontal">
+
+
+
+            <Button
+                android:id="@+id/update"
+                style="@style/smallTextViewStyle_white"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="2dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_bg"
+                android:text="Update" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</LinearLayout>

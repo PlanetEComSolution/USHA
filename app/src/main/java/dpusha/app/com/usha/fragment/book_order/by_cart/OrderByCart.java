@@ -74,6 +74,8 @@ import dpusha.app.com.usha.shared_preference.SharedPreferencesUtil;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 
+
+//import static dpusha.app.com.usha.R.attr.layoutManager;
 import static dpusha.app.com.usha.R2.attr.layoutManager;
 
 //import dpusha.app.com.usha.model.ProductSKU;

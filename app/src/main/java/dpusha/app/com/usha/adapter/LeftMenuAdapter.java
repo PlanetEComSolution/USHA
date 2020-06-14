@@ -8,6 +8,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -62,6 +63,7 @@ OnDrawerItemClickListener onDrawerItemClickListener;
             if (position == 5) {
                 holder.recycler_menu_subItem.setAdapter(new DownloadsSubMenuAdapter(context));
             }
+
         }else {
             holder.right_arrow.setVisibility(View.GONE);
         }
@@ -113,7 +115,9 @@ OnDrawerItemClickListener onDrawerItemClickListener;
                                 recycler_menu_subItem.startAnimation(slideDown);
                                 down_arrow.setVisibility(View.VISIBLE);
                                 right_arrow.setVisibility(View.GONE);
-                            } else if (recycler_menu_subItem.getVisibility() == View.VISIBLE) {
+                            }
+
+                                    else if (recycler_menu_subItem.getVisibility() == View.VISIBLE) {
                                 recycler_menu_subItem.startAnimation(slideUp);
                                 recycler_menu_subItem.setVisibility(View.GONE);
                                 down_arrow.setVisibility(View.GONE);

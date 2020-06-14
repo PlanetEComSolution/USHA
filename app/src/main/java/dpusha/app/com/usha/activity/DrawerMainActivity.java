@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -50,13 +51,16 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dpusha.app.com.usha.Login;
 //import dpusha.app.com.usha.fragment.book_order.by_cart.OrderByCart;
-import dpusha.app.com.usha.fragment.book_order.BookOrderHome;
+import dpusha.app.com.usha.fragment.AnnounceFragment;
+import dpusha.app.com.usha.fragment.ContactUsFragment;
+import dpusha.app.com.usha.fragment.ProductCatolugeFragment;
+import dpusha.app.com.usha.fragment.SocialNetworkingFragment;
+import dpusha.app.com.usha.fragment.UsefulLinkFragment;
 import dpusha.app.com.usha.fragment.book_order.by_cart.OrderByCart;
 import dpusha.app.com.usha.fragment.book_order.by_category.OrderByItemCategory;
 import dpusha.app.com.usha.fragment.book_order.by_itemcode.OrderByItemCode;
 import dpusha.app.com.usha.fragment.book_order.by_template.OrderByTemplate;
-//import dpusha.app.com.usha.fragment.cart.CartFragment;
-import dpusha.app.com.usha.fragment.cart.CartSummary;
+import dpusha.app.com.usha.fragment.cart.CartFragment;
 import dpusha.app.com.usha.fragment.orders.orderListFragment;
 import dpusha.app.com.usha.model.AuthToken;
 import dpusha.app.com.usha.model.DrawerItem;
@@ -103,8 +107,8 @@ public class DrawerMainActivity extends AppCompatActivity
       LinearLayout ll_logout;*/
     NavigationView navigationView;
 
-  /*  @BindView(R.id.imgvw_cart)
-    ImageView imgvw_cart;*/
+    @BindView(R.id.imgvw_cart)
+    ImageView imgvw_cart;
 
 
     @BindView(R.id.button_cartCount)
@@ -275,11 +279,12 @@ public class DrawerMainActivity extends AppCompatActivity
                 break;
 
             case R.id.imgvw_cart:
-              //  addFragment(new CartFragment(), "CartFragment", true);
-                addFragment(new CartSummary(), "CartSummary", true);
-
+                addFragment(new CartFragment(), "CartFragment", true);
                 break;
+
         }
+
+
     }
     public void onLeftDrawerItemClick(int position) {
         // Toast.makeText(this,"Drawer Clicked ,Postion: "+position,Toast.LENGTH_SHORT).show();
@@ -291,10 +296,7 @@ public class DrawerMainActivity extends AppCompatActivity
 
             case 1:
                 // addFragment(new searchFragment(), "searchFragment", true);
-
-                break;
-            case 2:
-                 addFragment(new BookOrderHome(), "v", true);
+                addFragment(new AnnounceFragment(),"announceFragment",true);
 
                 break;
             case 3:
@@ -303,6 +305,7 @@ public class DrawerMainActivity extends AppCompatActivity
                 break;
             case 4:
                 // addFragment(new searchFragment(), "searchFragment", true);
+                addFragment(new ProductCatolugeFragment(),"productCatalouge",true);
 
                 break;
             case 6:
@@ -311,25 +314,34 @@ public class DrawerMainActivity extends AppCompatActivity
                 break;
             case 7:
                 // addFragment(new searchFragment(), "searchFragment", true);
-
+                addFragment(new SocialNetworkingFragment(),"socialFragment",true);
                 break;
 
             case 8:
                 // addFragment(new searchFragment(), "searchFragment", true);
-
+                addFragment(new UsefulLinkFragment(), "usefulLinkFragment", true);
                 break;
             case 9:
                 // addFragment(new searchFragment(), "searchFragment", true);
-
+                String serviceUrl="http://care.usha.com";
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(serviceUrl));
+                startActivity(intent);
                 break;
             case 10:
-                // addFragment(new searchFragment(), "searchFragment", true);
-
+                 //addFragment(new searchFragment(), "searchFragment", true);
+                /*Uri uri = Uri.parse("//Url for Retailer Registration\n" +
+                        "//http://148.72.22.64:92/EmployeeUser/CreateEditUserRegistration?&amp;UserCode=&amp;usertype=UTC0002&amp;Source=WEB"); // missing 'http://' will cause crashed
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);*/
+                String url = "http://148.72.22.64:92/EmployeeUser/CreateEditUserRegistration?&amp;UserCode=&amp;usertype=UTC0002&amp;Source=WEB";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
                 break;
             case 11:
-                // addFragment(new searchFragment(), "searchFragment", true);
-
-                break;
+                 addFragment(new ContactUsFragment(), "contactUsFragment", true);
+                 break;
         }
     }
 

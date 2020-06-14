@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:orientation="horizontal"
+
+    >
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="top"
+                    android:background="#f7f7f7"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="12dp"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <RelativeLayout
+                            android:id="@+id/rl_Dashboard"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+
+                            android:background="@drawable/address_button">
+
+                            <ImageView
+                                android:id="@+id/car1"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="10dp"
+                                android:background="@drawable/dashboard" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/car1"
+                                android:layout_centerHorizontal="true"
+                                android:text="Dashboard"
+                                android:textAlignment="center"
+                                android:textColor="#000"
+
+                                android:textSize="14sp" />
+
+                        </RelativeLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="11dp"
+                            android:layout_height="match_parent"></LinearLayout>
+
+
+                        <RelativeLayout
+                            android:id="@+id/rl_AdminModule"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/address_button">
+
+                            <ImageView
+                                android:id="@+id/car2"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="10dp"
+                                android:background="@drawable/adminmodule" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/car2"
+                                android:layout_centerHorizontal="true"
+                                android:text="Admin Module"
+                                android:textAlignment="center"
+
+                                android:textColor="#000"
+                                android:textSize="14sp" />
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="12dp"
+
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <RelativeLayout
+                            android:id="@+id/rl_ProductCatalogue"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/address_button">
+
+                            <ImageView
+                                android:id="@+id/car3"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="10dp"
+                                android:background="@drawable/productcatalogue" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/car3"
+                                android:layout_centerHorizontal="true"
+                                android:text="Product Catalouge"
+                                android:textAlignment="center"
+
+                                android:textColor="#000"
+                                android:textSize="14sp" />
+
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:layout_width="11dp"
+                            android:layout_height="match_parent"></LinearLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/rl_StockStatus"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/address_button">
+
+                            <ImageView
+                                android:id="@+id/car4"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="10dp"
+                                android:background="@drawable/stockstatus" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/car4"
+                                android:layout_centerHorizontal="true"
+                                android:text="Stock Status"
+                                android:textAlignment="center"
+                                android:textColor="#000"
+                                android:textSize="14sp" />
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="12dp"
+
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <RelativeLayout
+                            android:id="@+id/rl_Orders"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/address_button">
+
+                            <ImageView
+                                android:id="@id/car5"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="10dp"
+                                android:background="@drawable/order" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/car5"
+                                android:layout_centerHorizontal="true"
+                                android:text="Orders"
+                                android:textAlignment="center"
+
+                                android:textColor="#000"
+                                android:textSize="14sp" />
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:layout_width="11dp"
+                            android:layout_height="match_parent"></LinearLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/rl_Reports"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/address_button">
+
+                            <ImageView
+                                android:id="@+id/car6"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="10dp"
+                                android:background="@drawable/report" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/car6"
+                                android:layout_centerHorizontal="true"
+                                android:text="Reports"
+                                android:textAlignment="center"
+                                android:textColor="#000"
+
+                                android:textSize="14sp" />
+
+                        </RelativeLayout>
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="12dp"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <RelativeLayout
+                            android:id="@+id/rl_Account_Statement"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/address_button">
+
+                            <ImageView
+                                android:id="@id/car5"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="10dp"
+                                android:background="@drawable/accountstatement" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/car5"
+                                android:layout_centerHorizontal="true"
+                                android:text="Account Statement"
+                                android:textAlignment="center"
+
+                                android:textColor="#000"
+                                android:textSize="14sp" />
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:layout_width="11dp"
+                            android:layout_height="match_parent"></LinearLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/rl_Payment"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/address_button">
+
+                            <ImageView
+                                android:id="@+id/Payment"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="10dp"
+                                android:background="@drawable/payment" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/Payment"
+                                android:layout_centerHorizontal="true"
+                                android:text="Payment"
+                                android:textAlignment="center"
+                                android:textColor="#000"
+
+                                android:textSize="14sp" />
+
+                        </RelativeLayout>
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="12dp"
+                        android:layout_marginBottom="10dp"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <RelativeLayout
+                            android:id="@+id/download"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/address_button">
+
+                            <ImageView
+                                android:id="@id/car5"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="10dp"
+                                android:background="@drawable/download" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/car5"
+                                android:layout_centerHorizontal="true"
+                                android:text="Download"
+                                android:textAlignment="center"
+
+                                android:textColor="#000"
+                                android:textSize="14sp" />
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:layout_width="11dp"
+                            android:layout_height="match_parent"></LinearLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/claim"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/address_button">
+
+                            <ImageView
+                                android:id="@+id/Claim"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="10dp"
+                                android:background="@drawable/claim" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/Claim"
+                                android:layout_centerHorizontal="true"
+                                android:text="Claim"
+                                android:textAlignment="center"
+                                android:textColor="#000"
+
+                                android:textSize="14sp" />
+
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+
+</LinearLayout>

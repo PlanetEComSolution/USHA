@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.ContactUsFragment">
+
+
+    <TextView
+        android:id="@+id/cont"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Contact Us"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textSize="24dp"
+        android:textColor="@color/black_myaccount"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"/>
+    <TextView
+        android:id="@+id/ho"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="HeadOffice address"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cont"
+        android:textSize="24dp"
+        android:textColor="@color/black_myaccount"
+
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/address"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="HeadOffice address"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ho"
+        android:textSize="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"/>
+
+
+    <TextView
+        android:id="@+id/ro"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Registered Office"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/address"
+        android:textSize="24dp"
+        android:textColor="@color/black_myaccount"
+
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"/>
+    <TextView
+        android:id="@+id/ro_address"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Registered Office"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ro"
+        android:textSize="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/cin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="CIN"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ro_address"
+        android:textSize="24dp"
+        android:textColor="@color/black_myaccount"
+
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"/>
+    <TextView
+        android:id="@+id/cin_details"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="CIN"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cin"
+        android:textSize="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"/>
+    <TextView
+        android:id="@+id/contact_no"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Contact no."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cin_details"
+        android:textSize="24dp"
+        android:textColor="@color/black_myaccount"
+
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"/>
+    <TextView
+        android:id="@+id/contact_num"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Contact no."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contact_no"
+        android:textSize="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"/>
+    <TextView
+        android:id="@+id/contact_num2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Contact no."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contact_num"
+        android:textSize="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"/>
+    <TextView
+        android:id="@+id/email"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Contact no."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contact_num2"
+        android:textSize="24dp"
+        android:textColor="@color/black_myaccount"
+
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"/>
+    <TextView
+        android:id="@+id/email_details"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Contact no."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/email"
+        android:textSize="24dp"
+        android:textColor="@color/black_myaccount"
+
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"/>
+    <TextView
+        android:id="@+id/grev_office"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Contact no."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/email_details"
+        android:textSize="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"/>
+    <TextView
+        android:id="@+id/grev_office_details"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Contact no."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/grev_office"
+        android:textSize="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"/>
+    <TextView
+        android:id="@+id/care"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Customer Care."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/grev_office_details"
+        android:textSize="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"/>
+    <TextView
+        android:id="@+id/care_details"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Contact no."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/care"
+        android:textSize="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

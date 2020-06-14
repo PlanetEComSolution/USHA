@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#30000000">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="80dp"
+        android:layout_centerInParent="true"
+        android:background="#ffffff">
+        <RelativeLayout
+            android:id="@+id/rl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#edeaed"
+
+            >
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="@dimen/space_5"
+
+
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:src="@drawable/adminmodule" />
+
+            <TextView
+
+
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+               android:gravity="center"
+              android:layout_marginLeft="60dp"
+
+                android:id="@+id/textcount"
+
+                android:text="2"
+                android:background="@color/all"
+
+                android:textAlignment="center"
+                android:layout_marginTop="@dimen/space_7"
+
+
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                />
+
+            <ImageView
+                android:id="@+id/edit_profile"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+               android:layout_marginTop="@dimen/space_10"
+
+                android:background="@drawable/cross" />
+        </RelativeLayout>
+<LinearLayout
+   android:layout_below="@+id/rl"
+    android:layout_width="match_parent"
+    android:background="#c1c6c7"
+    android:layout_height="1dp">
+
+</LinearLayout>
+
+
+
+        <LinearLayout
+            android:id="@+id/location_list"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@+id/rl"
+
+            android:orientation="vertical"
+            >
+            <TextView
+                android:id="@+id/anoncementText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:textSize="@dimen/space_15"
+                android:text="Anouncement for Dealers"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="@dimen/space_10"
+                android:layout_marginTop="15dp"
+
+                />
+
+            <TextView
+                android:id="@+id/textAnnounce"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:textSize="@dimen/space_10"
+                android:text="Anouncement for Dealers"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="@dimen/space_10"
+                android:layout_marginTop="15dp"
+
+                />
+            <ImageView
+                android:id="@+id/norecords"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+android:visibility="gone"
+
+               android:src="@drawable/adminmodule"
+
+                android:textSize="18sp"
+
+                />
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

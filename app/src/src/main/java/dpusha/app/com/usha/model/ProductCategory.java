@@ -1,0 +1,163 @@
+
+package dpusha.app.com.usha.model;
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+public class ProductCategory {
+
+    @SerializedName("CatCode")
+    @Expose
+    private String catCode;
+    @SerializedName("CatName")
+    @Expose
+    private String catName;
+    @SerializedName("ImageName")
+    @Expose
+    private String imageName;
+    @SerializedName("CallType")
+    @Expose
+    private Object callType;
+    @SerializedName("UserId")
+    @Expose
+    private Object userId;
+    @SerializedName("DivCode")
+    @Expose
+    private Object divCode;
+    @SerializedName("DivName")
+    @Expose
+    private Object divName;
+    @SerializedName("CatType")
+    @Expose
+    private Object catType;
+    @SerializedName("Category")
+    @Expose
+    private Object category;
+    @SerializedName("SubCategory")
+    @Expose
+    private Object subCategory;
+
+    /**
+     * No args constructor for use in serialization
+     * 
+     */
+    public ProductCategory() {
+    }
+
+    public ProductCategory(String catCode, String catName) {
+        this.catCode = catCode;
+        this.catName = catName;
+    }
+
+    /**
+     * 
+     * @param catCode
+     * @param subCategory
+     * @param imageName
+     * @param divName
+     * @param divCode
+     * @param catName
+     * @param catType
+     * @param category
+     * @param userId
+     * @param callType
+     */
+    public ProductCategory(String catCode, String catName, String imageName, Object callType, Object userId, Object divCode, Object divName, Object catType, Object category, Object subCategory) {
+        super();
+        this.catCode = catCode;
+        this.catName = catName;
+        this.imageName = imageName;
+        this.callType = callType;
+        this.userId = userId;
+        this.divCode = divCode;
+        this.divName = divName;
+        this.catType = catType;
+        this.category = category;
+        this.subCategory = subCategory;
+    }
+
+    public String getCatCode() {
+        return catCode;
+    }
+
+    public void setCatCode(String catCode) {
+        this.catCode = catCode;
+    }
+
+    public String getCatName() {
+        return catName;
+    }
+
+    public void setCatName(String catName) {
+        this.catName = catName;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
+
+    public Object getCallType() {
+        return callType;
+    }
+
+    public void setCallType(Object callType) {
+        this.callType = callType;
+    }
+
+    public Object getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Object userId) {
+        this.userId = userId;
+    }
+
+    public Object getDivCode() {
+        return divCode;
+    }
+
+    public void setDivCode(Object divCode) {
+        this.divCode = divCode;
+    }
+
+    public Object getDivName() {
+        return divName;
+    }
+
+    public void setDivName(Object divName) {
+        this.divName = divName;
+    }
+
+    public Object getCatType() {
+        return catType;
+    }
+
+    public void setCatType(Object catType) {
+        this.catType = catType;
+    }
+
+    public Object getCategory() {
+        return category;
+    }
+
+    public void setCategory(Object category) {
+        this.category = category;
+    }
+
+    public Object getSubCategory() {
+        return subCategory;
+    }
+
+    public void setSubCategory(Object subCategory) {
+        this.subCategory = subCategory;
+    }
+
+    @Override
+    public String toString() {
+        return  catName ;
+    }
+}

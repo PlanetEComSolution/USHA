@@ -262,6 +262,54 @@ public class RetrofitManager implements OnRetryCallback {
         performCallback(mRequestListener, mContext, mApiType, showProgress);
 
     }
+
+    public void getContactUsDetails(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+             String token,
+            final boolean showProgress){
+        call = retroService.getContactDetails(token);
+        performCallback(mRequestListener, mContext,mApiType, showProgress);
+    }
+
+    public void getUsefulLink(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            final boolean showProgress){
+        call = retroService.getUsefulLinks();
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+    }
+
+    public void getProductCatalouge(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            final boolean showProgress){
+        call = retroService.getProductCatolugeDetails();
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+    }
+    public void getSocialLinks(
+
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            final boolean showProgress){
+        call = retroService.getSocialNetworking();
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+    }
+
+    public void getAnnouncementDetails(
+
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            String token,
+            final boolean showProgress) {
+        call = retroService.getAnnouncement(token);
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+    }
     // get orderList
 
     public void GetOrderList(
