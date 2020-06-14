@@ -102,7 +102,7 @@ public class UsefulLinkFragment extends Fragment implements RequestListener {
     private void hitApiUsefulLinks() {
 
         retrofitManager.getUsefulLink(this, getActivity(), Constants.API_TYPE.USEFULLINKS, true);
-   Toast.makeText(getActivity(),"this is links",Toast.LENGTH_LONG).show();
+        //Toast.makeText(getActivity(),"this is links",Toast.LENGTH_LONG).show();
     }
 
     @Override

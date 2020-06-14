@@ -71,12 +71,9 @@ public class ContactUsFragment extends Fragment implements RequestListener {
         // Required empty public constructor
     }
 
-    public static ContactUsFragment newInstance(String param1, String param2) {
-        ContactUsFragment fragment = new ContactUsFragment();
-        Bundle args = new Bundle();
+    public static ContactUsFragment newInstance() {
 
-        fragment.setArguments(args);
-        return fragment;
+        return new ContactUsFragment();
     }
 
     @Override
@@ -93,6 +90,7 @@ public class ContactUsFragment extends Fragment implements RequestListener {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_contact_us, container, false);
         ButterKnife.bind(this, view);
+        //hitApiContactUs();
         return view;
     }
 
@@ -111,7 +109,7 @@ public class ContactUsFragment extends Fragment implements RequestListener {
 
 
     private void hitApiContactUs() {
-        //token = SharedPreferencesUtil.getAuthToken(getActivity());
+        token = SharedPreferencesUtil.getAuthToken(getActivity());
         retrofitManager.getContactUsDetails(this, getActivity(), Constants.API_TYPE.CONTACTUS, token, true);
     }
        /* private void getDetailsContact () {

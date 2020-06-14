@@ -1,3 +1,4 @@
+//my code
 package dpusha.app.com.usha.activity;
 
 import android.app.AlertDialog;
@@ -56,6 +57,7 @@ import dpusha.app.com.usha.fragment.ContactUsFragment;
 import dpusha.app.com.usha.fragment.ProductCatolugeFragment;
 import dpusha.app.com.usha.fragment.SocialNetworkingFragment;
 import dpusha.app.com.usha.fragment.UsefulLinkFragment;
+import dpusha.app.com.usha.fragment.book_order.BookOrderHome;
 import dpusha.app.com.usha.fragment.book_order.by_cart.OrderByCart;
 import dpusha.app.com.usha.fragment.book_order.by_category.OrderByItemCategory;
 import dpusha.app.com.usha.fragment.book_order.by_itemcode.OrderByItemCode;
@@ -109,8 +111,8 @@ public class DrawerMainActivity extends AppCompatActivity
       LinearLayout ll_logout;*/
     NavigationView navigationView;
 
-    @BindView(R.id.imgvw_cart)
-    ImageView imgvw_cart;
+   /* @BindView(R.id.imgvw_cart)
+    ImageView imgvw_cart;*/
 
 
     @BindView(R.id.button_cartCount)
@@ -301,6 +303,10 @@ public class DrawerMainActivity extends AppCompatActivity
                 addFragment(new AnnounceFragment(),"announceFragment",true);
 
                 break;
+            case 2:
+                addFragment(new BookOrderHome(), "v", true);
+
+                break;
             case 3:
                 // addFragment(new searchFragment(), "searchFragment", true);
                 addFragment(new orderListFragment(), "orderListFragment", true);
@@ -331,7 +337,7 @@ public class DrawerMainActivity extends AppCompatActivity
                 startActivity(intent);
                 break;
             case 10:
-                 //addFragment(new searchFragment(), "searchFragment", true);
+                //addFragment(new searchFragment(), "searchFragment", true);
                 /*Uri uri = Uri.parse("//Url for Retailer Registration\n" +
                         "//http://148.72.22.64:92/EmployeeUser/CreateEditUserRegistration?&amp;UserCode=&amp;usertype=UTC0002&amp;Source=WEB"); // missing 'http://' will cause crashed
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
@@ -342,8 +348,8 @@ public class DrawerMainActivity extends AppCompatActivity
                 startActivity(i);
                 break;
             case 11:
-                 addFragment(new ContactUsFragment(), "contactUsFragment", true);
-                 break;
+                addFragment(new ContactUsFragment(), "contactUsFragment", true);
+                break;
         }
     }
 
@@ -360,7 +366,7 @@ public class DrawerMainActivity extends AppCompatActivity
 
                 break;
             case 2:
-               addFragment(new OrderByCart(), "OrderByCart", true);
+                addFragment(new OrderByCart(), "OrderByCart", true);
                 break;
             case 3:
                 addFragment(new OrderByTemplate(), "OrderByTemplate", true);
@@ -582,16 +588,16 @@ public class DrawerMainActivity extends AppCompatActivity
         }
     }
 
-   /* public static boolean isValidPassword(final String password) {
-        Pattern pattern;
-        Matcher matcher;
-        final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{4,}$";
-        pattern = Pattern.compile(PASSWORD_PATTERN);
-        matcher = pattern.matcher(password);
-        return matcher.matches();
+    /* public static boolean isValidPassword(final String password) {
+         Pattern pattern;
+         Matcher matcher;
+         final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{4,}$";
+         pattern = Pattern.compile(PASSWORD_PATTERN);
+         matcher = pattern.matcher(password);
+         return matcher.matches();
 
-    }
-*/
+     }
+ */
     public static boolean isValidPassword(String s) {
         Pattern PASSWORD_PATTERN
                 = Pattern.compile(

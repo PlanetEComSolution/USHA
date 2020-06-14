@@ -77,7 +77,7 @@ public class SocialNetworkingFragment extends Fragment implements RequestListene
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         //   recycler_category.addItemDecoration(new ListSpacingDecoration(20));
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2,14,true));
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2,10,true));
         //hitApiUsefulLinks();
         return view;
     }
