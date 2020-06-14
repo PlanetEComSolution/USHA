@@ -48,10 +48,7 @@ import dpusha.app.com.usha.adapter.CategoryAdapter;
 import dpusha.app.com.usha.adapter.DivisionAdapter;
 import dpusha.app.com.usha.adapter.ProductListAdapter;
 import dpusha.app.com.usha.adapter.recycler_decorator.GridSpacingItemDecoration;
-import dpusha.app.com.usha.adapter.recycler_decorator.ListSpacingDecoration;
-import dpusha.app.com.usha.adapter.recycler_decorator.MyDividerItemDecoration;
-import dpusha.app.com.usha.fragment.cart.CartFragment;
-import dpusha.app.com.usha.listeners.CartItemChangedListener;
+
 import dpusha.app.com.usha.listeners.MainListner;
 import dpusha.app.com.usha.model.CartItem;
 import dpusha.app.com.usha.model.Item;

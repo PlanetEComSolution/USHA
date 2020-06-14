@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,20 +34,21 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.MyVi
     List<Item> items;
     CartItem cartItem;
     CartItemChangedListener cartItemChangedListener;
+    boolean isOrderEditable = false;
 
-
-    Integer Icon[]={R.drawable.fan,R.drawable.fan,R.drawable.fan,R.drawable.fan};
+    Integer Icon[] = {R.drawable.fan, R.drawable.fan, R.drawable.fan, R.drawable.fan};
 
     MainListner mainListner;
 //    Integer Icon[]={R.drawable.fan,R.drawable.fan2,R.drawable.fan3,R.drawable.fan4};
 
 
-    public CartItemsAdapter(Context context, CartItem cartItem, CartItemChangedListener listener, MainListner mainListner) {
+    public CartItemsAdapter(Context context, CartItem cartItem, CartItemChangedListener listener, MainListner mainListner, boolean isOrderEditable) {
         this.context = context;
         this.cartItem = cartItem;
         this.items = cartItem.getItems();
-        this.  cartItemChangedListener=listener;
-        this. mainListner=mainListner;
+        this.cartItemChangedListener = listener;
+        this.mainListner = mainListner;
+        this.isOrderEditable = isOrderEditable;
     }
 
     @Override
@@ -64,6 +66,15 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.MyVi
         holder.txtvw_Description.setText(items.get(position).getDescription());
 
         holder.txtvw_variable_qnty.setText(String.valueOf(items.get(position).getQuantity()));
+
+        holder.txtvw_minus_qnty.setEnabled(isOrderEditable);
+        holder.txtvw_plus_qnty.setEnabled(isOrderEditable);
+        if(isOrderEditable){
+            holder.imgvw_delete.setVisibility(View.VISIBLE);
+        }else {
+            holder.imgvw_delete.setVisibility(View.GONE);
+        }
+
          /* if(position<Icon.length){
               holder.icon.setImageResource(Icon[position]);
           }else {
@@ -71,10 +82,10 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.MyVi
           }*/
 
         Picasso.with(context)
-                .load(Constants.PRODUCT_IMAGE_URL_PREFIX +items.get(position).getImageName())
+                .load(Constants.PRODUCT_IMAGE_URL_PREFIX + items.get(position).getImageName())
                 .fit()
-                .placeholder(R.drawable.puma_offer)
-                .error(R.drawable.puma_offer)
+                .placeholder(R.drawable.thumb_no_mage)
+                .error(R.drawable.thumb_no_mage)
                 .into(holder.icon);
 
 
@@ -89,7 +100,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.MyVi
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public ImageView icon, imgvw_delete;
-        public TextView txtvw_SKU, txtvw_Description, txtvw_minus_qnty, txtvw_plus_qnty,txtvw_variable_qnty;
+        public TextView txtvw_SKU, txtvw_Description, txtvw_minus_qnty, txtvw_plus_qnty, txtvw_variable_qnty;
 
 
         public MyViewHolder(View view) {
@@ -100,7 +111,9 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.MyVi
             txtvw_Description = view.findViewById(R.id.txtvw_Description);
             txtvw_minus_qnty = view.findViewById(R.id.txtvw_minus_qnty);
             txtvw_plus_qnty = view.findViewById(R.id.txtvw_plus_qnty);
-            txtvw_variable_qnty= view.findViewById(R.id.txtvw_variable_qnty);
+            txtvw_variable_qnty = view.findViewById(R.id.txtvw_variable_qnty);
+
+
             imgvw_delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -108,9 +121,9 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.MyVi
                     cartItem.setItems(items);
 
                     notifyDataSetChanged();
-                   // SharedPreferencesUtil.setCartItems(context,  utility.convertCartToJSONString(cartItem));
-utility.setCartItems(context, utility.convertCartToJSONString(cartItem),mainListner);
-                    cartItemChangedListener.onCartRefresh();
+                    // SharedPreferencesUtil.setCartItems(context,  utility.convertCartToJSONString(cartItem));
+                    utility.setCartItems(context, utility.convertCartToJSONString(cartItem), mainListner);
+                    cartItemChangedListener.onCartRefresh(items.size());
 
                 }
             });
@@ -126,9 +139,9 @@ utility.setCartItems(context, utility.convertCartToJSONString(cartItem),mainList
                     cartItem.setItems(items);
                     notifyDataSetChanged();
                     //SharedPreferencesUtil.setCartItems(context,utility.convertCartToJSONString(cartItem));
-                    utility.setCartItems(context,utility.convertCartToJSONString(cartItem),mainListner);
+                    utility.setCartItems(context, utility.convertCartToJSONString(cartItem), mainListner);
 
-                    cartItemChangedListener.onCartRefresh();
+                    cartItemChangedListener.onCartRefresh(items.size());
 
 
                 }
@@ -141,10 +154,10 @@ utility.setCartItems(context, utility.convertCartToJSONString(cartItem),mainList
                     items.get(getAdapterPosition()).setQuantity(quantity);
                     cartItem.setItems(items);
                     notifyDataSetChanged();
-                  //  SharedPreferencesUtil.setCartItems(context,utility.convertCartToJSONString(cartItem));
-                    utility.setCartItems(context,utility.convertCartToJSONString(cartItem),mainListner);
+                    //  SharedPreferencesUtil.setCartItems(context,utility.convertCartToJSONString(cartItem));
+                    utility.setCartItems(context, utility.convertCartToJSONString(cartItem), mainListner);
 
-                    cartItemChangedListener.onCartRefresh();
+                    cartItemChangedListener.onCartRefresh(items.size());
                 }
             });
 

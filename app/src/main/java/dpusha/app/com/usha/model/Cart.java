@@ -12,9 +12,15 @@ public class Cart {
     @SerializedName("Description")
     @Expose
     private String description;
+
     @SerializedName("ImageName")
     @Expose
     private String imageName;
+
+    @SerializedName("UOM")
+    @Expose
+    private String UOM;
+
     @SerializedName("Quantity")
     @Expose
     private Integer quantity;
@@ -35,21 +41,11 @@ public class Cart {
     public Cart() {
     }
 
-    /**
-     * 
-     * @param imageName
-     * @param quantity
-     * @param pageIndex
-     * @param description
-     * @param sKU
-     * @param isActive
-     * @param totalRecord
-     */
-    public Cart(String sKU, String description, String imageName, Integer quantity, Boolean isActive, Integer pageIndex, Integer totalRecord) {
-        super();
+    public Cart(String sKU, String description, String imageName, String UOM, Integer quantity, Boolean isActive, Integer pageIndex, Integer totalRecord) {
         this.sKU = sKU;
         this.description = description;
         this.imageName = imageName;
+        this.UOM = UOM;
         this.quantity = quantity;
         this.isActive = isActive;
         this.pageIndex = pageIndex;
@@ -112,4 +108,28 @@ public class Cart {
         this.totalRecord = totalRecord;
     }
 
+
+    public String getsKU() {
+        return sKU;
+    }
+
+    public void setsKU(String sKU) {
+        this.sKU = sKU;
+    }
+
+    public String getUOM() {
+        return UOM;
+    }
+
+    public void setUOM(String UOM) {
+        this.UOM = UOM;
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
 }

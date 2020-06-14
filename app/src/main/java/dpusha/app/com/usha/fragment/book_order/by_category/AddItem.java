@@ -44,7 +44,8 @@ import butterknife.OnClick;
 import dpusha.app.com.usha.R;
 import dpusha.app.com.usha.adapter.CartItemsAdapter;
 import dpusha.app.com.usha.adapter.recycler_decorator.MyDividerItemDecoration;
-import dpusha.app.com.usha.fragment.cart.CartFragment;
+//import dpusha.app.com.usha.fragment.cart.CartFragment;
+import dpusha.app.com.usha.fragment.cart.PlaceOrder;
 import dpusha.app.com.usha.listeners.CartItemChangedListener;
 import dpusha.app.com.usha.listeners.MainListner;
 import dpusha.app.com.usha.model.CartItem;
@@ -164,7 +165,7 @@ public class AddItem extends Fragment implements RequestListener, CartItemChange
             activity = getActivity();
             listenerMainActivity = (MainListner) activity;
         }
-        hitAPIGetDraft();
+      //  hitAPIGetDraft();
         hitAPIGetShipToParty();
         setViewListener();
     }
@@ -348,9 +349,9 @@ public class AddItem extends Fragment implements RequestListener, CartItemChange
                     bundle.putString("Remarks",et_remarks.getText().toString().trim());
                     bundle.putString("Party",((ShipToParty) spinnerShipToParty.getSelectedItem()).getColumnValue());
                     bundle.putString("DeliveryDate",et_deliveryDate.getText().toString().trim());
-                   Fragment fragment=new CartFragment();
+                   Fragment fragment=new PlaceOrder();
                    fragment.setArguments(bundle);
-                    listenerMainActivity.addFragment(fragment, "CartFragment", true);
+                    listenerMainActivity.addFragment(fragment, "PlaceOrder", true);
                 } else {
                     utility.showToast(getActivity(), "Cart is empty!");
                 }
@@ -533,7 +534,7 @@ public class AddItem extends Fragment implements RequestListener, CartItemChange
         if (!strCartItem.equals("")) {
             CartItem cartObject = utility.convertJSONStringToCartObject(strCartItem);
             if (cartObject != null && cartObject.getItems() != null && cartObject.getItems().size() > 0) {
-                CartItemsAdapter cartItemsAdapter = new CartItemsAdapter(getActivity(), cartObject, this,listenerMainActivity);
+                CartItemsAdapter cartItemsAdapter = new CartItemsAdapter(getActivity(), cartObject, this,listenerMainActivity,true);
                 recycler_items.setAdapter(cartItemsAdapter);
             } else {
                 recycler_items.setAdapter(null);
@@ -576,7 +577,7 @@ public class AddItem extends Fragment implements RequestListener, CartItemChange
 
 
     @Override
-    public void onCartRefresh() {
+    public void onCartRefresh(int CartSize) {
 
     }
 

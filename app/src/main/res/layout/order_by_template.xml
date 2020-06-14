@@ -159,6 +159,18 @@
             android:text="Action" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtvw_noItems"
+        style="@style/mediumTextViewStyle_grey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:visibility="gone"
+        android:gravity="center"
+        android:text="No template(s) available!" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_template"
         android:layout_width="match_parent"
@@ -167,16 +179,6 @@
         android:layout_weight="1"
         android:visibility="visible"
         android:scrollbars="none" />
-    <TextView
-        android:id="@+id/txtvw_noItems"
-        style="@style/mediumTextViewStyle_grey"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-       android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:visibility="gone"
-android:gravity="center"
-        android:text="No item(s) found!" />
 
 
 </LinearLayout>

@@ -409,12 +409,7 @@ public class orderListFragment extends Fragment implements RequestListener {
         retrofitManager.GetOrderList(this,getContext(), Constants.API_TYPE.ORDER_LIST,user_id,true);
     }
 
-    private void hitAPIAccessToken() {
 
-
-
-        retrofitManager.getAuthToken(this, getActivity(), Constants.API_TYPE.TOKEN,SharedPreferencesUtil.getUserId(getActivity()),SharedPreferencesUtil.getPassword(getActivity()) ,true);
-    }
 
     @Override
     public void onSuccess(Response<ResponseBody> response, Constants.API_TYPE apiType) {
@@ -422,13 +417,7 @@ public class orderListFragment extends Fragment implements RequestListener {
             String strResponse = response.body().string();
             Log.e("menu", response.body().toString());
             // Toast.makeText(this, apiType+"Response  "+strResponse,Toast.LENGTH_SHORT).show();
-            if (apiType == Constants.API_TYPE.TOKEN) {
-                AuthToken tokenBean = new Gson().fromJson(strResponse, AuthToken.class);
-
-                String token = tokenBean.getAccessToken();
-                String token_type = tokenBean.getTokenType();
-                SharedPreferencesUtil.setAuthToken(getContext(),token_type+" "+token);
-            }else if(apiType == Constants.API_TYPE.ORDER_LIST){
+           if(apiType == Constants.API_TYPE.ORDER_LIST){
 
                 Gson gson = new Gson();
                 Type listType = new TypeToken<List<OrderList>>() {
@@ -437,14 +426,13 @@ public class orderListFragment extends Fragment implements RequestListener {
 
                 if(OrderListResponse!=null && !OrderListResponse.isEmpty()){
                     filterList.addAll(OrderListResponse);
-
                     orderListAdapter = new OrderListAdapter_new(getContext(),OrderListResponse,listenerMainActivity);
                     recycler_orderlist.setAdapter(orderListAdapter);
 
 
-                    Toast.makeText(getContext(),"Order List",Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(),"Order List",Toast.LENGTH_SHORT).show();
                 }else
-                    Toast.makeText(getContext(),"Invalid user",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),"Failed!",Toast.LENGTH_SHORT).show();
             }
 
         } catch (IOException e) {

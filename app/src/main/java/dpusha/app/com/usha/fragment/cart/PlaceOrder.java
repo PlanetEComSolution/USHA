@@ -1,17 +1,15 @@
 package dpusha.app.com.usha.fragment.cart;
 
 
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +19,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -42,6 +42,7 @@ import butterknife.OnClick;
 import dpusha.app.com.usha.R;
 import dpusha.app.com.usha.adapter.CartItemsAdapter;
 import dpusha.app.com.usha.adapter.recycler_decorator.MyDividerItemDecoration;
+import dpusha.app.com.usha.fragment.book_order.BookOrderHome;
 import dpusha.app.com.usha.listeners.CartItemChangedListener;
 import dpusha.app.com.usha.listeners.MainListner;
 import dpusha.app.com.usha.model.CartItem;
@@ -50,6 +51,7 @@ import dpusha.app.com.usha.model.Item;
 import dpusha.app.com.usha.model.Material;
 import dpusha.app.com.usha.model.Result;
 import dpusha.app.com.usha.model.ShipToParty;
+import dpusha.app.com.usha.model.draft.GetDraft;
 import dpusha.app.com.usha.network.APIError;
 import dpusha.app.com.usha.network.RequestListener;
 import dpusha.app.com.usha.network.RetrofitManager;
@@ -64,7 +66,7 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CartFragment extends Fragment implements RequestListener, DatePickerDialog.OnDateSetListener, CartItemChangedListener {
+public class PlaceOrder extends Fragment implements RequestListener, DatePickerDialog.OnDateSetListener, CartItemChangedListener {
 
 
     @BindView(R.id.recycler_items)
@@ -86,6 +88,14 @@ public class CartFragment extends Fragment implements RequestListener, DatePicke
     @BindView(R.id.spinnerShipToParty)
     Spinner spinnerShipToParty;
 
+
+    @BindView(R.id.button_updateOrder)
+    Button button_updateOrder;
+
+    @BindView(R.id.button_proceed)
+    LinearLayout button_proceed;
+
+
     @BindView(R.id.et_referenceNumber)
     EditText et_referenceNumber;
     @BindView(R.id.et_remarks)
@@ -96,13 +106,15 @@ public class CartFragment extends Fragment implements RequestListener, DatePicke
     CartItem cartItems;
     List<ShipToParty> shipToPartyList = new ArrayList<>();
     AlertDialog alertDialog1;
+    boolean isOrderEditable = true;
+    String ShipToPartyId = "";
 
-    public CartFragment() {
+    public PlaceOrder() {
         // Required empty public constructor
     }
 
-    public static CartFragment newInstance() {
-        return new CartFragment();
+    public static PlaceOrder newInstance() {
+        return new PlaceOrder();
 
     }
 
@@ -112,6 +124,7 @@ public class CartFragment extends Fragment implements RequestListener, DatePicke
 
 
     }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -124,7 +137,8 @@ public class CartFragment extends Fragment implements RequestListener, DatePicke
         setViewListener();
         setTemporaryAdapterForPartySpinner();
         hitAPIGetShipToParty();
-        refreshCartRecyclerFromPreference();
+        checkArguments();
+        // refreshCartRecyclerFromPreference();
 
     }
 
@@ -132,7 +146,7 @@ public class CartFragment extends Fragment implements RequestListener, DatePicke
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.cart, container, false);
+        View view = inflater.inflate(R.layout.place_order, container, false);
         ButterKnife.bind(this, view);
         recycler_items.setLayoutManager(new LinearLayoutManager(getActivity()));
         recycler_items.setItemAnimator(new DefaultItemAnimator());
@@ -142,35 +156,95 @@ public class CartFragment extends Fragment implements RequestListener, DatePicke
 
         return view;
     }
-   void checkArguments(){
 
-    Bundle bundle=getArguments();
-    if(bundle!=null){
-        if(bundle.containsKey("ReferenceNum")){
-          String ReferenceNum=  bundle.getString("ReferenceNum");
-          et_referenceNumber.setText(ReferenceNum);
-        }
-        if(bundle.containsKey("Remarks")){
-            String Remarks=  bundle.getString("Remarks");
-            et_remarks.setText(Remarks);
-        }
-        if(bundle.containsKey("Party")){
-            String Party=  bundle.getString("Party");
-            for(int i=0;i<shipToPartyList.size();i++){
-                ShipToParty shipToParty=shipToPartyList.get(i);
-                if(shipToParty.getColumnValue().equals(Party)){
-                    spinnerShipToParty.setSelection(i);
-                    break;
+    void checkArguments() {
+
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            if (bundle.containsKey("ReferenceNum")) {
+                String ReferenceNum = bundle.getString("ReferenceNum");
+                et_referenceNumber.setText(ReferenceNum);
+            }
+            if (bundle.containsKey("Remarks")) {
+                String Remarks = bundle.getString("Remarks");
+                et_remarks.setText(Remarks);
+            }
+            if (bundle.containsKey("Party")) {
+                ShipToPartyId = bundle.getString("Party");
+            }
+            if (bundle.containsKey("DeliveryDate")) {
+                String DeliveryDate = bundle.getString("DeliveryDate");
+                et_deliveryDate.setText(DeliveryDate);
+            }
+
+
+            if (bundle.containsKey(Constants.FROM_PLACED_ORDER)) {
+                //listenerMainActivity.clearCart(getActivity());
+
+                isOrderEditable = bundle.getBoolean("isOrderEditable", true);
+                if (isOrderEditable) {
+                    et_referenceNumber.setEnabled(false);
+                    et_remarks.setEnabled(true);
+                    spinnerShipToParty.setEnabled(true);
+                    et_deliveryDate.setEnabled(true);
+                    button_updateOrder.setVisibility(View.VISIBLE);
+                    button_proceed.setVisibility(View.GONE);
+
+                } else {
+                    et_referenceNumber.setEnabled(false);
+                    et_remarks.setEnabled(false);
+                    spinnerShipToParty.setEnabled(false);
+                    et_deliveryDate.setEnabled(false);
+                    button_updateOrder.setVisibility(View.GONE);
+                    button_proceed.setVisibility(View.GONE );
                 }
+                String id = getArguments().getString("id");
+                getOrderListDetails(id);
+            } else {
+                refreshCartRecyclerFromPreference();
+            }
+
+
+        } else {
+            refreshCartRecyclerFromPreference();
+
+        }
+
+    }
+
+    private void setSpinnerShipToPartyFromPartyId() {
+        for (int i = 0; i < shipToPartyList.size(); i++) {
+            ShipToParty shipToParty = shipToPartyList.get(i);
+            if (shipToParty.getColumnValue().equals(ShipToPartyId)) {
+                spinnerShipToParty.setSelection(i);
+                break;
             }
         }
-        if(bundle.containsKey("DeliveryDate")){
-            String DeliveryDate=  bundle.getString("DeliveryDate");
-            et_deliveryDate.setText(DeliveryDate);
+    }
+
+    private void setSpinnerShipToPartyFromPartyName(String PartyName) {
+        for (int i = 0; i < shipToPartyList.size(); i++) {
+            ShipToParty shipToParty = shipToPartyList.get(i);
+            if (shipToParty.getColumnName().equals(PartyName)) {
+                spinnerShipToParty.setSelection(i);
+                break;
+            }
         }
     }
 
+    private void setOrderDetailFields(String PartyName, String OrderId, String DeliveryDate) {
+        setSpinnerShipToPartyFromPartyName(PartyName);
+        et_referenceNumber.setText(OrderId);
+        if (DeliveryDate.contains("T")) {
+            DeliveryDate = DeliveryDate.substring(0, DeliveryDate.indexOf("T"));
+            DeliveryDate = utility.chageDateFormat("yyyy-MM-dd", DeliveryDate, "dd-MM-yyyy");
+        }
+
+        et_deliveryDate.setText(DeliveryDate);
+
     }
+
+
     void getPrice(CartItem cartItems) {
         List<String> sku = new ArrayList<>();
         List<Item> items = cartItems.getItems();
@@ -188,7 +262,7 @@ public class CartFragment extends Fragment implements RequestListener, DatePicke
             if (cartItems != null && cartItems.getItems() != null && cartItems.getItems().size() > 0) {
                 getPriceSample();
                 // getPrice(cartItems);
-                CartItemsAdapter cartItemsAdapter = new CartItemsAdapter(getActivity(), cartItems, this,listenerMainActivity);
+                CartItemsAdapter cartItemsAdapter = new CartItemsAdapter(getActivity(), cartItems, this, listenerMainActivity, isOrderEditable);
                 recycler_items.setAdapter(cartItemsAdapter);
 
             } else {
@@ -197,6 +271,7 @@ public class CartFragment extends Fragment implements RequestListener, DatePicke
         } else {
             recycler_items.setAdapter(null);
         }
+        // refreshTotalAmount();
     }
 
     void setViewListener() {
@@ -212,13 +287,27 @@ public class CartFragment extends Fragment implements RequestListener, DatePicke
     }
 
     private void hitAPIPlaceOrder() {
-     Log.e("Log_cartPlaceOrder",   utility.convertCartToJSONString(cartItems));
+
+        Log.e("Log_cartPlaceOrder", utility.convertCartToJSONString(cartItems));
         retrofitManager.placeOrder(this, getActivity(), Constants.API_TYPE.PLACE_ORDER, cartItems, true);
+    }
+    private void hitAPIUpdateOrder() {
+
+        Log.e("Log_cartUpdateOrder", utility.convertCartToJSONString(cartItems));
+        retrofitManager.updateOrder(this, getActivity(), Constants.API_TYPE.PLACE_ORDER, cartItems, true);
+    }
+
+
+
+
+    public void getOrderListDetails(String id) {
+        retrofitManager.GetOrderListDetails(this, getContext(), Constants.API_TYPE.ORDER_LIST_DETAILS, id, true);
     }
 
     @OnClick({
             R.id.et_deliveryDate,
             R.id.button_proceed,
+            R.id.button_updateOrder,
 
     })
     public void onClick(@NonNull View view) {
@@ -227,16 +316,18 @@ public class CartFragment extends Fragment implements RequestListener, DatePicke
             case R.id.et_deliveryDate:
                 Click_getDate();
                 break;
-            case R.id.button_proceed:
+            case R.id.button_proceed :
                 if (validation()) {
-
                     hitAPIPlaceOrder();
                 }
                 break;
+            case R.id.button_updateOrder:
+                cartItems.setOrderId(et_referenceNumber.getText().toString().trim());
+                if (validation()) {
+                    hitAPIUpdateOrder();
+                }
+                break;
 
-           /* case R.id.etShipToParty:
-                showDialogNew("Ship to party", getActivity(), etShipToParty, shipToPartyList);
-                break;*/
 
         }
     }
@@ -265,7 +356,8 @@ public class CartFragment extends Fragment implements RequestListener, DatePicke
                     setTemporaryAdapterForPartySpinner();
                     Toast.makeText(getActivity(), "No data found!", Toast.LENGTH_SHORT).show();
                 }
-                checkArguments();
+
+                setSpinnerShipToPartyFromPartyId();
             } else if (apiType == Constants.API_TYPE.GET_PRICE) {
                 GetPriceResponse priceResponse = new Gson().fromJson(strResponse, GetPriceResponse.class);
                 if (priceResponse != null && priceResponse.getIsSuccess() && priceResponse.getResult() != null && priceResponse.getResult().size() > 0) {
@@ -288,6 +380,22 @@ public class CartFragment extends Fragment implements RequestListener, DatePicke
             } else if (apiType == Constants.API_TYPE.PLACE_ORDER) {
 
                 Toast.makeText(getActivity(), strResponse, Toast.LENGTH_SHORT).show();
+                listenerMainActivity.clearCart(getActivity());
+                try {
+                    FragmentManager manager = getActivity().getSupportFragmentManager();
+                    FragmentTransaction trans = manager.beginTransaction();
+                    trans.remove(this);
+                    trans.commit();
+                    manager.popBackStack();
+                } catch (Exception e) {
+                    e.getMessage();
+                }
+                listenerMainActivity.addFragment(new BookOrderHome(), "BookOrderHome", true);
+            } else if (apiType == Constants.API_TYPE.ORDER_LIST_DETAILS) {
+                GetDraft draft = new Gson().fromJson(strResponse, GetDraft.class);
+                utility.saveDraftToCartPreference(draft, getActivity(), listenerMainActivity);
+                refreshCartRecyclerFromPreference();
+                setOrderDetailFields(String.valueOf(draft.getShipToParty()), draft.getOrderId(), draft.getRequestDeliveryDate());
             }
 
 
@@ -392,7 +500,7 @@ public class CartFragment extends Fragment implements RequestListener, DatePicke
 
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog dpd = DatePickerDialog.newInstance(
-                CartFragment.this,
+                PlaceOrder.this,
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH));
@@ -418,10 +526,16 @@ public class CartFragment extends Fragment implements RequestListener, DatePicke
         String shipToParty = _shipToParty.getColumnValue();
         // String shipToParty = etShipToParty.getText().toString().trim();
         String date = et_deliveryDate.getText().toString().trim();
-
-        cartItems.setReferenceNo(et_referenceNumber.getText().toString().trim());
+        date=utility.chageDateFormat("dd-MM-yyyy",date,"yyyy-MM-dd");
+      //  cartItems.setReferenceNo(et_referenceNumber.getText().toString().trim());
         cartItems.setShipToPartyId(shipToParty);
         cartItems.setRequestDeliveryDate(date);
+
+        cartItems.setReferenceNo(cartItems.getOrderId());
+        cartItems.setOrderStatus("Created");
+
+
+
         //cartItems.setremarks
 
         if (cartItems == null || cartItems.getItems() == null || cartItems.getItems().size() == 0) {
@@ -450,7 +564,9 @@ public class CartFragment extends Fragment implements RequestListener, DatePicke
     }
 
     @Override
-    public void onCartRefresh() {
+    public void onCartRefresh(int CartSize) {
         refreshTotalAmount();
     }
+
+
 }

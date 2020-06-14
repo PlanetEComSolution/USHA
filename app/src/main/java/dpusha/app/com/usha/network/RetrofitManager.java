@@ -460,6 +460,19 @@ public class RetrofitManager implements OnRetryCallback {
     }
 
 
+    public void updateOrder(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            final CartItem cartItem,
+            final boolean showProgress) {
+
+        call = retroService.updateOrder(cartItem);
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+
+    }
+
+
     public void getPrice(
             final RequestListener mRequestListener,
             final Context mContext,

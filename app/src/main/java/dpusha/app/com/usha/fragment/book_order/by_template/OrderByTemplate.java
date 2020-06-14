@@ -44,7 +44,8 @@ import dpusha.app.com.usha.adapter.recycler_decorator.ListSpacingDecoration;
 import dpusha.app.com.usha.adapter.recycler_decorator.MyDividerItemDecoration;
 import dpusha.app.com.usha.adapter.recycler_decorator.RecyclerViewMargin;
 import dpusha.app.com.usha.adapter.recycler_decorator.SpacesItemDecoration;
-import dpusha.app.com.usha.fragment.cart.CartFragment;
+//import dpusha.app.com.usha.fragment.cart.CartFragment;
+import dpusha.app.com.usha.fragment.cart.PlaceOrder;
 import dpusha.app.com.usha.listeners.BookOrderByTemplateListener;
 import dpusha.app.com.usha.listeners.MainListner;
 import dpusha.app.com.usha.model.AuthToken;
@@ -233,7 +234,7 @@ public class OrderByTemplate extends Fragment implements RequestListener, BookOr
                 //SharedPreferencesUtil.clearCartItems(getActivity(),listenerMainActivity);
                 listenerMainActivity.clearCart(getActivity());
                 utility.saveTemplateToCartPreference(template, getActivity(),listenerMainActivity);
-                listenerMainActivity.addFragment(new CartFragment(), "CartFragment", true);
+                listenerMainActivity.addFragment(new PlaceOrder(), "PlaceOrder", true);
 
             }
             else if (apiType == Constants.API_TYPE.DELETE_TEMPLATE) {
@@ -284,7 +285,13 @@ public class OrderByTemplate extends Fragment implements RequestListener, BookOr
             @Override
             public void onDateSet(int selectedMonth, int selectedYear) {
                 et_month.setText(utility.formatMonth(String.valueOf(selectedMonth + 1)));
-                filterByMonth(selectedMonth + 1);
+
+
+                if(et_year.getText().toString().trim().isEmpty()){
+                    filterByMonth(selectedMonth + 1);
+                }else {
+                    filterByYearMonth(Integer.parseInt(et_year.getText().toString()),selectedMonth + 1);
+                }
             }
         }, /* activated number in year */ calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH));
 
@@ -302,7 +309,12 @@ public class OrderByTemplate extends Fragment implements RequestListener, BookOr
             @Override
             public void onDateSet(int selectedMonth, int selectedYear) {
                 et_year.setText(Integer.toString(selectedYear));
-                filterByYear(selectedYear);
+                if(et_month.getText().toString().isEmpty()){
+                    filterByYear(selectedYear);
+                }else {
+                    filterByYearMonth(selectedYear,utility.formatMonthNameToNumber(et_month.getText().toString()));
+                }
+
             }
         }, calendar.get(Calendar.YEAR), 0);
 
@@ -330,10 +342,15 @@ public class OrderByTemplate extends Fragment implements RequestListener, BookOr
                     break;
                 }
             }
+
+            if(templateList1.isEmpty()){
+                txtvw_noItems.setVisibility(View.VISIBLE);
+            }else txtvw_noItems.setVisibility(View.GONE);
             TemplateAdapter categoryAdapter = new TemplateAdapter(getActivity(), templateList1,this);
             recycler_template.setAdapter(categoryAdapter);
 
         }
+
     }
 
     void filterByYear(int selectedYear) {
@@ -350,12 +367,46 @@ public class OrderByTemplate extends Fragment implements RequestListener, BookOr
                 templateList1.add(template);
             }
         }
+
+        if(templateList1.isEmpty()){
+            txtvw_noItems.setVisibility(View.VISIBLE);
+        }else txtvw_noItems.setVisibility(View.GONE);
+
         TemplateAdapter categoryAdapter = new TemplateAdapter(getActivity(), templateList1,this);
         recycler_template.setAdapter(categoryAdapter);
 
 
     }
+    void filterByYearMonth(int selectedYear, int selectedMonth) {
+        List<Template> templateList1 = new ArrayList<>();
+        for (int i = 0; i < templateList.size(); i++) {
+            Template template = templateList.get(i);
+            String date = template.getCreatedDate();
 
+
+            int month = 0;
+
+            String year = "";
+            if (date.contains("T")) {
+                date = date.substring(0, date.indexOf("T"));
+                year = utility.chageDateFormat("yyyy-MM-dd", date, "yyyy");
+                String str_month = utility.chageDateFormat("yyyy-MM-dd", date, "MM");
+                month = Integer.parseInt(str_month);
+            }
+            if (String.valueOf(selectedYear).equals(year)  && selectedMonth == month) {
+                templateList1.add(template);
+            }
+        }
+
+        if(templateList1.isEmpty()){
+            txtvw_noItems.setVisibility(View.VISIBLE);
+        }else txtvw_noItems.setVisibility(View.GONE);
+
+        TemplateAdapter categoryAdapter = new TemplateAdapter(getActivity(), templateList1,this);
+        recycler_template.setAdapter(categoryAdapter);
+
+
+    }
     void filterByMonth(int selectedMonth) {
         List<Template> templateList1 = new ArrayList<>();
         for (int i = 0; i < templateList.size(); i++) {
@@ -371,6 +422,12 @@ public class OrderByTemplate extends Fragment implements RequestListener, BookOr
                 templateList1.add(template);
             }
         }
+
+
+        if(templateList1.isEmpty()){
+            txtvw_noItems.setVisibility(View.VISIBLE);
+        }else txtvw_noItems.setVisibility(View.GONE);
+
         TemplateAdapter categoryAdapter = new TemplateAdapter(getActivity(), templateList1,this);
         recycler_template.setAdapter(categoryAdapter);
 

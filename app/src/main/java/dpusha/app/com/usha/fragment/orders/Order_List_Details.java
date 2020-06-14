@@ -134,13 +134,7 @@ public class Order_List_Details extends Fragment implements RequestListener {
             String strResponse = response.body().string();
             Log.e("menu", response.body().toString());
             // Toast.makeText(this, apiType+"Response  "+strResponse,Toast.LENGTH_SHORT).show();
-            if (apiType == Constants.API_TYPE.TOKEN) {
-                AuthToken tokenBean = new Gson().fromJson(strResponse, AuthToken.class);
-
-                String token = tokenBean.getAccessToken();
-                String token_type = tokenBean.getTokenType();
-                SharedPreferencesUtil.setAuthToken(getContext(),token_type+" "+token);
-            }else if(apiType == Constants.API_TYPE.ORDER_LIST_DETAILS){
+            if(apiType == Constants.API_TYPE.ORDER_LIST_DETAILS){
 
                /* Gson gson = new Gson();
                 Type listType = new TypeToken<List<Order_List_Details>>() {

@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dpusha.app.com.usha.R;
-import dpusha.app.com.usha.fragment.cart.CartFragment;
+
 import dpusha.app.com.usha.listeners.CartItemChangedListener;
 import dpusha.app.com.usha.listeners.MainListner;
 import dpusha.app.com.usha.model.Cart;
@@ -114,7 +114,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
                     }
 
                     notifyDataSetChanged();
-                    cartItemChangedListener.onCartRefresh();
+                    cartItemChangedListener.onCartRefresh(items.size());
 
 
                 }
@@ -127,7 +127,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
                     items.get(getAdapterPosition()).setQuantity(quantity);
 
                     notifyDataSetChanged();
-                    cartItemChangedListener.onCartRefresh();
+                    cartItemChangedListener.onCartRefresh(items.size());
                 }
             });
             button_addToCart.setOnClickListener(new View.OnClickListener() {
@@ -135,8 +135,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
                 public void onClick(View v) {
                     ProductDescription item = utility.convertCart_To_Description(items.get(getAdapterPosition()));
                     utility.addItemToCartPreference(item, context,listenerMainActivity);
-
-                  //  listenerMainActivity.addFragment(new CartFragment(), "CartFragment", true);
 
                     utility.showToast(context,"Item added to cart!");
                 }

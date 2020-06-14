@@ -32,6 +32,7 @@ public class Constants {
             CHANGEPASSWORD("CHANGE_PASSWORD"),
 
           TEMPLATE_DETAILS("TEMPLATE_DETAILS"),
+
           DELETE_TEMPLATE("DELETE_TEMPLATE"),
           CATEGORY_TYPE("CATEGORY_TYPE"),
           SUB_CATEGORY("SUB_CATEGORY"),
@@ -56,4 +57,7 @@ public class Constants {
     public static final String CATEGORY_IMAGE_URL_PREFIX =  Constants.IMAGE_URL_LIVE+"/assets/images/CategoryImages/";
       public static final String PRODUCT_IMAGE_URL_PREFIX =  Constants.IMAGE_URL_LIVE+"/assets/images/ProductImages/";
     public static final String DIVISION_IMAGE_URL_PREFIX =  Constants.IMAGE_URL_LIVE+"/assets/images/DivisionImages/";
+    public static final String FROM_PLACED_ORDER ="FROM_PLACED_ORDER";
+    public static final String ORDER_EDITABLE ="ORDER_EDITABLE";
+
 }

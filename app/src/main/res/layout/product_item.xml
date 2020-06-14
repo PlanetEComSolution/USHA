@@ -80,7 +80,7 @@ android:textColor="@color/md_black_1000"
             <TextView
                 android:id="@+id/txtvw_minus_qnty"
                 android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_height="match_parent"
                 android:text="-"
 android:gravity="left|center"
                 android:textSize="14dp"
@@ -100,9 +100,9 @@ android:gravity="left|center"
             <TextView
                 android:id="@+id/txtvw_plus_qnty"
                 android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_height="match_parent"
                 android:text="+"
-android:gravity="right"
+android:gravity="right|center"
                 android:textSize="14dp"
                 android:textStyle="bold" />
 

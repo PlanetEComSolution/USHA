@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import dpusha.app.com.usha.adapter.recycler_decorator.RecyclerViewMargin;
+import dpusha.app.com.usha.fragment.book_order.by_cart.OrderByCart;
 import dpusha.app.com.usha.model.DrawerItem;
 import dpusha.app.com.usha.R;
 import dpusha.app.com.usha.activity.DrawerMainActivity;
@@ -102,7 +103,11 @@ OnDrawerItemClickListener onDrawerItemClickListener;
                     if (context instanceof DrawerMainActivity) {
 
 
-                        if (getAdapterPosition() == 2 || getAdapterPosition() == 5) {
+                        if ( getAdapterPosition() == 5) {
+                    //    if (getAdapterPosition() == 2 || getAdapterPosition() == 5) {
+
+
+
                             if (recycler_menu_subItem.getVisibility() == View.GONE) {
                                 recycler_menu_subItem.setVisibility(View.VISIBLE);
                                 recycler_menu_subItem.startAnimation(slideDown);

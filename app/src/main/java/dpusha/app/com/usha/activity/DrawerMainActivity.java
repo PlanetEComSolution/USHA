@@ -50,11 +50,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dpusha.app.com.usha.Login;
 //import dpusha.app.com.usha.fragment.book_order.by_cart.OrderByCart;
+import dpusha.app.com.usha.fragment.book_order.BookOrderHome;
 import dpusha.app.com.usha.fragment.book_order.by_cart.OrderByCart;
 import dpusha.app.com.usha.fragment.book_order.by_category.OrderByItemCategory;
 import dpusha.app.com.usha.fragment.book_order.by_itemcode.OrderByItemCode;
 import dpusha.app.com.usha.fragment.book_order.by_template.OrderByTemplate;
-import dpusha.app.com.usha.fragment.cart.CartFragment;
+//import dpusha.app.com.usha.fragment.cart.CartFragment;
+import dpusha.app.com.usha.fragment.cart.CartSummary;
 import dpusha.app.com.usha.fragment.orders.orderListFragment;
 import dpusha.app.com.usha.model.AuthToken;
 import dpusha.app.com.usha.model.DrawerItem;
@@ -101,8 +103,8 @@ public class DrawerMainActivity extends AppCompatActivity
       LinearLayout ll_logout;*/
     NavigationView navigationView;
 
-    @BindView(R.id.imgvw_cart)
-    ImageView imgvw_cart;
+  /*  @BindView(R.id.imgvw_cart)
+    ImageView imgvw_cart;*/
 
 
     @BindView(R.id.button_cartCount)
@@ -273,7 +275,9 @@ public class DrawerMainActivity extends AppCompatActivity
                 break;
 
             case R.id.imgvw_cart:
-                addFragment(new CartFragment(), "CartFragment", true);
+              //  addFragment(new CartFragment(), "CartFragment", true);
+                addFragment(new CartSummary(), "CartSummary", true);
+
                 break;
         }
     }
@@ -287,6 +291,10 @@ public class DrawerMainActivity extends AppCompatActivity
 
             case 1:
                 // addFragment(new searchFragment(), "searchFragment", true);
+
+                break;
+            case 2:
+                 addFragment(new BookOrderHome(), "v", true);
 
                 break;
             case 3:

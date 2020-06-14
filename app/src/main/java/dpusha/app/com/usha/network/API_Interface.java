@@ -150,8 +150,13 @@ public interface API_Interface {
     @POST("/api/Order/InsertOrder")
     Call<ResponseBody>saveOrder(@Body CartItem cartItem);
 
-    // @Field parameters can only be used with form encoding.
 
+    @POST("/api/Order/UpdateOrder")
+    Call<ResponseBody>updateOrder(@Body CartItem cartItem);
+
+
+
+    // @Field parameters can only be used with form encoding.
     @FormUrlEncoded
     @POST("/api/Order/GetProductDetails")
     Call<ResponseBody>getProductDetails(@Field("SKU") String SKU);

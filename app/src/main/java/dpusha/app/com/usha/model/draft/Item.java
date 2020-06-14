@@ -50,19 +50,19 @@ public class Item {
     private Object preFix;
     @SerializedName("TotalDiscountPerSKU")
     @Expose
-    private Integer totalDiscountPerSKU;
+    private Double totalDiscountPerSKU;
     @SerializedName("TotalPricePerSKU")
     @Expose
-    private Integer totalPricePerSKU;
+    private Double totalPricePerSKU;
     @SerializedName("TotalAfterDiscountPerSKU")
     @Expose
-    private Integer totalAfterDiscountPerSKU;
+    private Double totalAfterDiscountPerSKU;
     @SerializedName("TotalTaxPerSKU")
     @Expose
-    private Integer totalTaxPerSKU;
+    private Double totalTaxPerSKU;
     @SerializedName("TotalPriceWithTaxPerSKU")
     @Expose
-    private Integer totalPriceWithTaxPerSKU;
+    private Double totalPriceWithTaxPerSKU;
     @SerializedName("DeliveryStatus")
     @Expose
     private Object deliveryStatus;
@@ -104,7 +104,7 @@ public class Item {
     public Item() {
     }
 
-    public Item(Object orderId, String sKU, String description, String uOM, Double unitPrice, Double discount, Double taxPercent, Boolean availableInStock, Integer quantity, Integer approvedQuantity, String imageName, Object divCode, Object shipToPartyId, Object preFix, Integer totalDiscountPerSKU, Integer totalPricePerSKU, Integer totalAfterDiscountPerSKU, Integer totalTaxPerSKU, Integer totalPriceWithTaxPerSKU, Object deliveryStatus, Object deliveryStatusString, Object userId, String status, Integer id, Object createdBy, Boolean isActive, Boolean isDeleted, Object iP, Object callType, Object resultCode) {
+    public Item(Object orderId, String sKU, String description, String uOM, Double unitPrice, Double discount, Double taxPercent, Boolean availableInStock, Integer quantity, Integer approvedQuantity, String imageName, Object divCode, Object shipToPartyId, Object preFix, Double totalDiscountPerSKU, Double totalPricePerSKU, Double totalAfterDiscountPerSKU, Double totalTaxPerSKU, Double totalPriceWithTaxPerSKU, Object deliveryStatus, Object deliveryStatusString, Object userId, String status, Integer id, Object createdBy, Boolean isActive, Boolean isDeleted, Object iP, Object callType, Object resultCode) {
         this.orderId = orderId;
         this.sKU = sKU;
         this.description = description;
@@ -249,43 +249,43 @@ public class Item {
         this.preFix = preFix;
     }
 
-    public Integer getTotalDiscountPerSKU() {
+    public Double getTotalDiscountPerSKU() {
         return totalDiscountPerSKU;
     }
 
-    public void setTotalDiscountPerSKU(Integer totalDiscountPerSKU) {
+    public void setTotalDiscountPerSKU(Double totalDiscountPerSKU) {
         this.totalDiscountPerSKU = totalDiscountPerSKU;
     }
 
-    public Integer getTotalPricePerSKU() {
+    public Double getTotalPricePerSKU() {
         return totalPricePerSKU;
     }
 
-    public void setTotalPricePerSKU(Integer totalPricePerSKU) {
+    public void setTotalPricePerSKU(Double totalPricePerSKU) {
         this.totalPricePerSKU = totalPricePerSKU;
     }
 
-    public Integer getTotalAfterDiscountPerSKU() {
+    public Double getTotalAfterDiscountPerSKU() {
         return totalAfterDiscountPerSKU;
     }
 
-    public void setTotalAfterDiscountPerSKU(Integer totalAfterDiscountPerSKU) {
+    public void setTotalAfterDiscountPerSKU(Double totalAfterDiscountPerSKU) {
         this.totalAfterDiscountPerSKU = totalAfterDiscountPerSKU;
     }
 
-    public Integer getTotalTaxPerSKU() {
+    public Double getTotalTaxPerSKU() {
         return totalTaxPerSKU;
     }
 
-    public void setTotalTaxPerSKU(Integer totalTaxPerSKU) {
+    public void setTotalTaxPerSKU(Double totalTaxPerSKU) {
         this.totalTaxPerSKU = totalTaxPerSKU;
     }
 
-    public Integer getTotalPriceWithTaxPerSKU() {
+    public Double getTotalPriceWithTaxPerSKU() {
         return totalPriceWithTaxPerSKU;
     }
 
-    public void setTotalPriceWithTaxPerSKU(Integer totalPriceWithTaxPerSKU) {
+    public void setTotalPriceWithTaxPerSKU(Double totalPriceWithTaxPerSKU) {
         this.totalPriceWithTaxPerSKU = totalPriceWithTaxPerSKU;
     }
 

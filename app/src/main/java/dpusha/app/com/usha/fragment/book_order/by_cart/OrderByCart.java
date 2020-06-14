@@ -45,12 +45,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dpusha.app.com.usha.R;
 import dpusha.app.com.usha.adapter.CartAdapter;
-import dpusha.app.com.usha.adapter.CartItemsAdapter;
+
 import dpusha.app.com.usha.adapter.recycler_decorator.EndlessScrollListener;
 import dpusha.app.com.usha.adapter.recycler_decorator.GridSpacingItemDecoration;
 import dpusha.app.com.usha.adapter.recycler_decorator.MyDividerItemDecoration;
 import dpusha.app.com.usha.adapter.recycler_decorator.WrapContentGridLayoutManager;
-import dpusha.app.com.usha.fragment.cart.CartFragment;
+
 import dpusha.app.com.usha.listeners.CartItemChangedListener;
 import dpusha.app.com.usha.listeners.MainListner;
 import dpusha.app.com.usha.model.Cart;
@@ -64,7 +64,7 @@ import dpusha.app.com.usha.model.ProductDivision;
 import dpusha.app.com.usha.model.ProductSKU;
 import dpusha.app.com.usha.model.ShipToParty;
 import dpusha.app.com.usha.model.SubCategory;
-import dpusha.app.com.usha.model.draft.GetDraft;
+
 import dpusha.app.com.usha.network.APIError;
 import dpusha.app.com.usha.network.RequestListener;
 import dpusha.app.com.usha.network.RetrofitManager;
@@ -145,13 +145,14 @@ public class OrderByCart extends Fragment implements RequestListener, CartItemCh
 
         View view = inflater.inflate(R.layout.order_by_cart, container, false);
         ButterKnife.bind(this, view);
-         //gridLayoutManager = new GridLayoutManager(getActivity(), 2);
-        //recycler_items.setLayoutManager(gridLayoutManager);
-        //recycler_items.setItemAnimator(new DefaultItemAnimator());
-        //recycler_items.addItemDecoration(new GridSpacingItemDecoration(2, 10, true));
-
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        cartAdapter=null;
     }
 
     @Override
@@ -273,7 +274,6 @@ public class OrderByCart extends Fragment implements RequestListener, CartItemCh
 
     void setTemporaryAdapterForCategorySpinner() {
         CategoryCode = "";
-
         productCategoryList.clear();
         productCategoryList.add(new ProductCategory("0", "Select Category"));
         ArrayAdapter<ProductCategory> dataAdapter = new ArrayAdapter<ProductCategory>(getActivity(), android.R.layout.simple_spinner_item, productCategoryList);
@@ -456,7 +456,7 @@ public class OrderByCart extends Fragment implements RequestListener, CartItemCh
 
 
     @Override
-    public void onCartRefresh() {
+    public void onCartRefresh(int CartSize) {
 
     }
 

@@ -265,6 +265,8 @@
         android:layout_marginTop="10dp"
             android:layout_gravity="right"
             android:layout_marginRight="2dp"
+           android:gravity="center"
+            android:visibility="visible"
             android:background="@drawable/btn_bg_rounded"
             android:orientation="horizontal"
             android:padding="10dp">
@@ -272,6 +274,7 @@
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                android:layout_marginRight="20dp"
                 android:orientation="horizontal"
 
                 android:src="@drawable/proceed" />
@@ -280,10 +283,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginLeft="20dp"
+
                 style="@style/smallTextViewStyle_white"
                 android:scaleType="fitCenter"
                 android:text="Place Order" />
         </LinearLayout>
+        <Button
+            android:id="@+id/button_updateOrder"
+            style="@style/smallTextViewStyle_white"
+            android:layout_width="90dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="right"
+            android:layout_marginRight="2dp"
+            android:layout_height="40dp"
+            android:visibility="gone"
+            android:background="@drawable/btn_bg_rounded"
+            android:text="Update" />
     </LinearLayout>
 </LinearLayout>

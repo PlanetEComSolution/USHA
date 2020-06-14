@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+android:gravity="center"
+    android:orientation="horizontal"
+
+    >
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"
+                    android:background="#f7f7f7"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="12dp"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <RelativeLayout
+                            android:id="@+id/rl_book_by_itemCode"
+                            android:layout_width="0dp"
+                            android:gravity="center"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+
+                            android:background="@drawable/address_button">
+
+                             <ImageView
+                                android:visibility="gone"
+
+                                android:id="@+id/car1"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="10dp"
+                                android:background="@drawable/dashboard" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/car1"
+                                android:layout_centerHorizontal="true"
+                                android:text="By Item Code"
+                            
+                                android:textColor="#000"
+
+                                android:textSize="14sp" />
+
+                        </RelativeLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="11dp"
+                            android:layout_height="match_parent"></LinearLayout>
+
+
+                        <RelativeLayout
+                            android:id="@+id/rl_book_by_category"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:background="@drawable/address_button">
+
+                             <ImageView
+                                android:visibility="gone"
+                                android:id="@+id/car2"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="10dp"
+                                android:background="@drawable/adminmodule" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/car2"
+                                android:layout_centerHorizontal="true"
+                                android:text="By Category"
+                            
+
+                                android:textColor="#000"
+                                android:textSize="14sp" />
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="12dp"
+
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <RelativeLayout
+                            android:id="@+id/rl_book_by_cart"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:background="@drawable/address_button">
+
+                             <ImageView
+                                android:visibility="gone"
+                                android:id="@+id/car3"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="10dp"
+                                android:background="@drawable/productcatalogue" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/car3"
+                                android:layout_centerHorizontal="true"
+                                android:text="By Cart"
+                            
+
+                                android:textColor="#000"
+                                android:textSize="14sp" />
+
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:layout_width="11dp"
+                            android:layout_height="match_parent"></LinearLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/rl_book_by_template"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:background="@drawable/address_button">
+
+                             <ImageView
+                                android:visibility="gone"
+                                android:id="@+id/car4"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="10dp"
+                                android:background="@drawable/stockstatus" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/car4"
+                                android:layout_centerHorizontal="true"
+                                android:text="By Template"
+                            
+                                android:textColor="#000"
+                                android:textSize="14sp" />
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+

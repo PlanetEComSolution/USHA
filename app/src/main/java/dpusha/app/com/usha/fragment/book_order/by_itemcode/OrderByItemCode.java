@@ -45,11 +45,10 @@ import butterknife.OnClick;
 import dpusha.app.com.usha.R;
 import dpusha.app.com.usha.adapter.CartItemsAdapter;
 import dpusha.app.com.usha.adapter.recycler_decorator.MyDividerItemDecoration;
-import dpusha.app.com.usha.fragment.cart.CartFragment;
+import dpusha.app.com.usha.fragment.cart.PlaceOrder;
 import dpusha.app.com.usha.listeners.CartItemChangedListener;
 import dpusha.app.com.usha.listeners.MainListner;
 import dpusha.app.com.usha.model.CartItem;
-import dpusha.app.com.usha.model.Item;
 import dpusha.app.com.usha.model.Material;
 import dpusha.app.com.usha.model.ProductCategory;
 import dpusha.app.com.usha.model.ProductDescription;
@@ -400,7 +399,7 @@ public class OrderByItemCode extends Fragment implements RequestListener, CartIt
             case R.id.button_proceed:
                 CartItem cartObject3 = utility.getCartFromPreference(getActivity());
                 if (cartObject3 != null) {
-                    listenerMainActivity.addFragment(new CartFragment(), "CartFragment", true);
+                    listenerMainActivity.addFragment(new PlaceOrder(), "CartFragment", true);
                 } else {
                     utility.showToast(getActivity(), "Cart is empty!");
                 }
@@ -616,7 +615,7 @@ public class OrderByItemCode extends Fragment implements RequestListener, CartIt
         if (!strCartItem.equals("")) {
             CartItem cartObject = utility.convertJSONStringToCartObject(strCartItem);
             if (cartObject != null && cartObject.getItems() != null && cartObject.getItems().size() > 0) {
-                CartItemsAdapter cartItemsAdapter = new CartItemsAdapter(getActivity(), cartObject, this,listenerMainActivity);
+                CartItemsAdapter cartItemsAdapter = new CartItemsAdapter(getActivity(), cartObject, this,listenerMainActivity,true);
                 recycler_items.setAdapter(cartItemsAdapter);
             } else {
                 recycler_items.setAdapter(null);
@@ -724,7 +723,7 @@ public class OrderByItemCode extends Fragment implements RequestListener, CartIt
     }
 
     @Override
-    public void onCartRefresh() {
+    public void onCartRefresh(int CartSize) {
 
     }
 

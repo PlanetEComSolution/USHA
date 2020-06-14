@@ -1,8 +1,14 @@
 package dpusha.app.com.usha.orders_home.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -276,6 +282,8 @@ public class utility {
         item.setImageName(items.getImageName());
         item.setQuantity(items.getQuantity());
         item.setActive(items.getIsActive());
+        item.setuOM(items.getUOM());
+
         return item;
     }
 
@@ -300,7 +308,7 @@ public class utility {
         Item item1 = new Item(item.getsKU(),
                 item.getDescription(), item.getuOM(), item.getUnitPrice(), item.getDiscount(),
                 item.getTaxPercent(), true, item.getQuantity(),
-                item.getQuantity(),
+                0,
                 imageName, null, null,
                 null);
         List<Item> list = cartObject.getItems();
@@ -355,7 +363,7 @@ public class utility {
             for (dpusha.app.com.usha.model.draft.Item item : draftItemsFromAPI) {
                 items.add(new Item(item.getsKU(), item.getDescription(), item.getuOM(),
                         item.getUnitPrice(), item.getDiscount(), item.getTaxPercent(),
-                        item.getAvailableInStock(), item.getQuantity(), item.getApprovedQuantity(), item.getImageName(),
+                        item.getAvailableInStock(), item.getQuantity(), 0, item.getImageName(),
                         item.getDivCode(),
                         null, null));
             }
@@ -380,6 +388,7 @@ public class utility {
 
     }
 
+
     public static void saveTemplateToCartPreference(Template template, Context context, MainListner mainListner) {
 
         if (template != null && template.getItems() != null && template.getItems().size() > 0) {
@@ -389,7 +398,7 @@ public class utility {
             for (dpusha.app.com.usha.model.draft.Item item : draftItemsFromAPI) {
                 items.add(new Item(item.getsKU(), item.getDescription(), item.getuOM(),
                         item.getUnitPrice(), item.getDiscount(), item.getTaxPercent(),
-                        item.getAvailableInStock(), item.getQuantity(), item.getApprovedQuantity(), item.getImageName(),
+                        item.getAvailableInStock(), item.getQuantity(), 0, item.getImageName(),
                         item.getDivCode(),
                         null, null));
             }
@@ -442,4 +451,16 @@ public class utility {
         return mnth;
     }
 
+    public static int formatMonthNameToNumber(String month) {
+        int mnth = 0;
+        try {
+            SimpleDateFormat monthParse = new SimpleDateFormat("MMMM");
+            SimpleDateFormat monthDisplay = new SimpleDateFormat("MM");
+            String str_mnth = monthDisplay.format(monthParse.parse(month));
+            mnth = Integer.parseInt(str_mnth);
+        } catch (ParseException e) {
+            e.getMessage();
+        }
+        return mnth;
+    }
 }
