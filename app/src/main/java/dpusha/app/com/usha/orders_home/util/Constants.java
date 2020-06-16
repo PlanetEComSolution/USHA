@@ -27,6 +27,7 @@ public class Constants {
         ORDER_LIST("order_list"),
         ORDER_LIST_DETAILS("order_list_details"),
         LOGIN("LOGIN"),
+        DASHBOARD("DASHBOARD"),
         PASSWORD("FORGOT_PASSWORD"),
         CHANGEPASSWORD("CHANGE_PASSWORD"),
         CONTACTUS("CONTACT_US"),

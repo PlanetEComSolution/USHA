@@ -597,6 +597,16 @@ public class RetrofitManager implements OnRetryCallback {
         performCallback(mRequestListener, mContext, mApiType, showProgress);
 
     }
+    public void getDashboard(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            final boolean showProgress
+    ) {
 
+        call = retroService.getDashboard();
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+
+    }
 
 }

@@ -1,4 +1,3 @@
-//my code
 package dpusha.app.com.usha.activity;
 
 import android.app.AlertDialog;
@@ -54,9 +53,11 @@ import dpusha.app.com.usha.Login;
 //import dpusha.app.com.usha.fragment.book_order.by_cart.OrderByCart;
 import dpusha.app.com.usha.fragment.AnnounceFragment;
 import dpusha.app.com.usha.fragment.ContactUsFragment;
+import dpusha.app.com.usha.fragment.DashboardFragment;
 import dpusha.app.com.usha.fragment.ProductCatolugeFragment;
 import dpusha.app.com.usha.fragment.SocialNetworkingFragment;
 import dpusha.app.com.usha.fragment.UsefulLinkFragment;
+import dpusha.app.com.usha.fragment.book_order.BookOrderHome;
 import dpusha.app.com.usha.fragment.book_order.BookOrderHome;
 import dpusha.app.com.usha.fragment.book_order.by_cart.OrderByCart;
 import dpusha.app.com.usha.fragment.book_order.by_category.OrderByItemCategory;
@@ -295,7 +296,7 @@ public class DrawerMainActivity extends AppCompatActivity
         closeLeftDrawer();
         switch (position) {
             case 0:
-                // addFragment(new searchFragment(), "searchFragment", true);
+                 addFragment(new DashboardFragment(), "DashboardFragment", true);
                 break;
 
             case 1:
@@ -304,7 +305,7 @@ public class DrawerMainActivity extends AppCompatActivity
 
                 break;
             case 2:
-                addFragment(new BookOrderHome(), "v", true);
+                addFragment(new BookOrderHome(), "BookOrderHome", true);
 
                 break;
             case 3:

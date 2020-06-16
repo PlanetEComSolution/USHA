@@ -1,79 +1,109 @@
 package dpusha.app.com.usha.fragment;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dpusha.app.com.usha.R;
-import dpusha.app.com.usha.activity.DrawerMainActivity;
-import dpusha.app.com.usha.adapter.LinksAdapter;
 import dpusha.app.com.usha.listeners.MainListner;
+import dpusha.app.com.usha.model.AuthToken;
 import dpusha.app.com.usha.model.ContactResponse;
-import dpusha.app.com.usha.model.LinkData;
+//import dpusha.app.com.usha.model.Dashboard;
+import dpusha.app.com.usha.model.DashboardData;
 import dpusha.app.com.usha.network.APIError;
 import dpusha.app.com.usha.network.RequestListener;
 import dpusha.app.com.usha.network.RetrofitManager;
 import dpusha.app.com.usha.orders_home.util.Constants;
-import dpusha.app.com.usha.shared_preference.SharedPreferencesUtil;
-import helper.ApiClient;
-import helper.ApiService;
 import okhttp3.ResponseBody;
-import retrofit2.Call;
 import retrofit2.Response;
 
 
-public class ContactUsFragment extends Fragment implements RequestListener {
+public class DashboardFragment extends Fragment implements RequestListener {
     View view;
-
-    @BindView(R.id.address)
-    TextView address;
-    @BindView(R.id.ro_address)
-    TextView ro_address;
-    @BindView(R.id.cin_details)
-    TextView cin;
-    @BindView(R.id.contact_num)
-    TextView contactNum1;
-    @BindView(R.id.contact_num2)
-
-    TextView contactNum2;
-    @BindView(R.id.email_details)
-    TextView email;
-    @BindView(R.id.grev_office_details)
-    TextView grevOffice;
-    String token;
     private FragmentActivity activity;
     private MainListner listenerMainActivity;
-
     private RetrofitManager retrofitManager = RetrofitManager.getInstance();
 
-    public ContactUsFragment() {
+    @BindView(R.id.txtvw_YTD)
+    TextView txtvw_YTD;
+
+
+    @BindView(R.id.txtvw_MTD)
+    TextView txtvw_MTD;
+
+
+    @BindView(R.id.txtvw_totalCreditLimit)
+    TextView txtvw_totalCreditLimit;
+
+
+
+    @BindView(R.id.txtvw_BalanceCreditLimit)
+    TextView txtvw_BalanceCreditLimit;
+
+
+    @BindView(R.id.txtvw_Total_outstanding)
+    TextView txtvw_Total_outstanding;
+
+
+    @BindView(R.id.txtvw_Pending_Orders)
+    TextView txtvw_Pending_Orders;
+
+
+
+    @BindView(R.id.txtvw_Name)
+    TextView txtvw_Name;
+
+    @BindView(R.id.txtvw_Div)
+    TextView txtvw_Div;
+
+
+
+
+
+
+
+
+
+
+    @BindView(R.id.txtvw_sales_ttd)
+    TextView txtvw_sales_ttd;
+
+
+    @BindView(R.id.txtvw_sales_mtd)
+    TextView txtvw_sales_mtd;
+
+
+    @BindView(R.id.txtvw_sales_ytd)
+    TextView txtvw_sales_ytd;
+
+
+
+
+
+    public DashboardFragment() {
         // Required empty public constructor
     }
 
-    public static ContactUsFragment newInstance() {
+    public static DashboardFragment newInstance() {
 
-        return new ContactUsFragment();
+        return new DashboardFragment();
     }
 
     @Override
@@ -87,8 +117,8 @@ public class ContactUsFragment extends Fragment implements RequestListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_contact_us, container, false);
+
+        view = inflater.inflate(R.layout.fragment_dashboard, container, false);
         ButterKnife.bind(this, view);
         //hitApiContactUs();
         return view;
@@ -102,17 +132,16 @@ public class ContactUsFragment extends Fragment implements RequestListener {
             activity = getActivity();
             listenerMainActivity = (MainListner) activity;
         }
-        hitApiContactUs();
+        hitApiGetDashboard();
         //setViewListener();
     }
 
 
 
-    private void hitApiContactUs() {
-        token = SharedPreferencesUtil.getAuthToken(getActivity());
-        retrofitManager.getContactUsDetails(this, getActivity(), Constants.API_TYPE.CONTACTUS, token, true);
-    }
+    private void hitApiGetDashboard() {
 
+        retrofitManager.getDashboard(this, getActivity(), Constants.API_TYPE.DASHBOARD, true);
+    }
 
 
 
@@ -121,23 +150,12 @@ public class ContactUsFragment extends Fragment implements RequestListener {
 
         try {
             String strResponse = response.body().string();
-            Log.e("menu", response.body().toString());
+            Log.e("Res", response.body().toString());
             // Toast.makeText(this, apiType+"Response  "+strResponse,Toast.LENGTH_SHORT).show();
-            if (apiType == Constants.API_TYPE.CONTACTUS) {
-                //usefulLinkList.clear();
-                Gson gson = new Gson();
-                Type listType = new TypeToken<ContactResponse>() {
-                }.getType();
-                ContactResponse mResponse = gson.fromJson(strResponse, listType);
+            if (apiType == Constants.API_TYPE.DASHBOARD) {
+                DashboardData mResponse = new Gson().fromJson(strResponse, DashboardData.class);
                 if (mResponse != null ) {
-                 address.setText(mResponse.getHeadOfficeAddress());
-                 ro_address.setText(mResponse.getRegisteredOffice());
-                 cin.setText(mResponse.getCIN());
-                 contactNum1.setText(mResponse.getContact1());
-                 contactNum2.setText(mResponse.getContact2());
-                 email.setText(mResponse.getEmail());
-                 grevOffice.setText(mResponse.getGrievanceEmail());
-
+                    setData(mResponse);
                 } else {
                     //recyclerView.setAdapter(null);
                     Toast.makeText(getActivity(), "No data found!", Toast.LENGTH_SHORT).show();
@@ -148,6 +166,26 @@ public class ContactUsFragment extends Fragment implements RequestListener {
             e.printStackTrace();
         }
 
+
+    }
+
+    void setData(DashboardData dashboardData){
+
+         txtvw_YTD.setText("YTD Rs. 45 Lac");
+         txtvw_MTD.setText("MTD Rs. 45 Lac");
+         txtvw_totalCreditLimit.setText("Total Credit Limit: Rs. 100 Lac");
+         txtvw_BalanceCreditLimit.setText("Balance Credit Limit: Rs. 25 Lac");
+        // txtvw_Total_outstanding.setText(dashboardData.getTotalOutstanding());
+       //  txtvw_Pending_Orders.setText(dashboardData.getTotalOrdersPending());
+
+        txtvw_Total_outstanding.setText("Total Outstanding: Rs. 65 Lac");
+        txtvw_Pending_Orders.setText("Rs 5 Lac");
+
+         txtvw_Name.setText("Rahul");
+         txtvw_Div.setText("FAN Division");
+         txtvw_sales_ttd.setText("+86");
+         txtvw_sales_mtd.setText("+76");
+         txtvw_sales_ytd.setText("+96");
 
     }
 

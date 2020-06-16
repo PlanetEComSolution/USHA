@@ -192,4 +192,9 @@ public interface API_Interface {
                                      @Field("TableName") String TableName,
                                      @Field("LookupType") String LookupType);
 
+
+
+    @GET("api/Dashboard/GetDashboardStats")// api/Dashboard/GetDashboardStats
+    Call<ResponseBody> getDashboard();
+
 }
