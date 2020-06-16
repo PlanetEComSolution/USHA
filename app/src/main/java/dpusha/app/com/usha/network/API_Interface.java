@@ -70,11 +70,16 @@ public interface API_Interface {
 
     @GET("api/Announcement/GetByRole")
     Call<ResponseBody> getAnnouncement(@Header("Authorization") String token);
-
+    @GET("api/Scheme/GetByUserId")
+    Call<ResponseBody> getSchemeByUserId(@Header("Authorization") String token);
+    @GET("api/Division/GetByUserId")
+    Call<ResponseBody> getDownloadDivisionList();
 
     @GET("/api/TrackOrder/GetOrdersByUserId")// get list of order
     Call<ResponseBody> getOrderList(@Query("UserId") String id);
 
+    @POST("api/Scheme/GetByDivCode")
+    Call<ResponseBody> getSchemeByDivision(@Header("Authorization") String token);
 
     // get orderList Details
     @GET("/api/TrackOrder/GetDetailsByOrderId")// get list of order

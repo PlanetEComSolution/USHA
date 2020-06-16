@@ -66,6 +66,9 @@ import dpusha.app.com.usha.fragment.book_order.by_template.OrderByTemplate;
 //import dpusha.app.com.usha.fragment.cart.CartFragment;
 import dpusha.app.com.usha.fragment.cart.CartSummary;
 import dpusha.app.com.usha.fragment.cart.PlaceOrder;
+import dpusha.app.com.usha.fragment.download.FragmentAccountStatement;
+import dpusha.app.com.usha.fragment.download.InvoiceFragment;
+import dpusha.app.com.usha.fragment.download.SchemesFragment;
 import dpusha.app.com.usha.fragment.orders.orderListFragment;
 import dpusha.app.com.usha.model.AuthToken;
 import dpusha.app.com.usha.model.DrawerItem;
@@ -379,7 +382,19 @@ public class DrawerMainActivity extends AppCompatActivity
     public void onLeftDrawerDownloadsItemClick(int position) {
         // Toast.makeText(this,"Drawer Clicked ,Postion: "+position,Toast.LENGTH_SHORT).show();
         closeLeftDrawer();
+        switch (position) {
+            case 0:
+                addFragment(new SchemesFragment(), "schemeFragment", true);
+                break;
 
+            case 1:
+                addFragment(new FragmentAccountStatement(), "accountFragment", true);
+                break;
+
+            case 2:
+                addFragment(new InvoiceFragment(), "invoiceFragment", true);
+                break;
+        }
     }
     private void closeLeftDrawer() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {

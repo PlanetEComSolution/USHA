@@ -312,6 +312,38 @@ public class RetrofitManager implements OnRetryCallback {
     }
     // get orderList
 
+    public void getSchemeList(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            String token,
+            final boolean showProgress) {
+        call = retroService.getSchemeByUserId(token);
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+    }
+
+    public void getDivisionDownload(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            //final String userID,
+            final boolean showProgress) {
+
+        call = retroService.getDownloadDivisionList();
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+
+    }
+    private void getScehemeByDivision(
+        final RequestListener mRequestListener,
+        final Context mContext,
+        final Constants.API_TYPE mApiType,
+        //final String userID,
+        final boolean showProgress) {
+
+            call = retroService.getDownloadDivisionList();
+            performCallback(mRequestListener, mContext, mApiType, showProgress);
+    }
+
     public void GetOrderList(
             final RequestListener mRequestListener,
             final Context mContext,
