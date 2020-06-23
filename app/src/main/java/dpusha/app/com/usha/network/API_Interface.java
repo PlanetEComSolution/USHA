@@ -10,6 +10,7 @@ import dpusha.app.com.usha.model.ContactResponse;
 import dpusha.app.com.usha.model.ForgotPassword;
 import dpusha.app.com.usha.model.Material;
 import dpusha.app.com.usha.orders_home.model.OrderList;
+import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -19,8 +20,11 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import rx.Observable;
 
 public interface API_Interface {
@@ -48,7 +52,7 @@ public interface API_Interface {
 
     @FormUrlEncoded
     @POST("api/Login/ChangePassword")
-    Call<ResponseBody> changePassword(@Header("Authorization") String fina_token,
+    Call<ResponseBody> changePassword(
                                       @Field("OldPassword") String oldPass,
                                       @Field("Password") String password,
                                       @Field("NewPassword") String newPass);
@@ -199,7 +203,66 @@ public interface API_Interface {
 
 
 
+
+
+
+
     @GET("api/Dashboard/GetDashboardStats")// api/Dashboard/GetDashboardStats
     Call<ResponseBody> getDashboard();
+
+
+    @GET("api/Feedback/GetFeedbackByUser")// api/Dashboard/GetDashboardStats
+    Call<ResponseBody> getFeedbackList();
+
+    @GET("api/Feedback/GetDetailsById")
+    Call<ResponseBody> getFeedbackDetails(@Query("id") String id);
+
+
+    @GET("/api/Feedback/ChangeStatus")
+    Call<ResponseBody> changeFeedbackStatus(@Query("id") String id);
+
+
+    @FormUrlEncoded
+    @POST("api/Common/GetLocationsForAutoComplete")
+    Call<ResponseBody>getLocations(@Field("PreFix") String PreFix);
+
+    @FormUrlEncoded
+    @POST("/api/FeedbackLog/InsertUpdate")
+    Call<ResponseBody>changeFeedbackStatusNew(@Field("FeedbackId") String FeedbackId,
+                                              @Field("FeedbackStatus") String FeedbackStatus,
+                                              @Field("PendingWithUserCode") String PendingWithUserCode
+                                              );
+
+    @FormUrlEncoded
+    @POST("api/Common/GetDepartmentsForAutoComplete")
+    Call<ResponseBody>getDepartments(@Field("PreFix") String PreFix);
+
+    @GET("api/Category/GetAll")
+    Call<ResponseBody> getAllCategory();
+
+
+    @Multipart
+    @POST("api/Common/Upload?FolderName=FeedbackImages")
+    Call<ResponseBody> uploadMedia(@Part() MultipartBody.Part[] image);
+
+
+    @FormUrlEncoded
+    @POST("api/Feedback/InsertUpdate")
+    Call<ResponseBody>saveFeedback(
+            @Field("LocationCode") String LocationCode,
+            @Field("DepartmentCode") String DepartmentCode,
+            @Field("CategoryCode") String CategoryCode,
+            @Field("ClassCode") String ClassCode,
+            @Field("Title") String Title,
+            @Field("Remarks") String Remarks,
+            @Field("ImageNames") String ImageNames
+
+    );
+
+
+
+
+
+
 
 }

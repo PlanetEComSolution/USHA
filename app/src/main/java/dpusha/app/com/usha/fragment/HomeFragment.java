@@ -26,18 +26,10 @@ import dpusha.app.com.usha.listeners.MainListner;
  * A simple {@link Fragment} subclass.
  */
 public class HomeFragment extends Fragment {
-
-
-
-
-
    private MainListner listenerMainActivity;
    private FragmentActivity activity;
     AlertDialog alertDialog ;
-
     public HomeFragment() {
-
-
         // Required empty public constructor
     }
 

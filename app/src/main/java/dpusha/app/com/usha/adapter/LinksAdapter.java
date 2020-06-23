@@ -54,8 +54,8 @@ public class LinksAdapter extends RecyclerView.Adapter<LinksAdapter.MyViewHolder
         Picasso.with(context)
                 .load(Constants.CATEGORY_IMAGE_URL_PREFIX +links.get(position).getImageName())
                 .fit()
-                .placeholder(R.drawable.puma_offer)
-                .error(R.drawable.puma_offer)
+                .placeholder(R.drawable.usha_icon)
+                .error(R.drawable.usha_icon)
                 .into(holder.image);
 
         holder.image.setOnClickListener(new View.OnClickListener() {

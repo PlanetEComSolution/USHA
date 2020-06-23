@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+
+            >
+
+            <TextView
+
+                style="@style/largeTextViewStyle_grey"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:layout_weight="1"
+
+                android:text="Create Feedback"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+
+
+        <TextView
+
+            style="@style/smallTextViewStyle_grey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Location*"
+            android:textColor="@color/black_myaccount" />
+
+        <AutoCompleteTextView
+            android:id="@+id/et_location"
+            style="@style/smallTextViewStyle_grey"
+            android:layout_width="match_parent"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/edittext_bg"
+
+
+            android:gravity="center_vertical"
+            android:hint="Location"
+            android:minHeight="40dp"
+            android:paddingLeft="10dp"
+
+
+            />
+
+        <TextView
+
+            style="@style/smallTextViewStyle_grey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Department*"
+            android:textColor="@color/black_myaccount" />
+
+        <AutoCompleteTextView
+            android:id="@+id/et_department"
+            style="@style/smallTextViewStyle_grey"
+            android:layout_width="match_parent"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/edittext_bg"
+
+
+            android:gravity="center_vertical"
+            android:hint="Department Code"
+            android:minHeight="40dp"
+            android:paddingLeft="10dp"
+
+
+            />
+
+        <TextView
+
+            style="@style/smallTextViewStyle_grey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Category*"
+            android:textColor="@color/black_myaccount" />
+
+        <Spinner
+            android:id="@+id/spinnerCategory"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/spinner_bg" />
+
+
+        <TextView
+
+            style="@style/smallTextViewStyle_grey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Class*"
+            android:textColor="@color/black_myaccount" />
+
+        <Spinner
+            android:id="@+id/spinnerClass"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/spinner_bg" />
+
+        <TextView
+
+            style="@style/smallTextViewStyle_grey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Title"
+            android:textColor="@color/black_myaccount" />
+
+        <EditText
+            android:id="@+id/et_title"
+            style="@style/smallTextViewStyle_grey"
+            android:layout_width="match_parent"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/edittext_bg"
+
+
+            android:gravity="center_vertical"
+            android:hint="Title"
+            android:minHeight="40dp"
+            android:paddingLeft="10dp"
+
+
+            />
+
+        <TextView
+
+            style="@style/smallTextViewStyle_grey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Remarks*"
+            android:textColor="@color/black_myaccount" />
+
+        <EditText
+            android:id="@+id/et_remarks"
+            style="@style/smallTextViewStyle_grey"
+            android:layout_width="match_parent"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/edittext_bg"
+            android:gravity="center_vertical"
+
+            android:hint="Remarks"
+            android:inputType="textMultiLine"
+            android:maxLines="3"
+            android:minHeight="80dp"
+            android:paddingLeft="10dp"
+
+            />
+
+        <TextView
+
+            style="@style/smallTextViewStyle_grey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Images"
+            android:textColor="@color/black_myaccount" />
+
+     <!--   <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/edittext_bg"
+            android:orientation="horizontal"
+
+
+            >
+
+            <EditText
+
+                android:id="@+id/et_images"
+                style="@style/smallTextViewStyle_grey"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+
+                android:editable="false"
+                android:focusableInTouchMode="false"
+
+                android:gravity="center_vertical"
+                android:hint="Choose File(s)"
+                android:minHeight="40dp"
+                android:paddingLeft="10dp"
+
+                />
+
+
+            <Button
+                android:id="@+id/button_addImages"
+                style="@style/smallTextViewStyle_white"
+                android:layout_width="90dp"
+
+                android:layout_height="40dp"
+                android:background="@drawable/btn_bg_grey"
+                android:text="Browse"
+                android:textColor="@color/btn_txt_color" />
+
+        </LinearLayout>-->
+
+
+        <LinearLayout
+            android:id="@+id/button_addImages"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/edittext_bg"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+
+                style="@style/smallTextViewStyle_grey"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:text="Choose File(s)" />
+
+          <!--  <LinearLayout
+                android:layout_width="wrap_content"
+
+                android:layout_height="match_parent"
+                android:background="@color/btn_bg"
+                android:gravity="center"
+
+                >-->
+
+                <TextView
+
+                    style="@style/smallTextViewStyle_grey"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+android:background="@color/btn_bg"
+                    android:layout_margin="2dp"
+                    android:gravity="center"
+                    android:text="Browse" />
+
+
+         <!--   </LinearLayout>-->
+
+        </LinearLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_feedback_images"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:scrollbars="none"
+            android:visibility="visible" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal"
+
+            >
+
+            <Button
+                android:id="@+id/button_save"
+                style="@style/smallTextViewStyle_white"
+                android:layout_width="90dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/btn_bg_rounded"
+                android:text="Save" />
+
+
+            <Button
+                android:id="@+id/button_cancel"
+                style="@style/smallTextViewStyle_white"
+                android:layout_width="90dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/btn_bg_rounded"
+                android:text="Cancel" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -69,6 +70,8 @@ import dpusha.app.com.usha.fragment.cart.PlaceOrder;
 import dpusha.app.com.usha.fragment.download.FragmentAccountStatement;
 import dpusha.app.com.usha.fragment.download.InvoiceFragment;
 import dpusha.app.com.usha.fragment.download.SchemesFragment;
+import dpusha.app.com.usha.fragment.feedback.FeedbackList;
+import dpusha.app.com.usha.fragment.feedback.FullscreenImageView;
 import dpusha.app.com.usha.fragment.orders.orderListFragment;
 import dpusha.app.com.usha.model.AuthToken;
 import dpusha.app.com.usha.model.DrawerItem;
@@ -140,7 +143,7 @@ public class DrawerMainActivity extends AppCompatActivity
     EditText newPassword;
     EditText confirmPassword;
     private String userPassword,newPass,confirmPass;
-    private String uToken;
+
     ImageView icProfile;
 
     LeftMenuAdapter leftMenuAdapter;
@@ -223,13 +226,15 @@ public class DrawerMainActivity extends AppCompatActivity
         return true;
     }
     private void initBottomViewAndLoadFragments() {
-        addFragment(new HomeFragment(), "HomeFragment", true);
+     //   addFragment(new HomeFragment(), "HomeFragment", true);
+        addFragment(new DashboardFragment(), "DashboardFragment", true);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 item -> {
                     switch (item.getItemId()) {
                         case R.id.nav_home:
-                            addFragment(new HomeFragment(), "HomeFragment", true);
+                           // addFragment(new HomeFragment(), "HomeFragment", true);
+                            addFragment(new DashboardFragment(), "DashboardFragment", true);
                             break;
 
                         case R.id.nav_search:
@@ -321,7 +326,7 @@ public class DrawerMainActivity extends AppCompatActivity
 
                 break;
             case 6:
-                // addFragment(new searchFragment(), "searchFragment", true);
+                 addFragment(new FeedbackList(), "FeedbackList", true);
 
                 break;
             case 7:
@@ -336,9 +341,15 @@ public class DrawerMainActivity extends AppCompatActivity
             case 9:
                 // addFragment(new searchFragment(), "searchFragment", true);
                 String serviceUrl="http://care.usha.com";
-                Intent intent = new Intent(Intent.ACTION_VIEW);
+               /* Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(serviceUrl));
+                startActivity(intent);*/
+                Intent intent = new Intent(this, FullscreenImageView.class);
+                intent.putExtra("url",serviceUrl);
                 startActivity(intent);
+
+
+
                 break;
             case 10:
                 //addFragment(new searchFragment(), "searchFragment", true);
@@ -347,9 +358,16 @@ public class DrawerMainActivity extends AppCompatActivity
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);*/
                 String url = "http://148.72.22.64:92/EmployeeUser/CreateEditUserRegistration?&amp;UserCode=&amp;usertype=UTC0002&amp;Source=WEB";
-                Intent i = new Intent(Intent.ACTION_VIEW);
+               /* Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(url));
-                startActivity(i);
+                startActivity(i);*/
+
+
+                Intent intent1 = new Intent(this, FullscreenImageView.class);
+                intent1.putExtra("url",url);
+                startActivity(intent1);
+
+
                 break;
             case 11:
                 addFragment(new ContactUsFragment(), "contactUsFragment", true);
@@ -555,28 +573,8 @@ public class DrawerMainActivity extends AppCompatActivity
         userPassword = oldPassword.getText().toString();
         newPass=newPassword.getText().toString();
         confirmPass=confirmPassword.getText().toString();
-        if (isConnectingToInternet()) {
-            // new ForgotPassword().execute();slider
-            //ForgotPassword_REST_api();
-            uToken = SharedPreferencesUtil.getAuthToken(this);
-           /* if(newPassword.getText().toString().length()<8 &&!isValidPassword(newPassword.getText().toString())){
-                Toast.makeText(DrawerMainActivity.this," Invalid Password",Toast.LENGTH_LONG).show();
-            }else{
-                Toast.makeText(DrawerMainActivity.this, "Valid Password",Toast.LENGTH_LONG).show();
-                hitAPIChangePassword(newPass,confirmPass,userPassword);
-            }
-            if(isValidPassword(newPass)){
-                hitAPIChangePassword(newPass,confirmPass,userPassword);
 
-            }*/
-           /* if(newPassword.getText().toString().length()<8 &&!isValidPassword(newPassword.getText().toString())){
-                Toast.makeText(DrawerMainActivity.this," Invalid Password",Toast.LENGTH_LONG).show();
 
-            }
-            else{
-                Toast.makeText(DrawerMainActivity.this, "Valid Password",Toast.LENGTH_LONG).show();
-                hitAPIChangePassword(newPass,confirmPass,userPassword);
-            }*/
             if (newPassword.getText().toString().isEmpty() || confirmPassword.getText().toString().isEmpty()) {
                 Toast.makeText(DrawerMainActivity.this, " empty Password", Toast.LENGTH_LONG).show();
 
@@ -589,31 +587,13 @@ public class DrawerMainActivity extends AppCompatActivity
                 Toast.makeText(DrawerMainActivity.this, " provide special char", Toast.LENGTH_LONG).show();
             } else {
                 hitAPIChangePassword(userPassword,newPass,confirmPass);
-                //hitAPIChangePassword(newPass, confirmPass, userPassword);
+
                 Toast.makeText(DrawerMainActivity.this, " SUCCESS", Toast.LENGTH_LONG).show();
             }
-        }
-        if (isConnectingToInternet()) {
-            //new ForgotPassword_CRG().execute();
-            //test
-            //ChangPassword();
 
-        } else {
-            Toast.makeText(getApplicationContext(),
-                    "No Internet Connection....", Toast.LENGTH_SHORT).show();
-        }
     }
 
-    /* public static boolean isValidPassword(final String password) {
-         Pattern pattern;
-         Matcher matcher;
-         final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{4,}$";
-         pattern = Pattern.compile(PASSWORD_PATTERN);
-         matcher = pattern.matcher(password);
-         return matcher.matches();
 
-     }
- */
     public static boolean isValidPassword(String s) {
         Pattern PASSWORD_PATTERN
                 = Pattern.compile(
@@ -623,29 +603,10 @@ public class DrawerMainActivity extends AppCompatActivity
     }
 
     private void hitAPIChangePassword(String userPass,String userNewPass,String userConfirmPass){
-        retrofitManager.changePassword(this,this, Constants.API_TYPE.CHANGEPASSWORD,userPass,userNewPass,userConfirmPass,uToken,true);
+        retrofitManager.changePassword(this,this, Constants.API_TYPE.CHANGEPASSWORD,userPass,userNewPass,userConfirmPass,true);
 
-        /*if(userNewPass.equals(userConfirmPass)){
-       retrofitManager.changePassword(this,this, Constants.API_TYPE.CHANGEPASSWORD,userPass,userNewPass,userConfirmPass,uToken,true);
-   }
-   else{
-       Toast.makeText(DrawerMainActivity.this,"password not matched",Toast.LENGTH_LONG).show();
-   }*/
     }
-    private boolean isConnectingToInternet() {
-        ConnectivityManager connectivity = (ConnectivityManager) DrawerMainActivity.this
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivity != null) {
-            NetworkInfo[] info = connectivity.getAllNetworkInfo();
-            if (info != null)
-                for (int i = 0; i < info.length; i++)
-                    if (info[i].getState() == NetworkInfo.State.CONNECTED) {
-                        return true;
-                    }
 
-        }
-        return false;
-    }
 
 
     //
@@ -705,5 +666,12 @@ public class DrawerMainActivity extends AppCompatActivity
         return true;
 
     }
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Fragment fragment = (Fragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if (fragment != null) {
+            fragment.onActivityResult(requestCode, resultCode, data);
+        }
+    }
 }

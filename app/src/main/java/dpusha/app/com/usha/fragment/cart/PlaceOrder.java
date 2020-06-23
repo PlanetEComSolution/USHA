@@ -345,7 +345,7 @@ public class PlaceOrder extends Fragment implements RequestListener, DatePickerD
                 }.getType();
                 List<ShipToParty> _shipToPartyList = gson.fromJson(strResponse, listType);
 
-                shipToPartyList.add(new ShipToParty("Select Party", "0"));
+                shipToPartyList.add(new ShipToParty("Shipping Address", "0"));
                 shipToPartyList.addAll(_shipToPartyList);
 
                 if (_shipToPartyList != null && !_shipToPartyList.isEmpty()) {
@@ -544,7 +544,7 @@ public class PlaceOrder extends Fragment implements RequestListener, DatePickerD
         }
         // else if (shipToParty.isEmpty() ) {
         else if (shipToParty.equals("0")) {
-            Toast.makeText(getActivity(), "Please select party!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Please select shipping address!", Toast.LENGTH_SHORT).show();
             validate = false;
         } else if (date.isEmpty()) {
             Toast.makeText(getActivity(), "Please select delivery date!", Toast.LENGTH_SHORT).show();
@@ -557,7 +557,7 @@ public class PlaceOrder extends Fragment implements RequestListener, DatePickerD
 
     void setTemporaryAdapterForPartySpinner() {
         shipToPartyList.clear();
-        shipToPartyList.add(new ShipToParty("Select Party", "0"));
+        shipToPartyList.add(new ShipToParty("Shipping Address", "0"));
         ArrayAdapter<ShipToParty> dataAdapter = new ArrayAdapter<ShipToParty>(getActivity(), android.R.layout.simple_spinner_item, shipToPartyList);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerShipToParty.setAdapter(dataAdapter);

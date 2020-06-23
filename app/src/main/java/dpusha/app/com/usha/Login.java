@@ -10,7 +10,10 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -62,23 +65,17 @@ import retrofit2.Response;
 
 public class Login extends AppCompatActivity implements View.OnClickListener ,BaseSliderView.OnSliderClickListener,ViewPagerEx.OnPageChangeListener, RequestListener {
     public static final String FROM = "EDIT";
-    Button btn;
-    private Dialog dialog3;
+
     Dialog changePassDialog;
 
-    private Button back;
     private TextView forgot_pass;
     private String user_id, password, status, NewPassword, OldPassword;
     private String userPassword,newPass,confirmPass;
     private EditText user_name, pass, user_email;
     EditText uId;
     EditText name_edit;
-    EditText oldPassword;
     EditText newPassword;
     EditText confirmPassword;
-    private JSONArray jArray;
-    private String inValid_username = "", inValid_otp = "", inValid_Email = "";
-    private String uToken;
 
     private ProgressDialog progressDialog;
 
@@ -122,7 +119,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener ,Ba
 
 
         HashMap<String, Integer> file_maps = new HashMap<String, Integer>();
-        file_maps.put("Hannibal", R.drawable.puma_offer);
+        file_maps.put("Hannibal", R.drawable.usha_icon);
         file_maps.put("Big Bang Theory", R.drawable.home);
         file_maps.put("House of Cards", R.drawable.accountstatement);
         file_maps.put("Game of Thrones", R.drawable.indicator_corner_bg);
@@ -253,29 +250,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener ,Ba
 
     }
 
-    /*public void showChangePassDialog(){
-         changePassDialog=new Dialog(Login.this);
-        changePassDialog.setContentView(R.layout.alert_change_password);
-        changePassDialog.setCanceledOnTouchOutside(false);
-        int width = (int) (Login.this.getResources().getDisplayMetrics().widthPixels * 0.90);
-        int height = (int) (Login.this.getResources().getDisplayMetrics().heightPixels * 0.90);
-        LayoutInflater inflater = Login.this.getLayoutInflater();
-        Button btn_save = changePassDialog.findViewById(R.id.btn_save);
-        Button btn_reset = changePassDialog.findViewById(R.id.btn_reset);
-         oldPassword=changePassDialog.findViewById(R.id.edit_old_pass);
-         newPassword=changePassDialog.findViewById(R.id.edit_new_pass);
-         confirmPassword=changePassDialog.findViewById(R.id.edit_confirm_pass);
-        changePassDialog.getWindow().setLayout(width, height);
-        btn_save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //changePassDialog.dismiss();
-                hitChangePasswordApi();
-            }
-        });
-        changePassDialog.show();
-    }
-*/
 
     private void hitForgotPasswordApi() {
         //user_id = user_email.getText().toString();
@@ -305,9 +279,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener ,Ba
         newPass=newPassword.getText().toString();
         confirmPass=confirmPassword.getText().toString();
         if (isConnectingToInternet()) {
-            // new ForgotPassword().execute();slider
-            //ForgotPassword_REST_api();
-            uToken = SharedPreferencesUtil.getAuthToken(this);
+
+
             hitAPIChangePassword(userPassword,newPass,confirmPass);
         } else
             Toast.makeText(getApplicationContext(),
@@ -633,7 +606,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener ,Ba
         retrofitManager.getPassword(this,this, Constants.API_TYPE.PASSWORD,userId,true);
     }
     private void hitAPIChangePassword(String userPass,String userNewPass,String userConfirmPass){
-        retrofitManager.changePassword(this,this, Constants.API_TYPE.CHANGEPASSWORD,userPass,userNewPass,userConfirmPass,uToken,true);
+        retrofitManager.changePassword(this,this, Constants.API_TYPE.CHANGEPASSWORD,userPass,userNewPass,userConfirmPass,true);
 
     }
     @Override

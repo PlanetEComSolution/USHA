@@ -62,8 +62,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
         Picasso.with(context)
                 .load(Constants.CATEGORY_IMAGE_URL_PREFIX +productCategoryList.get(position).getCatName()+".png")
                 .fit()
-                .placeholder(R.drawable.puma_offer)
-                .error(R.drawable.puma_offer)
+                .placeholder(R.drawable.usha_icon)
+                .error(R.drawable.usha_icon)
                 .into(holder.imgvw_category);
     }
 

@@ -41,9 +41,6 @@ import dpusha.app.com.usha.shared_preference.SharedPreferencesUtil;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 
-//import dpusha.app.com.usha.model.ProductSKU;
-
-
 /**
  * A simple {@link Fragment} subclass.
  */

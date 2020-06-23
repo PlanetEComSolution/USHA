@@ -1,4 +1,5 @@
 package dpusha.app.com.usha.network;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 
 import android.accounts.NetworkErrorException;
@@ -28,6 +29,9 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
 
 //import com.bumptech.glide.request.RequestListener;
 import com.android.volley.BuildConfig;
@@ -255,10 +259,8 @@ public class RetrofitManager implements OnRetryCallback {
             String oldPass,
             String password,
             String newPass,
-
-            String token,
             final boolean showProgress){
-        call = retroService.changePassword(token,oldPass,password,newPass);
+        call = retroService.changePassword(oldPass,password,newPass);
         performCallback(mRequestListener, mContext, mApiType, showProgress);
 
     }
@@ -640,5 +642,126 @@ public class RetrofitManager implements OnRetryCallback {
         performCallback(mRequestListener, mContext, mApiType, showProgress);
 
     }
+    public void getFeedback(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            final boolean showProgress
+    ) {
+
+        call = retroService.getFeedbackList();
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+
+    }
+    public void getFeedbackDetails(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            final String id,
+            final boolean showProgress
+    ) {
+
+        call = retroService.getFeedbackDetails(id);
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+
+    }
+
+    public void changeFeedbackStatus(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            final String id,
+            final boolean showProgress
+    ) {
+
+        call = retroService.changeFeedbackStatus(id);
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+
+    }
+
+
+
+    public void changeFeedbackStatusNew(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            final String FeedbackId,
+            final String FeedbackStatus,
+            final String PendingWithUserCode,
+            final boolean showProgress
+    ) {
+
+        call = retroService.changeFeedbackStatusNew(FeedbackId,FeedbackStatus,PendingWithUserCode);
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+
+    }
+
+
+
+    public void getLocation(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            final String PreFix,
+            final boolean showProgress
+    ) {
+
+        call = retroService.getLocations(PreFix);
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+
+    }
+
+
+    public void getDepartment(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            final String PreFix,
+            final boolean showProgress
+    ) {
+
+        call = retroService.getDepartments(PreFix);
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+
+    }
+
+    public void getAllCategory(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            final boolean showProgress
+    ) {
+
+        call = retroService.getAllCategory();
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+
+    }
+    public void uploadMedia(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            final  MultipartBody.Part[] images,
+            final boolean showProgress
+    ) {
+
+        call = retroService.uploadMedia(images);
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+
+    }
+    public void saveFeedback(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            final  String LocationCode,String DepartmentCode,String CategoryCode,String ClassCode,String Title,String Remarks,String ImageNames,
+            final boolean showProgress
+    ) {
+
+        call = retroService.saveFeedback( LocationCode, DepartmentCode, CategoryCode, ClassCode, Title, Remarks, ImageNames);
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+
+    }
+
+
+
 
 }

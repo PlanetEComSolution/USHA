@@ -53,6 +53,7 @@
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
                     android:layout_weight="1"
+                    android:gravity="center"
                     android:layout_marginLeft="5dp"
                     android:background="@android:color/transparent"
                     android:text="123456789999999"
@@ -60,7 +61,7 @@
                 <TextView
                     android:id="@+id/order_status"
                     android:layout_width="100dp"
-
+android:gravity="right"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:text="Progress in ERP"
@@ -68,6 +69,7 @@
                     style="@style/smallTextViewStyle_grey" />
 
                 <ImageView
+                    android:visibility="gone"
                     android:id="@+id/filter_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

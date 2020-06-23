@@ -17,6 +17,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import dpusha.app.com.usha.R;
+import dpusha.app.com.usha.fragment.feedback.FullscreenImageView;
 import dpusha.app.com.usha.listeners.MainListner;
 import dpusha.app.com.usha.model.LinkData;
 import dpusha.app.com.usha.model.ProductCatalougeList;
@@ -57,20 +58,24 @@ public class ProductCatalougeAdapter extends RecyclerView.Adapter<ProductCatalou
      Picasso.with(context)
             .load(Constants.CATEGORY_IMAGE_URL_PREFIX +productCatalougeLists.get(position).getImageName())
             .fit()
-                .placeholder(R.drawable.puma_offer)
-                .error(R.drawable.puma_offer)
+                .placeholder(R.drawable.usha_icon)
+                .error(R.drawable.usha_icon)
                 .into(holder.image);
 
-        holder.image.setOnClickListener(new View.OnClickListener() {
+      /*  holder.image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String url= productCatalougeLists.get(position).getUrl();
-                Intent intent = new Intent(Intent.ACTION_VIEW);
+               *//* Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(url));
-                //startActivity(intent);
+                context.startActivity(intent);*//*
+
+                Intent intent = new Intent(context, FullscreenImageView.class);
+                intent.putExtra("url",url);
                 context.startActivity(intent);
+
             }
-        });
+        });*/
 
 
 
@@ -89,6 +94,16 @@ public class ProductCatalougeAdapter extends RecyclerView.Adapter<ProductCatalou
             super(itemView);
             name = itemView.findViewById(R.id.title);
             image = itemView.findViewById(R.id.image);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String url= productCatalougeLists.get(getAdapterPosition()).getUrl();
+                    Intent intent = new Intent(context, FullscreenImageView.class);
+                    intent.putExtra("url",url);
+                    context.startActivity(intent);
+
+                }
+            });
         }
     }
 }

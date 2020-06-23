@@ -111,10 +111,12 @@
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:gravity="center_vertical"
+        android:visibility="gone"
         android:background="@drawable/tranprant_menu"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-
+android:paddingLeft="5dp"
+        android:paddingRight="5dp"
         android:layout_marginTop="15dp"
 
         android:orientation="horizontal">
@@ -154,7 +156,7 @@
 
             <TextView
                 android:id="@+id/reference_no"
-                android:gravity="left"
+                android:gravity="center"
 
                 android:layout_width="match_parent"
                 android:layout_weight="1"
@@ -171,7 +173,7 @@
 
             <TextView
                 android:id="@+id/order_status"
-                android:gravity="left"
+                android:gravity="right"
 
                 android:layout_width="match_parent"
                 android:layout_weight="1"
@@ -188,7 +190,7 @@
 
                 android:id="@+id/Detail"
                 android:gravity="center"
-
+android:visibility="gone"
                 style="@style/smallTextViewStyle_white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

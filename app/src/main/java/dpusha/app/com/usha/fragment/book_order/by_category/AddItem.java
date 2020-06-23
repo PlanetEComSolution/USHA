@@ -404,7 +404,7 @@ public class AddItem extends Fragment implements RequestListener, CartItemChange
                 }.getType();
                 List<ShipToParty> _shipToPartyList = gson.fromJson(strResponse, listType);
 
-                shipToPartyList.add(new ShipToParty("Select Party", "0"));
+                shipToPartyList.add(new ShipToParty("Shipping Address", "0"));
                 shipToPartyList.addAll(_shipToPartyList);
 
                 if (_shipToPartyList != null && !_shipToPartyList.isEmpty()) {

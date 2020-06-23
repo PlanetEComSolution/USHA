@@ -66,20 +66,11 @@ public class DashboardFragment extends Fragment implements RequestListener {
     TextView txtvw_Pending_Orders;
 
 
-
     @BindView(R.id.txtvw_Name)
     TextView txtvw_Name;
 
     @BindView(R.id.txtvw_Div)
     TextView txtvw_Div;
-
-
-
-
-
-
-
-
 
 
     @BindView(R.id.txtvw_sales_ttd)
@@ -92,7 +83,6 @@ public class DashboardFragment extends Fragment implements RequestListener {
 
     @BindView(R.id.txtvw_sales_ytd)
     TextView txtvw_sales_ytd;
-
 
 
 

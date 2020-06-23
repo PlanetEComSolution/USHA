@@ -7,7 +7,10 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <application
         android:name=".activity.USHAApplication"
         android:allowBackup="true"
@@ -51,7 +54,11 @@
         <activity
             android:name=".activity.DrawerMainActivity"
             android:label="@string/title_activity_main2"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".fragment.feedback.FullscreenImageView"
+            android:label="@string/title_activity_main2"
+            android:screenOrientation="portrait"/>
 
             <!--
             <intent-filter>
@@ -60,10 +67,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             -->
-        </activity>
+
         <activity
             android:name=".Main3Activity"
             android:label="@string/title_activity_main3"></activity>
+
+
+        <activity
+            android:name="com.gun0912.tedpicker.ImagePickerActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

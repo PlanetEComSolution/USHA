@@ -55,9 +55,9 @@ public class OrderListAdapter_new extends RecyclerView.Adapter<OrderListAdapter_
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recycler_orderlist_new, parent, false);
+               // .inflate(R.layout.recycler_orderlist_new, parent, false);
 
-
+ .inflate(R.layout.recycler_order_item, parent, false);
         return new MyViewHolder(itemView);
     }
 

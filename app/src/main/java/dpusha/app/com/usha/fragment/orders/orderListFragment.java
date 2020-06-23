@@ -149,9 +149,9 @@ public class orderListFragment extends Fragment implements RequestListener {
         recycler_orderlist.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recycler_orderlist.setItemAnimator(new DefaultItemAnimator());
 
-        MyDividerItemDecoration decoration1 = new MyDividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL, 0);
-        recycler_orderlist.addItemDecoration(decoration1);
-       // hitAPIAccessToken();
+      //  MyDividerItemDecoration decoration1 = new MyDividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL, 0);
+       // recycler_orderlist.addItemDecoration(decoration1);
+
         getOrderList();
 
         pullToRefresh = rootView.findViewById(R.id.pullToRefresh);

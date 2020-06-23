@@ -51,8 +51,8 @@ public class SocialNetworkingAdapter extends RecyclerView.Adapter<SocialNetworki
         Picasso.with(context)
                 .load(Constants.CATEGORY_IMAGE_URL_PREFIX +mList.get(position).getImageName())
                 .fit()
-                .placeholder(R.drawable.puma_offer)
-                .error(R.drawable.puma_offer)
+                .placeholder(R.drawable.usha_icon)
+                .error(R.drawable.usha_icon)
                 .into(holder.image);
         holder.image.setOnClickListener(new View.OnClickListener() {
             @Override

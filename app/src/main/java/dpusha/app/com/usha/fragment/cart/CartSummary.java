@@ -231,7 +231,7 @@ public class CartSummary extends Fragment implements RequestListener, CartItemCh
                 }.getType();
                 List<ShipToParty> _shipToPartyList = gson.fromJson(strResponse, listType);
 
-                shipToPartyList.add(new ShipToParty("Select Party", "0"));
+                shipToPartyList.add(new ShipToParty("Shipping Address", "0"));
                 shipToPartyList.addAll(_shipToPartyList);
 
                 if (_shipToPartyList != null && !_shipToPartyList.isEmpty()) {
@@ -355,7 +355,7 @@ public class CartSummary extends Fragment implements RequestListener, CartItemCh
 
     void setTemporaryAdapterForPartySpinner() {
         shipToPartyList.clear();
-        shipToPartyList.add(new ShipToParty("Select Party", "0"));
+        shipToPartyList.add(new ShipToParty("Shipping Address ", "0"));
         ArrayAdapter<ShipToParty> dataAdapter = new ArrayAdapter<ShipToParty>(getActivity(), android.R.layout.simple_spinner_item, shipToPartyList);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerShipToParty.setAdapter(dataAdapter);
