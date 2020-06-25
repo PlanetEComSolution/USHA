@@ -454,11 +454,32 @@ public class RetrofitManager implements OnRetryCallback {
             final int PageNo,
             final int PageSize,
             final boolean showProgress) {
-//        Log.e("Log_ Api: GetProductsForList", "DivCode " + DivCode + " CategoryType " + CategoryType + " SubCategory " + SubCategory + " callType " + callType + " PageNo " + PageNo + " PageSize " + PageSize);
+
         call = retroService.getProductsForList(DivCode, CategoryType, SubCategory, callType, PageNo, PageSize);
         performCallback(mRequestListener, mContext, mApiType, showProgress);
 
     }
+
+
+
+    public void getProductsForListNew(
+            final RequestListener mRequestListener,
+            final Context mContext,
+            final Constants.API_TYPE mApiType,
+            final String DivCode,
+            final String CategoryType,
+            final String SubCategory,
+            final String callType,
+            final String PreFix,
+            final int PageNo,
+            final int PageSize,
+            final boolean showProgress) {
+
+        call = retroService.getProductsForListNew(DivCode, CategoryType, SubCategory, callType,PreFix, PageNo, PageSize);
+        performCallback(mRequestListener, mContext, mApiType, showProgress);
+
+    }
+
 
 
     public void getSKU(

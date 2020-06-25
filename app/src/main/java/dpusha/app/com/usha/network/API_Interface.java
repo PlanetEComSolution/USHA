@@ -139,6 +139,22 @@ public interface API_Interface {
     );
 
 
+    @FormUrlEncoded
+    @POST("/api/Order/GetProductsForList")
+    Call<ResponseBody>getProductsForListNew(@Field("DivCode") String DivCode,
+                                         @Field("CategoryType") String CategoryType,
+                                         @Field("SubCategory") String SubCategory,
+                                         @Field("CallType") String CallType,
+                                            @Field("PreFix") String PreFix,
+                                         @Field("PageNo") int PageNo,
+                                         @Field("PageSize") int PageSize
+    );
+
+
+
+
+
+
 
     @FormUrlEncoded
     @POST("/api/Order/GetProductForAutoComplete")
