@@ -49,8 +49,6 @@ import retrofit2.Response;
 
 
 //import static dpusha.app.com.usha.R.attr.layoutManager;
-
-
 //import dpusha.app.com.usha.model.ProductSKU;
 
 
