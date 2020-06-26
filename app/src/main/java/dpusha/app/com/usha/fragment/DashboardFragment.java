@@ -12,21 +12,30 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dpusha.app.com.usha.R;
+import dpusha.app.com.usha.adapter.DashboardAdapter;
+import dpusha.app.com.usha.adapter.DivisionAdapter;
+import dpusha.app.com.usha.adapter.recycler_decorator.GridSpacingItemDecoration;
 import dpusha.app.com.usha.listeners.MainListner;
 import dpusha.app.com.usha.model.AuthToken;
 import dpusha.app.com.usha.model.ContactResponse;
 //import dpusha.app.com.usha.model.Dashboard;
 import dpusha.app.com.usha.model.DashboardData;
+import dpusha.app.com.usha.model.DashboardModel;
 import dpusha.app.com.usha.network.APIError;
 import dpusha.app.com.usha.network.RequestListener;
 import dpusha.app.com.usha.network.RetrofitManager;
@@ -40,7 +49,7 @@ public class DashboardFragment extends Fragment implements RequestListener {
     private FragmentActivity activity;
     private MainListner listenerMainActivity;
     private RetrofitManager retrofitManager = RetrofitManager.getInstance();
-
+/*
     @BindView(R.id.txtvw_YTD)
     TextView txtvw_YTD;
 
@@ -70,7 +79,13 @@ public class DashboardFragment extends Fragment implements RequestListener {
     TextView txtvw_Name;
 
     @BindView(R.id.txtvw_Div)
-    TextView txtvw_Div;
+    TextView txtvw_Div;*/
+
+
+    @BindView(R.id.recycler_dashboard)
+    RecyclerView recycler_dashboard;
+
+
 
 
     @BindView(R.id.txtvw_sales_ttd)
@@ -110,6 +125,13 @@ public class DashboardFragment extends Fragment implements RequestListener {
 
         view = inflater.inflate(R.layout.fragment_dashboard, container, false);
         ButterKnife.bind(this, view);
+
+
+        recycler_dashboard.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        recycler_dashboard.setItemAnimator(new DefaultItemAnimator());
+        //   recycler_category.addItemDecoration(new ListSpacingDecoration(20));
+        recycler_dashboard.addItemDecoration(new GridSpacingItemDecoration(2,10,false));
+
         //hitApiContactUs();
         return view;
     }
@@ -161,7 +183,7 @@ public class DashboardFragment extends Fragment implements RequestListener {
 
     void setData(DashboardData dashboardData){
 
-         txtvw_YTD.setText("YTD Rs. 45 Lac");
+        /* txtvw_YTD.setText("YTD Rs. 45 Lac");
          txtvw_MTD.setText("MTD Rs. 45 Lac");
          txtvw_totalCreditLimit.setText("Total Credit Limit: Rs. 100 Lac");
          txtvw_BalanceCreditLimit.setText("Balance Credit Limit: Rs. 25 Lac");
@@ -172,7 +194,23 @@ public class DashboardFragment extends Fragment implements RequestListener {
         txtvw_Pending_Orders.setText("Rs 5 Lac");
 
          txtvw_Name.setText("Rahul");
-         txtvw_Div.setText("FAN Division");
+         txtvw_Div.setText("FAN Division");*/
+
+
+        List<DashboardModel> dashboardList=new ArrayList<>();
+        dashboardList.add(new DashboardModel("Sales Performance","YTD Rs. 45 Lac","MTD Rs. 45 Lac",R.drawable.sales_performance));
+        dashboardList.add(new DashboardModel("Credit Limit","Total Credit Limit: Rs. 100 Lac","Balance Credit Limit: Rs. 25 Lac",R.drawable.credit_limit));
+        dashboardList.add(new DashboardModel("Outstanding Status","Total Outstanding: Rs. 65 Lac","",R.drawable.total));
+        dashboardList.add(new DashboardModel("Pending Orders","Rs 5 Lac","",R.drawable.cart_red));
+        dashboardList.add(new DashboardModel("KAM Details","Rahul","FAN Division",R.drawable.account_red));
+
+
+
+        DashboardAdapter categoryAdapter = new DashboardAdapter(getActivity(), dashboardList,listenerMainActivity);
+        recycler_dashboard.setAdapter(categoryAdapter);
+
+
+
          txtvw_sales_ttd.setText("+86");
          txtvw_sales_mtd.setText("+76");
          txtvw_sales_ytd.setText("+96");

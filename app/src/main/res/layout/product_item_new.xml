@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:background="@drawable/edittext_bg"
+            android:padding="10dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/fan"
+            android:visibility="visible" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+
+            >
+
+            <TextView
+                android:id="@+id/txtvw_SKU"
+                style="@style/smallTextViewStyle_grey"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="sku"
+                android:textColor="@color/md_black_1000" />
+
+            <TextView
+                android:id="@+id/txtvw_Description"
+                style="@style/smallTextViewStyle_grey"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+
+                android:text="Desc" />
+
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/et_qty"
+            style="@style/smallTextViewStyle_grey"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/edittext_bg"
+            android:gravity="center"
+            android:hint="QTY"
+            android:inputType="number"
+
+            android:minHeight="40dp" />
+
+        <ImageView
+            android:id="@+id/imgvw_delete"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:scaleType="fitXY"
+            android:visibility="gone"
+            app:srcCompat="@drawable/delete" />
+
+    </LinearLayout>
+
+</LinearLayout>

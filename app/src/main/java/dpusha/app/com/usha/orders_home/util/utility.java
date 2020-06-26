@@ -287,6 +287,87 @@ public class utility {
         return item;
     }
 
+
+    public static void addItemsListToCartPreference(List<Cart> items, Context context, MainListner mainListner) {
+        String strCartItem = SharedPreferencesUtil.getCartItems(context);
+        CartItem cartObject = utility.convertJSONStringToCartObject(strCartItem);
+        if (cartObject == null) {
+            cartObject = new CartItem();
+        }
+        cartObject.setOrderId(utility.getCurrentTimestamp());
+        cartObject.setOrderStatus(null);
+        cartObject.setShipToPartyId(null);
+        // cartObject.setId(SharedPreferencesUtil.getUserId(getActivity()));
+
+
+
+
+        List<Item> list = cartObject.getItems();
+
+        for(int i=0;i<items.size();i++){
+
+            Cart item=items.get(i);
+            String imageName = "";
+            if (item.getImageName() == null || item.getImageName().equals("") || item.getImageName().equals("null")) {
+                imageName = "NoImage.png";
+            } else {
+                imageName = String.valueOf(item.getImageName());
+            }
+
+            Item item1 = new Item(item.getsKU(),
+                    item.getDescription(), item.getUOM(), 0.0, 0.0,
+                    0.0, true, item.getQuantity(),
+                    0,
+                    imageName, null, null,
+                    null);
+
+
+            if (list == null || list.isEmpty()) {
+                list = new ArrayList<>();
+                list.add(item1);
+
+            } else {
+
+                // check item already in cart ?
+                for (int j = 0; j < list.size(); j++) {
+                    if (list.get(j).getsKU().equals(item.getsKU())) {  // item exist inn cart already
+
+                        list.set(j, item1);
+                        break;
+                   /*int quantityInCart= list.get(i).getQuantity();
+                    int newQuantity= item.getQuantity();
+                    if(newQuantity>quantityInCart){
+                        list.set(i,item1);
+                    }else {
+                        item1.setQuantity(quantityInCart+newQuantity);
+                        list.set(i,item1);
+                    }*/
+
+                    } else if (j == list.size() - 1) {   //  item does not exist in cart
+                        list.add(item1);
+                    }
+                }
+            }
+
+
+        }
+
+
+
+
+
+
+
+        cartObject.setItems(list);
+        String newCartJson = utility.convertCartToJSONString(cartObject);
+        // SharedPreferencesUtil.setCartItems(context, newCartJson);
+        utility.setCartItems(context, newCartJson, mainListner);
+
+
+    }
+
+
+
     public static void addItemToCartPreference(ProductDescription item, Context context, MainListner mainListner) {
         String strCartItem = SharedPreferencesUtil.getCartItems(context);
         CartItem cartObject = utility.convertJSONStringToCartObject(strCartItem);

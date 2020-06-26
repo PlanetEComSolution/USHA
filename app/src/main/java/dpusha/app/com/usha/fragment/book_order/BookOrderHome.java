@@ -47,6 +47,7 @@ import dpusha.app.com.usha.adapter.recycler_decorator.MyDividerItemDecoration;
 import dpusha.app.com.usha.fragment.book_order.by_cart.OrderByCart;
 import dpusha.app.com.usha.fragment.book_order.by_category.OrderByItemCategory;
 import dpusha.app.com.usha.fragment.book_order.by_itemcode.OrderByItemCode;
+import dpusha.app.com.usha.fragment.book_order.by_itemcode.OrderByItemCodeNew;
 import dpusha.app.com.usha.fragment.book_order.by_template.OrderByTemplate;
 //import dpusha.app.com.usha.fragment.cart.CartFragment;
 import dpusha.app.com.usha.listeners.CartItemChangedListener;
@@ -129,7 +130,9 @@ public class BookOrderHome extends Fragment {
         switch (view.getId()) {
             case R.id.rl_book_by_itemCode:
 
-                listenerMainActivity.addFragment(new OrderByItemCode(), "OrderByItemCodeFragment", true);
+              //  listenerMainActivity.addFragment(new OrderByItemCode(), "OrderByItemCodeFragment", true);
+                listenerMainActivity.addFragment(new OrderByItemCodeNew(), "OrderByItemCodeNew", true);
+
                 break;
             case R.id.rl_book_by_category:
                 listenerMainActivity. addFragment(new OrderByItemCategory(), "OrderByItemCategory", true);

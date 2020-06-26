@@ -2,19 +2,26 @@ package dpusha.app.com.usha.fragment.book_order.by_itemcode;
 
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
@@ -27,22 +34,23 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import dpusha.app.com.usha.R;
-import dpusha.app.com.usha.adapter.CartAdapter;
+import dpusha.app.com.usha.adapter.CartItemsAdapterNew;
 import dpusha.app.com.usha.adapter.recycler_decorator.EndlessScrollListener;
-import dpusha.app.com.usha.adapter.recycler_decorator.WrapContentGridLayoutManager;
+import dpusha.app.com.usha.adapter.recycler_decorator.MyDividerItemDecoration;
+import dpusha.app.com.usha.fragment.cart.PlaceOrder;
 import dpusha.app.com.usha.listeners.CartItemChangedListener;
 import dpusha.app.com.usha.listeners.MainListner;
 import dpusha.app.com.usha.model.Cart;
 import dpusha.app.com.usha.model.CategoryType;
 import dpusha.app.com.usha.model.ProductCategory;
-import dpusha.app.com.usha.model.ProductDescription;
 import dpusha.app.com.usha.model.ProductDivision;
-import dpusha.app.com.usha.model.SubCategory;
 import dpusha.app.com.usha.network.APIError;
 import dpusha.app.com.usha.network.RequestListener;
 import dpusha.app.com.usha.network.RetrofitManager;
 import dpusha.app.com.usha.orders_home.util.Constants;
+import dpusha.app.com.usha.orders_home.util.utility;
 import dpusha.app.com.usha.shared_preference.SharedPreferencesUtil;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
@@ -56,8 +64,8 @@ import retrofit2.Response;
  * A simple {@link Fragment} subclass.
  */
 public class OrderByItemCodeNew extends Fragment implements RequestListener, CartItemChangedListener {
-   // @BindView(R.id.nestedScrollRotanaNewsHome)
-   // NestedScrollView nestedScrollRotanaNewsHome;
+    // @BindView(R.id.nestedScrollRotanaNewsHome)
+    // NestedScrollView nestedScrollRotanaNewsHome;
     @BindView(R.id.spinnerCategory)
     Spinner spinnerCategory;
 
@@ -67,8 +75,12 @@ public class OrderByItemCodeNew extends Fragment implements RequestListener, Car
     @BindView(R.id.spinnerCategoryType)
     Spinner spinnerCategoryType;
 
-    @BindView(R.id.spinnerSubCategory)
-    Spinner spinnerSubCategory;
+   /* @BindView(R.id.spinnerSubCategory)
+    Spinner spinnerSubCategory;*/
+
+    @BindView(R.id.autoCompleteSKUDesc)
+    EditText autoCompleteSKUDesc;
+
 
     @BindView(R.id.recycler_items)
     RecyclerView recycler_items;
@@ -77,23 +89,25 @@ public class OrderByItemCodeNew extends Fragment implements RequestListener, Car
     private RetrofitManager retrofitManager = RetrofitManager.getInstance();
 
 
-    private String CategoryCode = "", DivisionCode = "", CategoryType = "", SubCategory = "";
+    private String DivisionCode = "", CategoryType = "", SubCategory = "";//CategoryCode = "",
 
     private List<ProductCategory> productCategoryList = new ArrayList<>();
     private List<ProductDivision> productDivisionList = new ArrayList<>();
     private List<CategoryType> categoryTypeList = new ArrayList<>();
-    private List<SubCategory> subCategoryList = new ArrayList<>();
+    //  private List<SubCategory> subCategoryList = new ArrayList<>();
 
     private List<Cart> cartList = new ArrayList<>();
-    private ProductDescription item;
-    CartAdapter cartAdapter;
+    private List<Cart> cartListNew = new ArrayList<>();
+    //  private ProductDescription item;
+    CartItemsAdapterNew cartAdapter;
     private MainListner listenerMainActivity;
     private FragmentActivity activity;
     GridLayoutManager gridLayoutManager;
-   // int pageNumber=1;
+    // int pageNumber=1;
     int pageSize = 30;//, pageLimit=5;
-    String callType = "";
+    //  String callType = "";
     private boolean isLoading;
+    boolean APICallInProgress = false;
 
     public OrderByItemCodeNew() {
         // Required empty public constructor
@@ -116,7 +130,7 @@ public class OrderByItemCodeNew extends Fragment implements RequestListener, Car
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.order_by_cart, container, false);
+        View view = inflater.inflate(R.layout.order_by_item_code_new, container, false);
         ButterKnife.bind(this, view);
 
         return view;
@@ -125,7 +139,7 @@ public class OrderByItemCodeNew extends Fragment implements RequestListener, Car
     @Override
     public void onResume() {
         super.onResume();
-        cartAdapter=null;
+        cartAdapter = null;
     }
 
     @Override
@@ -145,19 +159,22 @@ public class OrderByItemCodeNew extends Fragment implements RequestListener, Car
         setTemporaryAdapterForCategorySpinner();
         setTemporaryAdapterForDivsionSpinner();
         setTemporaryAdapterForCategoryTypeSpinner();
-        setTemporaryAdapterForSubCategorySpinner();
+        autoCompleteSKUDesc.setText("");
         spinnerCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 // On selecting a spinner item
                 setTemporaryAdapterForDivsionSpinner();
                 setTemporaryAdapterForCategoryTypeSpinner();
-                setTemporaryAdapterForSubCategorySpinner();
 
                 ProductCategory item = (ProductCategory) parent.getItemAtPosition(position);
-                CategoryCode = item.getCatCode();
-                if (!CategoryCode.equals("0"))
-                    hitAPIGetDivisionByProductCategory();
+                if (!item.getCatCode().equals("0")) {
+                    CategoryType = String.valueOf(item.getCatCode());
+
+                    cartList.clear();
+                    hitAPIGetCartList(1, autoCompleteSKUDesc.getText().toString().trim());
+                    hitAPIGetDivisionByProductCategory(item.getCatCode());
+                }
             }
 
             @Override
@@ -169,16 +186,13 @@ public class OrderByItemCodeNew extends Fragment implements RequestListener, Car
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 setTemporaryAdapterForCategoryTypeSpinner();
-                setTemporaryAdapterForSubCategorySpinner();
 
                 ProductDivision item = (ProductDivision) parent.getItemAtPosition(position);
-                DivisionCode = item.getDivCode();
-                if (!DivisionCode.equals("0")) {
+                if (!item.getDivCode().equals("0")) {
+                    DivisionCode = item.getDivCode();
                     hitAPIGetCategoryTypeByProductCategory();
-                    //   pageNumber=1;
                     cartList.clear();
-                    callType = "GetByDivisions";
-                    hitAPIGetCartList(1, callType);
+                    hitAPIGetCartList(1, autoCompleteSKUDesc.getText().toString().trim());
                 }
             }
 
@@ -190,17 +204,14 @@ public class OrderByItemCodeNew extends Fragment implements RequestListener, Car
         spinnerCategoryType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                setTemporaryAdapterForSubCategorySpinner();
+
 
                 CategoryType item = (CategoryType) parent.getItemAtPosition(position);
-                CategoryType = String.valueOf(item.getCatType());
                 String CategoryCode = String.valueOf(item.getCatCode());
                 if (!CategoryCode.equals("0")) {
-                    hitAPIGetSubCategoryByProductCategory();
-                    //pageNumber=1;
+                    SubCategory = String.valueOf(item.getCatType());
                     cartList.clear();
-                    callType = "GetByCategories";
-                    hitAPIGetCartList(1, callType);
+                    hitAPIGetCartList(1, autoCompleteSKUDesc.getText().toString().trim());
                 }
             }
 
@@ -209,26 +220,53 @@ public class OrderByItemCodeNew extends Fragment implements RequestListener, Car
 
             }
         });
-        spinnerSubCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                SubCategory item = (SubCategory) parent.getItemAtPosition(position);
-                SubCategory = String.valueOf(item.getSubCategory());
-                String CategoryCode = String.valueOf(item.getCatCode());
-                if (!CategoryCode.equals("0")) {
-                    //pageNumber=1;
-                    cartList.clear();
-                    callType = "GetBySubCategories";
-                    hitAPIGetCartList(1, callType);
-                }
+        autoCompleteSKUDesc.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
 
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (APICallInProgress) return;
+                        String Prefix = autoCompleteSKUDesc.getText().toString().trim();
+                        if (!Prefix.isEmpty()) {
+                            cartList.clear();
+                            setAPICallInProgress();
+                            hitAPIGetCartList(1, autoCompleteSKUDesc.getText().toString().trim());
+
+                        } else {
+                            int pos1 = spinnerCategory.getSelectedItemPosition();
+                            int pos2 = spinnerDivision.getSelectedItemPosition();
+                            int pos3 = spinnerCategoryType.getSelectedItemPosition();
+                            if (pos1 == 0 && pos2 == 0 && pos3 == 0) {
+                                cartList.clear();
+                                recycler_items.getAdapter().notifyDataSetChanged();
+                            }else {
+                                cartList.clear();
+                                hitAPIGetCartList(1, autoCompleteSKUDesc.getText().toString().trim());
+                            }
+
+                        }
+                    }
+                }, 2000);
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
             }
         });
+
+
+
       /*
         recycler_items.addOnScrollListener(new EndlessScrollListener(gridLayoutManager) {
             @Override
@@ -246,7 +284,7 @@ public class OrderByItemCodeNew extends Fragment implements RequestListener, Car
     }
 
     void setTemporaryAdapterForCategorySpinner() {
-        CategoryCode = "";
+        //  CategoryCode = "";
         productCategoryList.clear();
         productCategoryList.add(new ProductCategory("0", "Select Category"));
         ArrayAdapter<ProductCategory> dataAdapter = new ArrayAdapter<ProductCategory>(getActivity(), android.R.layout.simple_spinner_item, productCategoryList);
@@ -255,7 +293,7 @@ public class OrderByItemCodeNew extends Fragment implements RequestListener, Car
     }
 
     void setTemporaryAdapterForDivsionSpinner() {
-        DivisionCode = "";
+        // DivisionCode = "";
 
         productDivisionList.clear();
         productDivisionList.add(new ProductDivision("0", "Select Division"));
@@ -265,7 +303,7 @@ public class OrderByItemCodeNew extends Fragment implements RequestListener, Car
     }
 
     void setTemporaryAdapterForCategoryTypeSpinner() {
-        CategoryType = "";
+        // CategoryType = "";
 
         categoryTypeList.clear();
         categoryTypeList.add(new CategoryType("0", "Select Category Type"));
@@ -274,35 +312,23 @@ public class OrderByItemCodeNew extends Fragment implements RequestListener, Car
         spinnerCategoryType.setAdapter(dataAdapter1);
     }
 
-    void setTemporaryAdapterForSubCategorySpinner() {
-        SubCategory = "";
-
-        subCategoryList.clear();
-        subCategoryList.add(new SubCategory("0", "Select Sub-Category"));
-        ArrayAdapter<SubCategory> dataAdapter1 = new ArrayAdapter<SubCategory>(getActivity(), android.R.layout.simple_spinner_item, subCategoryList);
-        dataAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerSubCategory.setAdapter(dataAdapter1);
-    }
 
     private void hitAPIGetProductCategory() {
 
         retrofitManager.getProductCategory(this, getActivity(), Constants.API_TYPE.PRODUCT_CATEGORY, SharedPreferencesUtil.getUserId(getActivity()), true);
     }
 
-    private void hitAPIGetDivisionByProductCategory() {
-        retrofitManager.getDivisionByProductCategory(this, getActivity(), Constants.API_TYPE.PRODUCT_DIVISION, SharedPreferencesUtil.getUserId(getActivity()), CategoryCode, "GetDivisionsByProductCategory", true);
+    private void hitAPIGetDivisionByProductCategory(String categoryCode) {
+        retrofitManager.getDivisionByProductCategory(this, getActivity(), Constants.API_TYPE.PRODUCT_DIVISION, SharedPreferencesUtil.getUserId(getActivity()), categoryCode, "GetDivisionsByProductCategory", true);
     }
 
     private void hitAPIGetCategoryTypeByProductCategory() {
-        retrofitManager.getCategoryTypeByProductCategory(this, getActivity(), Constants.API_TYPE.CATEGORY_TYPE, CategoryCode, DivisionCode, "GetCategoryByProductCategoryAndDivision", true);
+        retrofitManager.getCategoryTypeByProductCategory(this, getActivity(), Constants.API_TYPE.CATEGORY_TYPE, CategoryType, DivisionCode, "GetCategoryByProductCategoryAndDivision", true);
     }
 
-    private void hitAPIGetSubCategoryByProductCategory() {
-        retrofitManager.getSubCategoryByProductCategory(this, getActivity(), Constants.API_TYPE.SUB_CATEGORY, CategoryCode, DivisionCode, CategoryType, "GetSubCategoryByProductCategoryAndDivision", true);
-    }
 
-    private void hitAPIGetCartList(int pageNumber, String callType) {
-        retrofitManager.getProductsForList(this, getActivity(), Constants.API_TYPE.CART_LIST, DivisionCode, CategoryType, SubCategory, callType, pageNumber, pageSize, true);
+    private void hitAPIGetCartList(int pageNumber, String prefix) {
+        retrofitManager.getProductsForListNew(this, getActivity(), Constants.API_TYPE.CART_LIST, DivisionCode, CategoryType, SubCategory, "GetByCatDivSub", prefix, pageNumber, pageSize, true);
     }
 
 
@@ -343,7 +369,7 @@ public class OrderByItemCodeNew extends Fragment implements RequestListener, Car
                     ArrayAdapter<ProductDivision> dataAdapter = new ArrayAdapter<ProductDivision>(getActivity(), android.R.layout.simple_spinner_item, productDivisionList);
                     dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinnerDivision.setAdapter(dataAdapter);
-                   // spinnerDivision.setSelection(1);
+                    // spinnerDivision.setSelection(1);
                 } else {
                     setTemporaryAdapterForDivsionSpinner();
                     Toast.makeText(getActivity(), "No data found!", Toast.LENGTH_SHORT).show();
@@ -372,34 +398,22 @@ public class OrderByItemCodeNew extends Fragment implements RequestListener, Car
                 Type listType = new TypeToken<List<Cart>>() {
                 }.getType();
                 List<Cart> _cartList = gson.fromJson(strResponse, listType);
-                cartList.addAll(_cartList);
+                List<Cart> _cartListNew = new ArrayList<>();
+
+                for (Cart cart : _cartList) {
+                    cart.setQuantity(0);
+                    _cartListNew.add(cart);
+                }
+                cartList.addAll(_cartListNew);
                 Log.e("Log_size", cartList.size() + "");
-                if (_cartList != null && !_cartList.isEmpty()) {
+                if (_cartListNew != null && !_cartListNew.isEmpty()) {
                     //  cartAdapter = new CartAdapter(getActivity(), cartList, this, listenerMainActivity);
                     //recycler_items.setAdapter(cartAdapter);
                     checkForLoadMore();
 
 
                 } else {
-                  //  Toast.makeText(getActivity(), "No data found!", Toast.LENGTH_SHORT).show();
-                }
-            } else if (apiType == Constants.API_TYPE.SUB_CATEGORY) {
-                subCategoryList.clear();
-                Gson gson = new Gson();
-                Type listType = new TypeToken<List<SubCategory>>() {
-                }.getType();
-                List<SubCategory> _subCategoryList = gson.fromJson(strResponse, listType);
-                subCategoryList.add(new SubCategory("0", "Select Sub-Category"));
-                subCategoryList.addAll(_subCategoryList);
-
-                if (_subCategoryList != null && !_subCategoryList.isEmpty()) {
-                    ArrayAdapter<SubCategory> dataAdapter = new ArrayAdapter<SubCategory>(getActivity(), android.R.layout.simple_spinner_item, subCategoryList);
-                    dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    spinnerSubCategory.setAdapter(dataAdapter);
-
-                } else {
-                    setTemporaryAdapterForSubCategorySpinner();
-                    Toast.makeText(getActivity(), "No data found!", Toast.LENGTH_SHORT).show();
+                    //  Toast.makeText(getActivity(), "No data found!", Toast.LENGTH_SHORT).show();
                 }
             }
         } catch (IOException e) {
@@ -454,9 +468,16 @@ public class OrderByItemCodeNew extends Fragment implements RequestListener, Car
     private void setAdapter() {
 
         if (cartList.size() > 0) {
-            WrapContentGridLayoutManager layoutManager = new WrapContentGridLayoutManager(getActivity(), 2);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
             recycler_items.setLayoutManager(layoutManager);
-            cartAdapter = new CartAdapter(getActivity(), cartList, this, listenerMainActivity);
+            //WrapContentGridLayoutManager layoutManager = new WrapContentGridLayoutManager(getActivity(), 2);
+            // recycler_items.setLayoutManager(layoutManager);
+
+            MyDividerItemDecoration decoration1 = new MyDividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL, 0);
+            recycler_items.addItemDecoration(decoration1);
+
+
+            cartAdapter = new CartItemsAdapterNew(getActivity(), cartList, listenerMainActivity, false);
             recycler_items.setAdapter(cartAdapter);
             recycler_items.scrollTo(0, 0);
 
@@ -465,7 +486,7 @@ public class OrderByItemCodeNew extends Fragment implements RequestListener, Car
                 public boolean onLoadMore(int page, int totalItemsCount) {
                     Log.e("LoadMore", "page:" + page + "  totalItemsCount:" + String.valueOf(totalItemsCount));
                     if (++page > 1) {
-                        hitAPIGetCartList(page, callType);
+                        hitAPIGetCartList(page, autoCompleteSKUDesc.getText().toString().trim());
                     }
                     isLoading = true;
 
@@ -474,11 +495,70 @@ public class OrderByItemCodeNew extends Fragment implements RequestListener, Car
             });
 
 
-
-
-
         } else {
 
         }
+    }
+
+    @OnClick({
+            R.id.button_addToCart,
+            R.id.button_next,
+
+    })
+    public void onClick(@NonNull View view) {
+
+        switch (view.getId()) {
+            case R.id.button_addToCart:
+                if (validation()) {
+                    utility.addItemsListToCartPreference(cartListNew, getActivity(), listenerMainActivity);
+                    Toast.makeText(getActivity(), "Added to Cart", Toast.LENGTH_SHORT).show();
+                    cartList.clear();
+                    recycler_items.getAdapter().notifyDataSetChanged();
+                    onResume();
+                }
+                break;
+            case R.id.button_next:
+
+                listenerMainActivity.addFragment(new PlaceOrder(), "CartFragment", true);
+
+                break;
+
+
+        }
+    }
+
+    public boolean validation() {
+        boolean validate = true;
+        cartListNew.clear();
+        if (cartList.isEmpty()) {
+            Toast.makeText(getActivity(), "No items found!", Toast.LENGTH_SHORT).show();
+            validate = false;
+            return false;
+
+        }
+        for (int i = 0; i < cartList.size(); i++) {
+            if (cartList.get(i).getQuantity() > 0) {
+                cartListNew.add(cartList.get(i));
+            }
+        }
+
+        if (cartListNew.isEmpty()) {
+            Toast.makeText(getActivity(), "Please enter valid quantity", Toast.LENGTH_SHORT).show();
+            validate = false;
+
+        }
+
+        return validate;
+    }
+
+    private void setAPICallInProgress() {
+        APICallInProgress = true;
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                APICallInProgress = false;
+            }
+        }, 2000);
     }
 }

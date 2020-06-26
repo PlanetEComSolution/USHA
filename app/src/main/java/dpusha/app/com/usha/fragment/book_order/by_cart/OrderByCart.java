@@ -105,7 +105,6 @@ public class OrderByCart extends Fragment implements RequestListener, CartItemCh
 
     private RetrofitManager retrofitManager = RetrofitManager.getInstance();
 
-
     private String CategoryCode = "", DivisionCode = "", CategoryType = "", SubCategory = "";
 
     private List<ProductCategory> productCategoryList = new ArrayList<>();
