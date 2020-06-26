@@ -247,7 +247,9 @@ public class OrderByItemCodeNew extends Fragment implements RequestListener, Car
                             int pos3 = spinnerCategoryType.getSelectedItemPosition();
                             if (pos1 == 0 && pos2 == 0 && pos3 == 0) {
                                 cartList.clear();
-                                recycler_items.getAdapter().notifyDataSetChanged();
+
+                                cartAdapter = new CartItemsAdapterNew(getActivity(), cartList, listenerMainActivity, false);
+                                recycler_items.setAdapter(cartAdapter);
                             }else {
                                 cartList.clear();
                                 hitAPIGetCartList(1, autoCompleteSKUDesc.getText().toString().trim());
